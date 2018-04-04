@@ -1,6 +1,6 @@
 package model;
 
-public class Pokemon {
+public class Pokemon extends Items{
 
   private String name;
   private int resistanceTocatch;
