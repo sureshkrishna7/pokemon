@@ -13,6 +13,7 @@ public abstract class NPC extends Items {
 	private Boolean hostile;
 	
 	public NPC(String npcName, Boolean hostility, Vector<Pokemon> NPCPokemon) {
+	  super('N');
 		this.name = npcName;
 		this.hostile = hostility;
 		this.allPokemon = NPCPokemon;

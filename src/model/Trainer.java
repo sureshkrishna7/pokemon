@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 public class Trainer extends Items{
@@ -117,6 +118,16 @@ public class Trainer extends Items{
 	 return false;
   }
 
+  public boolean setPosition(Point pos) {
+	 
+	 if(walkable) {
+		currentPosX = pos.x;
+		currentPosY = pos.y;
+		return true;
+	 }
+	 return false;
+  }
+  
   /*
    * Methods are not implemented because we need NPC pokemon or wild Pokemon
    */

@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -13,7 +14,7 @@ public class Map{
 
   private char[][] characterBoard;
 
-  //Just for testing purposes
+  //Crucial for walking of player to work
   private final int width = 50;
   private final int height = 50;
 
@@ -60,7 +61,7 @@ public class Map{
 	  */
 	 setHouse1(24,24);
 
-	 setMall()
+	// setMall()
 
   }
   public Items[][] getBoard() {
@@ -103,7 +104,33 @@ public class Map{
 	 setCharacter(X+2,Y+1,'D');  	//Door to the house
 	 setCharacter(X+2,Y+2,'H');
   }
-  
-  
+
+  public boolean isWalkable(int x, int y) {
+
+	 // Checking if its a valid existing point
+	 // If not then return false
+
+	 // If its a valid range of access
+	 if((x >= 0 && x < height) && (y>= 0 && y < width)) {
+		if(board[x][y].isWalkable()) {
+		  return true;
+		}
+	 }
+	 return false;
+  }
+
+  public boolean isWalkable(Point pos) {
+
+	 // Checking if its a valid existing point
+	 // If not then return false
+
+	 // If its a valid range of access
+	 if((pos.x >= 0 && pos.x < height) && (pos.y>= 0 && pos.y < width)) {
+		if(board[pos.x][pos.y].isWalkable()) {
+		  return true;
+		}
+	 }
+	 return false;
+  }
 
 }

@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class Type {
+public class PokemonType {
 
   //Water, Ice, Fire, Earth
 
@@ -20,7 +20,7 @@ public class Type {
   private String type;
   private ArrayList<Attack> moves;
 
-  public Type(char typeChar) {
+  public PokemonType(char typeChar) {
 	 //FIRE type
 	 if(typeChar == 'F') {
 		type = "fire";
@@ -40,7 +40,7 @@ public class Type {
 	 initializeAttacks(type);
   }
 
-  public Type(String typeChar) {
+  public PokemonType(String typeChar) {
 	 //FIRE type
 	 if(typeChar.toLowerCase().equals("fire")) {
 		type = "fire";
