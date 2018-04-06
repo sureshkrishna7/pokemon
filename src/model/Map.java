@@ -61,7 +61,7 @@ public class Map{
 	  */
 	 setHouse1(24,24);
 
-	// setMall()
+	 // setMall()
 
   }
   public Items[][] getBoard() {
@@ -103,6 +103,18 @@ public class Map{
 	 setCharacter(X+2,Y,'H');
 	 setCharacter(X+2,Y+1,'D');  	//Door to the house
 	 setCharacter(X+2,Y+2,'H');
+  }
+
+  /*
+   * Get the character from the location the player moved
+   * If we cannot access that point then return 0 (ZERO) 
+   */
+  public char getCharacterFromLocation(Point pos) {
+
+	 if((pos.x >= 0 && pos.x < height) && (pos.y>= 0 && pos.y < width)) {
+		return characterBoard[pos.x][pos.y];
+	 }
+	 return '0';
   }
 
   public boolean isWalkable(int x, int y) {

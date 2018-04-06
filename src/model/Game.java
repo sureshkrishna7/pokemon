@@ -29,29 +29,43 @@ public class Game {
   }
 
   // direction could be n,s,e,w or N, S, E, W
-  public boolean playerMove(char direction) {
+  public char playerMove(char direction) {
 
 	 Point player = ash.getLocation();
-	 
+
 	 if(direction == 'n' || direction == 'N') {
 
-		if(pokeTown[][])
-		return true;
+		player.x = player.x - 1;
+		if(pokeTown.isWalkable(player)) {
+		  ash.setLocation(player);
+		  return pokeTown.getCharacterFromLocation(player);
+		}
 	 }
 	 else if(direction == 's' || direction == 'S') {
 
-		return true;
+		player.x = player.x + 1;
+		if(pokeTown.isWalkable(player)) {
+		  ash.setLocation(player);
+		  return pokeTown.getCharacterFromLocation(player);
+		}
 	 }
 	 else if(direction == 'e' || direction == 'E') {
 
-		return true;
+		player.y = player.y + 1;
+		if(pokeTown.isWalkable(player)) {
+		  ash.setLocation(player);
+		  return pokeTown.getCharacterFromLocation(player);
+		}
 	 }
 	 else if(direction == 'w' || direction == 'W') {
 
-		return true;
+		player.y = player.y - 1;
+		if(pokeTown.isWalkable(player)) {
+		  ash.setLocation(player);
+		  return pokeTown.getCharacterFromLocation(player);
+		}
 	 }
-	 
-	 return false;
+	 return '0';
   }
 
 }

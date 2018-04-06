@@ -14,6 +14,7 @@ public class Trainer extends Items{
 
   private int currentPosX;
   private int currentPosY;
+  private Point currentPos;
 
   private Pokemon currentPokemon; //current battle pokemon, switch dynamically while in battle
 
@@ -26,6 +27,7 @@ public class Trainer extends Items{
    * Rick Mercer as easter egg, professor that gives you a pokemon
    */
   public Trainer(String name) {
+	 super('O');
 	 this.trainer = name;
 	 this.money = 5000;
 	 this.capturedPokemons = new ArrayList<Pokemon>(1);
@@ -108,26 +110,22 @@ public class Trainer extends Items{
 	 return this.currentBalls;
   }
 
-  public boolean setPosition(int x, int y) {
+  public void setPosition(int x, int y) {
 
-	 if(walkable) {
-		currentPosX = x;
-		currentPosY = y;
-		return true;
-	 }
-	 return false;
+	 currentPosX = x;
+	 currentPosY = y;
+	 currentPos.x = x;
+	 currentPos.y = y;
   }
 
-  public boolean setPosition(Point pos) {
-	 
-	 if(walkable) {
-		currentPosX = pos.x;
-		currentPosY = pos.y;
-		return true;
-	 }
-	 return false;
+  public void setPosition(Point pos) {
+
+	 currentPosX = pos.x;
+	 currentPosY = pos.y;
+	 currentPos.x = pos.x;
+	 currentPos.y = pos.y;
   }
-  
+
   /*
    * Methods are not implemented because we need NPC pokemon or wild Pokemon
    */
