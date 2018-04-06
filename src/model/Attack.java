@@ -1,36 +1,37 @@
 package model;
 
+import java.util.Random;
+
 public class Attack {
-	private String name;
-	private int totalPP;
-	private int currentPP;
-	private double damageMultiplier;
-	
-	public Attack(String moveName, int movePP, double multiplier) {
-		this.name = moveName;
-		this.currentPP = movePP;					// this tells you how many more times you can use the move before it is exhausted
-		this.totalPP = movePP;
-		this.damageMultiplier = multiplier; //if this is high, PP should be low
-	}
-	public int getCurrentPP() {
-		return this.currentPP;
-	}
-	public int getTotalPP() {
-		return this.totalPP;
-	}
-	public void resetPP() {		//replenishes PP to maximum (effect of a potion, pokemon being healed or level up)
-		this.currentPP = this.totalPP;
-	}
-	public void decreasePP() {
-		this.currentPP--;
-	}
-	public void increaseTotalPP() {
-		this.totalPP++;
-	}
-	public String getAttackName() {
-		return this.name;
-	}
-	public double getMultiplier() {
-		return this.damageMultiplier;
-	}
+
+  private String attack;
+  private String effect;
+  private String type;
+  private int damage;
+  
+  private Random rand;
+  
+  public Attack(String nam, String effec, String typ) {
+	 this.attack = nam;
+	 this.effect = effec;
+	 this.type = typ.toLowerCase();
+	 damage = rand.nextInt(400) + 100;
+  }
+  
+  int baseDamage() {
+	 return this.damage;
+  }
+  
+  String attack() {
+	 return this.attack;
+  }
+  
+  String effect() {
+	 return this.effect;
+  }
+  
+  String type() {
+	 return this.type;
+  }
 }
+

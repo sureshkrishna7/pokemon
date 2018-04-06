@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 
 public abstract class Items {
 
+  // Have door class implement Items
   private String type;
   private Image picture;
   private boolean walkable = false;		//set this to FALSE because most items are NOT walkable (MUST SET TRUE FOR WALKABLE)
