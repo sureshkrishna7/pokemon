@@ -14,27 +14,27 @@ public abstract class Items {
   private Point location;
 
   /*
-   * NEED to chnage the constructor so that it takes at most no parameters
-   * This is were dynamic initialization shines
-   */
-
-
-  /*
+   * ************
+   * 12 Items
+   * ************
    * G for grass
    * B for Bush (Pokemon can only be found here), So maintain a list of its position
    * P for Pokemon
    * O for Trainer
+   * 1 for Black
    * T for Tree
-   * R for River
+   * W for Water
    * H for House
    * N for NPC 
    * D for Door
+   * R for Rock
+   * I for Items
    */
   public Items(char item) {
 	 location = new Point();
 	 type = item;
 
-	 if(type == 'G' || type == 'B' || type == 'D') {
+	 if(type == 'G' || type == 'B' || type == 'D' || type == 'P' || type == 'I') {
 		setWalkable();
 	 }
   }
@@ -44,7 +44,7 @@ public abstract class Items {
 	 location = new Point();
 	 type = item;
 
-	 if(type == 'G' || type == 'B' || type == 'D') {
+	 if(type == 'G' || type == 'B' || type == 'D' || type == 'P' || type == 'I') {
 		setWalkable();
 	 }
 	 setLocation(xpos, ypos);
@@ -54,7 +54,7 @@ public abstract class Items {
 	 location = new Point();
 	 type = item;
 
-	 if(type == 'G' || type == 'B' || type == 'D') {
+	 if(type == 'G' || type == 'B' || type == 'D' || type == 'P' || type == 'I') {
 		setWalkable();
 	 }
 	 setLocation(pos);

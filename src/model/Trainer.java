@@ -12,8 +12,6 @@ public class Trainer extends Items{
   private ArrayList<Items> inventory;
   private int money;
 
-  private int currentPosX;
-  private int currentPosY;
   private Point currentPos;
 
   private Pokemon currentPokemon; //current battle pokemon, switch dynamically while in battle
@@ -111,16 +109,12 @@ public class Trainer extends Items{
 
   public void setPosition(int x, int y) {
 
-	 currentPosX = x;
-	 currentPosY = y;
 	 currentPos.x = x;
 	 currentPos.y = y;
   }
 
   public void setPosition(Point pos) {
 
-	 currentPosX = pos.x;
-	 currentPosY = pos.y;
 	 currentPos.x = pos.x;
 	 currentPos.y = pos.y;
   }
