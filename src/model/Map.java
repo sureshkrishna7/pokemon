@@ -180,29 +180,8 @@ public class Map{
 
   public boolean isWalkable(Point pos) {
 
-	 // Checking if its a valid existing point
-	 // If not then return false
-
-	 // If its a valid range of access
-	 if((pos.x >= 0 && pos.x < height) && (pos.y>= 0 && pos.y < width)) {
-		/*
-		 * *************
-		 * Note:
-		 * 
-		 * WE NEED TO INITIALIZE THE MAP AND RUN A LOOP CREATING ALL THE APPROPRIATE OBJECTS
-		 * *************** COMMENTED OUT THIS SO THAT WE CAN TEST THIS ***************
-		 * *************
-		 */
-		//if(board[pos.x][pos.y].isWalkable()) {
-		if(characterBoard[pos.x][pos.y] == 'G' || characterBoard[pos.x][pos.y] == 'B' || characterBoard[pos.x][pos.y] == 'D' || characterBoard[pos.x][pos.y] == 'P') {	  
-		  return true;
-		}
-	 }
-	 return false;
+	  return isWalkable(pos.x, pos.y);
   }
 
-  /*
-   * *********************************************************
-   */
 
 }

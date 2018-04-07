@@ -1,6 +1,7 @@
 package controller;
 
 import java.awt.Point;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -43,7 +44,9 @@ public class PokemonGame {
 		  System.out.println();
 		  i++;
 		}
-		System.out.print(theGame.getCamera().toString());
+		
+		//System.out.println(theGame.getTrainerLocation().x  + "" + theGame.getTrainerLocation().y);
+		//System.out.print(Arrays.toString(theGame.getCamera()));
 
 
 		System.out.print("Move (n, e, s, w)?");
