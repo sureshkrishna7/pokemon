@@ -4,35 +4,44 @@ import java.util.Random;
 
 public class Attack {
 
-  private String attack;
-  private String effect;
+  private String name;
+  private String buf;
+  private String debuf;
   private String type;
   private int damage;
+  private int cost;
   
   private Random rand;
   
-  public Attack(String nam, String effec, String typ) {
+  public Attack(String name, String type, int damage, String buf, String debuf, int cost) {
 	 rand = new Random();
-	 this.attack = nam;
-	 this.effect = effec;
-	 this.type = typ.toLowerCase();
-	 damage = rand.nextInt(400) + 100;
+	 this.name = name;
+	 this.type = type.toLowerCase();
+	 this.damage = damage;
+	 this.buf = buf;
+	 this.debuf = debuf;
+	 this.cost = cost;
+	 //damage = rand.nextInt(400) + 100;
   }
   
-  int baseDamage() {
-	 return this.damage;
+  public int baseDamage() {
+	 return damage;
+  }
+    
+  public String getBuf() {
+	 return buf;
   }
   
-  String attack() {
-	 return this.attack;
+  public String getDebuf() {
+	  return debuf;
   }
   
-  String effect() {
-	 return this.effect;
+  public String getType() {
+	 return type;
   }
   
-  String type() {
-	 return this.type;
+  public int getCost() {
+	  return cost;
   }
 }
 

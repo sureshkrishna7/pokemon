@@ -13,7 +13,7 @@ public class Rare {
    */
 
   private int HP; 				// differs from 500 to 3000, health points higher is a stronger pokemon, rare has high health
-  private int runable; 		// 500 to 3000, inclined to run when it is lower, rare has low runable
+  private int runnable; 		// 500 to 3000, inclined to run when it is lower, rare has low runable
   private int damageBoost;	// 50 to 300, common has less damage, rare has more damage boost 
 
   private Random rand;
@@ -50,7 +50,7 @@ public class Rare {
 		this.HP = r;
 
 		r = rand.nextInt(500) + c + 1000;
-		this.runable = r;
+		this.runnable = r;
 
 		d = rand.nextInt(200)+50;
 		this.damageBoost = d;  
@@ -61,7 +61,7 @@ public class Rare {
 		this.HP = r;
 
 		r = rand.nextInt(500) + c + 500;
-		this.runable = r;
+		this.runnable = r;
 
 		d = rand.nextInt(300)+50; 				
 		this.damageBoost = d;						
@@ -72,7 +72,7 @@ public class Rare {
 		this.HP = r;
 
 		r = rand.nextInt(500) + c + 2000;
-		this.runable = r;
+		this.runnable = r;
 
 		d = rand.nextInt(100)+50;
 		this.damageBoost = d;
@@ -98,7 +98,7 @@ public class Rare {
 		this.HP = r;
 
 		r = rand.nextInt(500) + c + 1000;
-		this.runable = r;
+		this.runnable = r;
 
 		d = rand.nextInt(200)+50;
 		this.damageBoost = d;  
@@ -109,7 +109,7 @@ public class Rare {
 		this.HP = r;
 
 		r = rand.nextInt(500) + c + 500;
-		this.runable = r;
+		this.runnable = r;
 
 		d = rand.nextInt(300)+50; 				
 		this.damageBoost = d;						
@@ -120,7 +120,7 @@ public class Rare {
 		this.HP = r;
 
 		r = rand.nextInt(500) + c + 2000;
-		this.runable = r;
+		this.runnable = r;
 
 		d = rand.nextInt(100)+50;
 		this.damageBoost = d;
@@ -165,8 +165,8 @@ public class Rare {
 	 return this.HP;
   }
 
-  int getRunable() {
-	 return this.runable;
+  int getRunnable() {
+	 return this.runnable;
   }
 
   int getDamageBoost() {
