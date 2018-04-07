@@ -85,6 +85,7 @@ public class Game {
 	 int y;
 	 
 	 while(i < camHeight) {
+		
 		j = 0;
 		while(j < camWidth) {
 		  
@@ -93,6 +94,11 @@ public class Game {
 		  
 		  if(x < 0 || x >= camHeight || y < 0 || y >= camWidth) {
 			 camera[i][j] = 'B';
+		  }
+		  else if(i == (camHeight-1)/2 && j == (camWidth-1)/2){ 
+			 //Player Position is dynamic, he is NOT placed in a MAP TILE
+			 //His position is stored in Trainer, he MOVES but is NEVER STORED in the MAP
+			 camera[i][j] = 'O';
 		  }
 		  else {
 			 camera[i][j] = pokeTown.getCharacterFromLocation(x,y);
