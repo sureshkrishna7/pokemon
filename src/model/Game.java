@@ -26,6 +26,7 @@ public class Game {
 
 	 ash = new Trainer(new String("Ash"));
 	 ash.setLocation(27, 25);
+	 //ash.setLocation(49, 49);
 
 	 this.cameraArray = new Items[camHeight][camWidth];
 	 this.camera = new char[camHeight][camWidth];
@@ -35,40 +36,49 @@ public class Game {
   public char playerMove(char direction) {
 
 	 Point player = ash.getLocation();
-
+	 Point newPoint = new Point();
+	 
 	 if(direction == 'n' || direction == 'N') {
+		newPoint.x = player.x - 1;
+		newPoint.y = player.y;
 
-		player.x = player.x - 1;
-		if(pokeTown.isWalkable(player)) {
-		  ash.setLocation(player);
-		  return pokeTown.getCharacterFromLocation(player);
+		if(pokeTown.isWalkable(newPoint)) {
+		  ash.setLocation(newPoint);
+		  return pokeTown.getCharacterFromLocation(newPoint);
 		}
 	 }
 	 else if(direction == 's' || direction == 'S') {
+		newPoint.x = player.x + 1;
+		newPoint.y = player.y;
 
-		player.x = player.x + 1;
-		if(pokeTown.isWalkable(player)) {
-		  ash.setLocation(player);
-		  return pokeTown.getCharacterFromLocation(player);
+		if(pokeTown.isWalkable(newPoint)) {
+		  ash.setLocation(newPoint);
+		  return pokeTown.getCharacterFromLocation(newPoint);
 		}
 	 }
 	 else if(direction == 'e' || direction == 'E') {
+		newPoint.x = player.x;
+		newPoint.y = player.y + 1;
 
-		player.y = player.y + 1;
-		if(pokeTown.isWalkable(player)) {
-		  ash.setLocation(player);
-		  return pokeTown.getCharacterFromLocation(player);
+		if(pokeTown.isWalkable(newPoint)) {
+		  ash.setLocation(newPoint);
+		  return pokeTown.getCharacterFromLocation(newPoint);
 		}
 	 }
 	 else if(direction == 'w' || direction == 'W') {
+		newPoint.x = player.x;
+		newPoint.y = player.y - 1;
 
-		player.y = player.y - 1;
-		if(pokeTown.isWalkable(player)) {
-		  ash.setLocation(player);
-		  return pokeTown.getCharacterFromLocation(player);
+		if(pokeTown.isWalkable(newPoint)) {
+		  ash.setLocation(newPoint);
+		  return pokeTown.getCharacterFromLocation(newPoint);
 		}
 	 }
 	 return '0';
+  }
+  
+  public Point getTrainerLocation() {
+	  return ash.getLocation();
   }
 
   public char[][] getCamera(){
@@ -84,6 +94,7 @@ public class Game {
 	 int x;
 	 int y;
 	 
+	 
 	 while(i < camHeight) {
 		
 		x = g  + i;
@@ -93,7 +104,7 @@ public class Game {
 		  y = h  + j;
 		  
 		  if(x < 0 || x >= pokeTown.getMapHeight() || y < 0 || y >= pokeTown.getMapWidth()) {
-			 camera[i][j] = 'B';
+			 camera[i][j] = '1';
 		  }
 		  else if(i == (camHeight-1)/2 && j == (camWidth-1)/2){ 
 			 //Player Position is dynamic, he is NOT placed in a MAP TILE
