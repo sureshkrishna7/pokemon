@@ -16,7 +16,6 @@ public class Pokemon extends Items{
 	 this.pokemon = name;
 	 this.rarity = new Rare(rareOfPokemon);
 	 this.type = new PokemonType(typeOfPokemon);
-	 this.moves = new ArrayList<Attack>(4);
 	 this.moves = type.getPokemonAttacks();
   }
 
@@ -25,7 +24,6 @@ public class Pokemon extends Items{
 	 this.pokemon = name;
 	 this.rarity = new Rare(rareOfPokemon);
 	 this.type = new PokemonType(typeOfPokemon);
-	 this.moves = new ArrayList<Attack>(4);
 	 this.moves = type.getPokemonAttacks();
   }
 
@@ -35,7 +33,6 @@ public class Pokemon extends Items{
 	 this.pokemon = name;
 	 this.rarity = new Rare("common");
 	 this.type = new PokemonType("earth");
-	 this.moves = new ArrayList<Attack>(4);
 	 this.moves = type.getPokemonAttacks();
   }
 
@@ -56,7 +53,7 @@ public class Pokemon extends Items{
   public ArrayList<Attack> getPokemonAttacks(){
 	 return this.moves;
   }
-
+  
   public String pokemon() {
 	 return this.pokemon;
   }
@@ -70,7 +67,7 @@ public class Pokemon extends Items{
   }
 
   public int pokemonRunnable() {
-	 return rarity.getRunable();
+	 return rarity.getRunnable();
   }
 
 }

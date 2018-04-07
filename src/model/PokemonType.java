@@ -19,7 +19,8 @@ public class PokemonType {
 
   private String type;
   private ArrayList<Attack> moves;
-
+  private final static int baseDmg = 25;
+  
   public PokemonType(char typeChar) {
 	 //FIRE type
 	 if(typeChar == 'F') {
@@ -71,36 +72,36 @@ public class PokemonType {
 	 moves = new ArrayList<Attack>(4);
 
 	 if(attackType.equals("ice")) {
-		moves.add(new Attack("Avalanche", "Double effect if took damage first", "ice"));
-		moves.add(new Attack("Blizzard", "Side effect of freezing opponent", "ice"));
-		moves.add(new Attack("Icy Wind", "Lowers speed of opponent", "ice"));
-		moves.add(new Attack("Ice Rain", "Random double power", "ice"));
+		moves.add(new Attack("Avalanche", "ice",     baseDmg, null,        null, 2));
+		moves.add(new Attack( "Blizzard", "ice",     baseDmg, null,    "freeze", 3));
+		moves.add(new Attack( "Icy Wind", "ice", baseDmg * 2, null, "speedDown", 4));
+		moves.add(new Attack( "Ice Rain", "ice", baseDmg * 2, null,    "double", 5));
 	 }
 	 else if(attackType.equals("fire")) {
-		moves.add(new Attack("Flame Thrower", "Standard Attack", "fire"));
-		moves.add(new Attack("Flare", "Can do critical damage or low damage", "fire"));
-		moves.add(new Attack("Fire Punch", "Higher Damage then Flame Thrower", "fire"));
-		moves.add(new Attack("Tucson Summer", "Initial damage, slight hp drop during course of battle", "fire"));
+		moves.add(new Attack("Flame Thrower", "fire",     baseDmg, null,     null, 2));
+		moves.add(new Attack(        "Flare", "fire",     baseDmg, null, "random", 3));
+		moves.add(new Attack(   "Fire Punch", "fire", baseDmg * 2, null,     null, 5));
+		moves.add(new Attack("Tucson Summer", "fire", baseDmg * 2, null,   "burn", 7));
 	 }
 	 else if(attackType.equals("water")) {
-		moves.add(new Attack("Soak", "Standard Attack", "water"));
-		moves.add(new Attack("Brine", "Doubles power if opponent HP < 50%", "water"));
-		moves.add(new Attack("Aqualung", "Lowers opponent accuracy", "water"));
-		moves.add(new Attack("Maelstrom", "Does damage to opponent battling, also does little damage to NPC's other Pokemon", "water"));
+		moves.add(new Attack(     "Soak", "water",     baseDmg,     null,      null, 2));
+		moves.add(new Attack(    "Brine", "water",           0, "double",      null, 3));
+		moves.add(new Attack( "Aqualung", "water", baseDmg * 2,     null, "bubbles", 5));
+		moves.add(new Attack("Maelstrom", "water", baseDmg * 2,     null,  "dmgAll", 6));
 	 }
 	 else{
-		moves.add(new Attack("Rock", "Standard Attack", "earth"));
-		moves.add(new Attack("Drill", "Slows opponent speed", "earth"));
-		moves.add(new Attack("Earth Bender", "Strong Attack", "earth"));
-		moves.add(new Attack("Quake", "Super strong against water", "earth"));
+		moves.add(new Attack(        "Rock", "earth",     baseDmg, null,    null, 1));
+		moves.add(new Attack(       "Drill", "earth",     baseDmg, null,  "slow", 2));
+		moves.add(new Attack("Earth Bender", "earth", baseDmg * 3, null,    null, 5));
+		moves.add(new Attack(       "Quake", "earth", baseDmg * 2, null, "extra", 7));
 	 }
   }
 
-  String getPokemonType() {
+  public String getPokemonType() {
 	 return this.type;
   }
 
-  ArrayList<Attack> getPokemonAttacks(){
+  public ArrayList<Attack> getPokemonAttacks(){
 	 return this.moves;
   }
 

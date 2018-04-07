@@ -1,10 +1,12 @@
 package controller;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Vector;
 
+import model.Attack;
 import model.Game;
 
 
@@ -14,10 +16,11 @@ public class PokemonGame {
 
   private static Scanner sc;
   private static Game theGame;
-
+  private static ArrayList<Attack> attackList;
+  
   public static void main(String[] args) {
 	 theGame = new Game();
-
+	 
 	 char north = 'n';
 	 char south = 's';
 	 char west = 'w';
@@ -81,4 +84,5 @@ public class PokemonGame {
 
 	 // sc.close();
   }
+
 }
