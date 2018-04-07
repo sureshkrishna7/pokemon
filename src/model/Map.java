@@ -83,7 +83,9 @@ public class Map{
 	  * []      []     []
 	  * []      [D]    (26,26)
 	  */
-	 setHouse1(24,24);
+	 setHouse1(12,12);
+	 setHouse2(10,35);
+	 setHouse3(24,24);
 
 	 // setMall()
 
@@ -99,23 +101,89 @@ public class Map{
   }
 
   /*
-   * (X,Y)   []     []
-   * []      []     []
-   * []      [D]    (X+2,Y+2)
+   * (row,col)   []     []
+   *     []      []     []
+   *     []      [D]    (row+2,col+2)
    */
-  public void setHouse1(int X, int Y) {
+  public void setHouse1(int row, int col) {
 
-	 setCharacter(X,Y,'H');
-	 setCharacter(X,Y+1,'H');
-	 setCharacter(X,Y+2,'H');
+	 setCharacter(row, col,'H');
+	 setCharacter(row, col + 1,'H');
+	 setCharacter(row, col + 2,'H');
 
-	 setCharacter(X+1,Y,'H');
-	 setCharacter(X+1,Y+1,'H');
-	 setCharacter(X+1,Y+2,'H');
+	 setCharacter(row + 1, col,'H');
+	 setCharacter(row + 1, col + 1,'H');
+	 setCharacter(row + 1, col + 2,'H');
 
-	 setCharacter(X+2,Y,'H');
-	 setCharacter(X+2,Y+1,'D');  	//Door to the house
-	 setCharacter(X+2,Y+2,'H');
+	 setCharacter(row + 2, col,'H');
+	 setCharacter(row + 2, col + 1,'D');  	//Door to the house
+	 setCharacter(row + 2, col + 2,'H');
+  }
+  
+  public void setHouse2(int row, int col) {
+	 setCharacter(row, col,'H');
+	 setCharacter(row, col + 1,'H');
+	 setCharacter(row, col + 2,'H');
+	 setCharacter(row, col + 3,'H');
+	 setCharacter(row, col + 4,'H');
+
+	 setCharacter(row + 1, col,'H');
+	 setCharacter(row + 1, col + 1,'H');
+	 setCharacter(row + 1, col + 2,'H');
+	 setCharacter(row + 1, col + 3,'H');
+	 setCharacter(row + 1, col + 4,'H');
+	 
+	 
+	 setCharacter(row + 2, col,'H');
+	 setCharacter(row + 2, col + 1,'H');
+	 setCharacter(row + 2, col + 2,'H');
+	 setCharacter(row + 2, col + 3,'H');
+	 setCharacter(row + 2, col + 4,'H');
+	 
+	 setCharacter(row + 3, col,'H');
+	 setCharacter(row + 3, col + 1,'H');
+	 setCharacter(row + 3, col + 2,'D');
+	 setCharacter(row + 3, col + 3,'H');
+	 setCharacter(row + 3, col + 4,'H');
+	 
+  }
+  
+  
+  public void setHouse3(int row, int col) {
+	 setCharacter(row, col,'H');
+	 setCharacter(row, col + 1,'H');
+	 setCharacter(row, col + 2,'H');
+	 setCharacter(row, col + 3,'H');
+	 setCharacter(row, col + 4,'H');
+	 setCharacter(row, col + 5,'H');
+	 setCharacter(row, col + 6,'H');
+
+	 setCharacter(row + 1, col,'H');
+	 setCharacter(row + 1, col + 1,'H');
+	 setCharacter(row + 1, col + 2,'H');
+	 setCharacter(row + 1, col + 3,'H');
+	 setCharacter(row + 1, col + 4,'H');
+	 setCharacter(row + 1, col + 5,'H');
+	 setCharacter(row + 1, col + 6,'H');
+	 
+	 
+	 setCharacter(row + 2, col,'H');
+	 setCharacter(row + 2, col + 1,'H');
+	 setCharacter(row + 2, col + 2,'H');
+	 setCharacter(row + 2, col + 3,'H');
+	 setCharacter(row + 2, col + 4,'H');
+	 setCharacter(row + 2, col + 5,'H');
+	 setCharacter(row + 2, col + 6,'H');
+	 
+
+	 setCharacter(row + 3, col + 2,'H');
+	 setCharacter(row + 3, col + 3,'H');
+	 setCharacter(row + 3, col + 4,'H');
+	 
+	 setCharacter(row + 4, col + 2,'H');
+	 setCharacter(row + 4, col + 3,'D');
+	 setCharacter(row + 4, col + 4,'H');
+	 
   }
 
   /*

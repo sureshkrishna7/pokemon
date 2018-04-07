@@ -25,8 +25,8 @@ public class Game {
 	 pokeTown.setPokemonTown();
 
 	 ash = new Trainer(new String("Ash"));
-	 ash.setLocation(27, 25);
-	 //ash.setLocation(49, 49);
+	 //ash.setLocation(27, 25);
+	 ash.setLocation(24, 23);
 
 	 this.cameraArray = new Items[camHeight][camWidth];
 	 this.camera = new char[camHeight][camWidth];
