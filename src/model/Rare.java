@@ -17,7 +17,6 @@ public class Rare {
   private int damageBoost;	// 50 to 300, common has less damage, rare has more damage boost 
 
   private Random rand;
-
   /*
    * Constructor 1)
    * Rare, Common, Medium as r, c, m 
@@ -26,6 +25,7 @@ public class Rare {
    */
 
   public Rare(char rare) {
+	 rand = new Random();
 	 int r;
 	 int c = rand.nextInt(500);
 	 int d;
@@ -87,6 +87,7 @@ public class Rare {
    */
   
   public Rare(String rare) {
+	 rand = new Random();
 	 int r;
 	 int c = rand.nextInt(500);
 	 int d;

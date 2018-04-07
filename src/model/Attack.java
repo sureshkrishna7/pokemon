@@ -12,6 +12,7 @@ public class Attack {
   private Random rand;
   
   public Attack(String nam, String effec, String typ) {
+	 rand = new Random();
 	 this.attack = nam;
 	 this.effect = effec;
 	 this.type = typ.toLowerCase();

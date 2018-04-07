@@ -22,17 +22,33 @@ public class Map{
   private final int camHeight = 10;
   private Items[][] cameraArray;    		// Camera Array relative to the position of the Player
 
+  
+  
   private ArrayList<Items> listOfItems; // list of items in the map
   private ArrayList<Items> listOfPokemon; // list of pokemon in the map
 
   private boolean didGameEnd;
 
+  /*
+   * *********************************************************
+   */
   public Map() {
 
 	 didGameEnd = false;
 	 initializeBoard();
   }
 
+  public void initializeBoard() {
+
+	 this.board = new Items[height][width];		//Access elements x,y style
+	 this.cameraArray = new Items[camHeight][camWidth];
+	 this.listOfItems = new ArrayList<Items>(5);
+	 this.listOfItems = new ArrayList<Items>(5);
+  }
+
+  /*
+   * *********************************************************
+   */
   public void setPokemonTown() {
 	 /*
 	  * G for grass
@@ -63,17 +79,6 @@ public class Map{
 
 	 // setMall()
 
-  }
-  public Items[][] getBoard() {
-	 return board;
-  }
-
-  public void initializeBoard() {
-
-	 this.board = new Items[height][width];		//Access elements x,y style
-	 this.cameraArray = new Items[camHeight][camWidth];
-	 this.listOfItems = new ArrayList<Items>(5);
-	 this.listOfItems = new ArrayList<Items>(5);
   }
 
   public boolean setCharacter(int x, int y, char z) {
@@ -106,6 +111,14 @@ public class Map{
   }
 
   /*
+   * *********************************************************
+   */
+
+  /*
+   * *********************************************************
+   */
+
+  /*
    * Get the character from the location the player moved
    * If we cannot access that point then return 0 (ZERO) 
    */
@@ -117,6 +130,21 @@ public class Map{
 	 return '0';
   }
 
+  public char getCharacterFromLocation(int x, int y) {
+
+	 if((x >= 0 && x < height) && (y>= 0 && y < width)) {
+		return characterBoard[x][y];
+	 }
+	 return '0';
+  }
+  
+  /*
+   * *********************************************************
+   */
+
+  /*
+   * *********************************************************
+   */
   public boolean isWalkable(int x, int y) {
 
 	 // Checking if its a valid existing point
@@ -144,5 +172,9 @@ public class Map{
 	 }
 	 return false;
   }
+
+  /*
+   * *********************************************************
+   */
 
 }

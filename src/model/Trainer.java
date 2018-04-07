@@ -32,7 +32,7 @@ public class Trainer extends Items{
 	 this.money = 5000;
 	 this.capturedPokemons = new ArrayList<Pokemon>(1);
 	 this.inventory = new ArrayList<Items>(1);
-	 addPokemon("Pikachu");
+	 addPokemon(new String("Pikachu"));
 	 setBattlePokemon(capturedPokemons.get(0));
 
 	 // Set this to 500 when the trainer pays money to NPC or menu option
@@ -47,8 +47,7 @@ public class Trainer extends Items{
 
   // Add 1)
   public void addPokemon(String str) {
-	 Pokemon s = new Pokemon(str);
-	 capturedPokemons.add(s);
+	 capturedPokemons.add(new Pokemon(str));
   }
   //Add 2)
   public void addPokemon(String name, String rareOfPokemon, String typeOfPokemon) {

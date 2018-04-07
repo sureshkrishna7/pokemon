@@ -14,6 +14,8 @@ public class Game {
   private final int camHeight = 10;
   private Items[][] cameraArray; 
 
+  private char[][] camera;
+  
   public Game() {
 
 	 didGameEnd = false;
@@ -22,10 +24,11 @@ public class Game {
 	 pokeTown = new Map();
 	 pokeTown.setPokemonTown();
 
-	 ash = new Trainer("Ash");
+	 ash = new Trainer(new String("Ash"));
 	 ash.setLocation(27, 25);
 
 	 this.cameraArray = new Items[camHeight][camWidth];
+	 this.camera = new char[camHeight][camWidth];
   }
 
   // direction could be n,s,e,w or N, S, E, W
@@ -68,4 +71,38 @@ public class Game {
 	 return '0';
   }
 
+  public char[][] getCamera(){
+	 Point playerPos = ash.getLocation(); 
+	 
+	 playerPos.x = playerPos.x - 4;
+	 
+	 playerPos.y = playerPos.y - 4;
+	 
+	 int i = 0;
+	 int j = 0;
+	 
+	 int x;
+	 int y;
+	 
+	 while(i < camHeight) {
+		j = 0;
+		while(j < camWidth) {
+		  
+		  x = playerPos.x  + i;
+		  y = playerPos.y  + j;
+		  
+		  if(x < 0 || x >= camHeight || y < 0 || y >= camWidth) {
+			 camera[i][j] = 'B';
+		  }
+		  else {
+			 camera[i][j] = pokeTown.getCharacterFromLocation(x,y);
+		  }
+		  j++;
+		}
+		i++;
+	 }
+	 
+	 return camera; 
+  }
+  
 }

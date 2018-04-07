@@ -31,7 +31,7 @@ public abstract class Items {
    * D for Door
    */
   public Items(char item) {
-
+	 location = new Point();
 	 type = item;
 
 	 if(type == 'G' || type == 'B' || type == 'D') {
@@ -41,7 +41,7 @@ public abstract class Items {
 
 
   public Items(char item, int xpos, int ypos) {
-
+	 location = new Point();
 	 type = item;
 
 	 if(type == 'G' || type == 'B' || type == 'D') {
@@ -51,7 +51,7 @@ public abstract class Items {
   }
 
   public Items(char item, Point pos) {
-
+	 location = new Point();
 	 type = item;
 
 	 if(type == 'G' || type == 'B' || type == 'D') {
