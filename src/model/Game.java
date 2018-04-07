@@ -74,9 +74,9 @@ public class Game {
   public char[][] getCamera(){
 	 Point playerPos = ash.getLocation(); 
 	 
-	 playerPos.x = playerPos.x - 4;
+	 int g = playerPos.x - 4;
 	 
-	 playerPos.y = playerPos.y - 4;
+	 int h = playerPos.y - 4;
 	 
 	 int i = 0;
 	 int j = 0;
@@ -86,13 +86,13 @@ public class Game {
 	 
 	 while(i < camHeight) {
 		
+		x = g  + i;
 		j = 0;
 		while(j < camWidth) {
 		  
-		  x = playerPos.x  + i;
-		  y = playerPos.y  + j;
+		  y = h  + j;
 		  
-		  if(x < 0 || x >= camHeight || y < 0 || y >= camWidth) {
+		  if(x < 0 || x >= pokeTown.getMapHeight() || y < 0 || y >= pokeTown.getMapWidth()) {
 			 camera[i][j] = 'B';
 		  }
 		  else if(i == (camHeight-1)/2 && j == (camWidth-1)/2){ 

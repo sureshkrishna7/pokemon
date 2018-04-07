@@ -22,8 +22,8 @@ public class Map{
   private final int camHeight = 10;
   private Items[][] cameraArray;    		// Camera Array relative to the position of the Player
 
-  
-  
+
+
   private ArrayList<Items> listOfItems; // list of items in the map
   private ArrayList<Items> listOfPokemon; // list of pokemon in the map
 
@@ -44,6 +44,14 @@ public class Map{
 	 this.cameraArray = new Items[camHeight][camWidth];
 	 this.listOfItems = new ArrayList<Items>(5);
 	 this.listOfItems = new ArrayList<Items>(5);
+  }
+
+  public int getMapWidth() {
+	 return width;
+  }
+
+  public int getMapHeight() {
+	 return height;
   }
 
   /*
@@ -137,7 +145,7 @@ public class Map{
 	 }
 	 return '0';
   }
-  
+
   /*
    * *********************************************************
    */
@@ -152,7 +160,18 @@ public class Map{
 
 	 // If its a valid range of access
 	 if((x >= 0 && x < height) && (y>= 0 && y < width)) {
-		if(board[x][y].isWalkable()) {
+
+		/*
+		 * *************
+		 * Note:
+		 * 
+		 * WE NEED TO INITIALIZE THE MAP AND RUN A LOOP CREATING ALL THE APPROPRIATE OBJECTS
+		 * *************** COMMENTED OUT THIS SO THAT WE CAN TEST THIS ***************
+		 * *************
+		 */
+		//if(board[x][y].isWalkable()) {
+
+		if(characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D' || characterBoard[x][y] == 'P') {
 		  return true;
 		}
 	 }
@@ -166,7 +185,16 @@ public class Map{
 
 	 // If its a valid range of access
 	 if((pos.x >= 0 && pos.x < height) && (pos.y>= 0 && pos.y < width)) {
-		if(board[pos.x][pos.y].isWalkable()) {
+		/*
+		 * *************
+		 * Note:
+		 * 
+		 * WE NEED TO INITIALIZE THE MAP AND RUN A LOOP CREATING ALL THE APPROPRIATE OBJECTS
+		 * *************** COMMENTED OUT THIS SO THAT WE CAN TEST THIS ***************
+		 * *************
+		 */
+		//if(board[pos.x][pos.y].isWalkable()) {
+		if(characterBoard[pos.x][pos.y] == 'G' || characterBoard[pos.x][pos.y] == 'B' || characterBoard[pos.x][pos.y] == 'D' || characterBoard[pos.x][pos.y] == 'P') {	  
 		  return true;
 		}
 	 }

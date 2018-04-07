@@ -22,7 +22,7 @@ public class PokemonGame {
 	 char west = 'w';
 	 char east = 'e';
 	 String direction = "n";
-	 char gameLogic;
+	 char gameLogic = 0;
 
 	 /* if(direction.equals(""+north)) {
 		System.out.print("It's True\n");
@@ -64,7 +64,15 @@ public class PokemonGame {
 		  gameLogic = theGame.playerMove(east);
 		}
 
-
+		if(gameLogic == 'D') {
+		  System.out.print("Encountered a Door\n");
+		}
+		else if(gameLogic == 'P') {
+		  System.out.print("Encountered a Pokemon\n");
+		}
+		else if(gameLogic == 'N') {
+		  System.out.print("Encountered a NPC\n");
+		}
 
 	 }
 
