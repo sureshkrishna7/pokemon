@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 /* This is a general NPC class. We can create specific NPCs that extend this class.
@@ -8,15 +9,14 @@ import java.util.Vector;
 
 public abstract class NPC extends Items {
 	public String name;
-	public Vector<String>dialogues;
-	protected Vector<Pokemon> allPokemon;
+	public ArrayList<String>dialogues;
+	protected ArrayList<Pokemon> allPokemon;
 	private Boolean hostile;
 	
 	public NPC(String npcName, Boolean hostility, Vector<Pokemon> NPCPokemon) {
 	  super('N');
 		this.name = npcName;
 		this.hostile = hostility;
-		this.allPokemon = NPCPokemon;
 	}
 	
 	public Boolean checkHostility() {
