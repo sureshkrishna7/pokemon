@@ -35,6 +35,7 @@ public class Game {
 
 	 ash = new Trainer(new String("Ash"));
 	 //ash.setLocation(27, 25);
+	 //ash.setLocation(5,12);
 	 ash.setLocation(10,38);
 
 	 this.cameraArray = new Items[camHeight][camWidth];
@@ -98,9 +99,6 @@ public class Game {
 	  return ash.getLocation();
   }
   
-//  public void setTrainerLocation(Point newLocation) {
-//	  ash.setPosition(newLocation);
-//  }
 
   public char[][] getCamera(){
 	 Point playerPos = ash.getLocation(); 

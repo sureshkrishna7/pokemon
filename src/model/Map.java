@@ -107,18 +107,11 @@ public class Map{
 		System.out.println(read);
 		i = 0;
 		while(i < read.length()) {
-//			System.out.println("i: " + i + ", j: "+ j);
-//			System.out.println("len: " + read.length());
-//			System.out.println("len: " + characterBoard[j].length);
-			//if (!(characterBoard[j][i] == ' ')){
-
-			//System.out.println(" CURR CHAR --> " + characterBoard[j][i]);
 			characterBoard[j][i] = read.charAt(i);	
 			
 			if (characterBoard[j][i] == ' '){
-				//System.out.println("i: " + i + ", J: " + j);
-				currentPlayerPos.x = i;
-				currentPlayerPos.y = j;
+				currentPlayerPos.x = j;
+				currentPlayerPos.y = i;
 			}
 			
 			i++;
@@ -130,10 +123,6 @@ public class Map{
 
 	 ac.close();
 	 
-	 if (this.getClass().getName().equals("Door"))
-		 System.out.println("Door class accessing map class");
-	 else 
-		 System.out.println(this.getClass().getName() + " accessing map class");
 	 initializeMapObjects();
   }
 
@@ -147,7 +136,6 @@ public class Map{
 
   private void initializeMapObjects() throws FileNotFoundException {
 
-	  System.out.println("Initializing objects...");
 	 Scanner rp = new Scanner(new File("src/PokemonNames.txt"));
 
 	 int doorCount = 1;

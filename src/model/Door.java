@@ -40,7 +40,7 @@ public class Door extends Items {
 		  System.out.println("NULL MAP");
 	  }
 	  else {
-		  System.out.println("MAP :)");
+		  System.out.println("MAP :)  " + insideMap.getPlayerLocation());
 	  }
 	  return insideMap;
   }

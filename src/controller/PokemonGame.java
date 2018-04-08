@@ -57,7 +57,7 @@ public class PokemonGame {
 		System.out.print("Move (n, e, s, w)?");
 
 		sc = new Scanner(System.in);
-		direction=sc.next();
+		direction=sc.next().toLowerCase();
 
 		if(direction.equals(""+north)) {
 		  gameLogic = theGame.playerMove(north);
@@ -72,7 +72,7 @@ public class PokemonGame {
 		  gameLogic = theGame.playerMove(east);
 		}
 
-		System.out.println(theGame.getTrainerLocation());
+		
 		if(gameLogic == 'D') {
 			
 		  System.out.print("Encountered a Door\n");
@@ -80,6 +80,7 @@ public class PokemonGame {
 		  playerOldLocation.y = theGame.getTrainerLocation().y;
 		  
 		  Door door = (Door) theGame.getPokeTown().getItemsBoard()[theGame.getTrainerLocation().x][theGame.getTrainerLocation().y];
+		  
 		  theGame.setCurrCameraMap(door.getInsideMap());
 		  theGame.setTrainerLocation(door.getInsideMap().getPlayerLocation());
 		  
