@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Point;
+import java.io.FileNotFoundException;
 
 public class Game {
 
@@ -22,11 +23,16 @@ public class Game {
 	 playerWon = false;
 
 	 pokeTown = new Map();
-	 pokeTown.setPokemonTown();
+	 try {
+		pokeTown.geniusMethod("src/PokemonTown.txt");
+	 } catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	 }
 
 	 ash = new Trainer(new String("Ash"));
-	 ash.setLocation(27, 25);
-	 //ash.setLocation(49, 49);
+	 //ash.setLocation(27, 25);
+	 ash.setLocation(9,25);
 
 	 this.cameraArray = new Items[camHeight][camWidth];
 	 this.camera = new char[camHeight][camWidth];
