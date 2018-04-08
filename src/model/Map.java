@@ -4,7 +4,10 @@ import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
+
+import javafx.scene.shape.Line;
 
 /*The idea for this class is to allow Polymorphism of this class.
   This class will simply provide the DIMENSIONS and the Board 
@@ -13,16 +16,14 @@ import java.util.Scanner;
 public class Map{
 
   private Items[][] board;
-
   private char[][] characterBoard;
 
   //Crucial for walking of player to work
   private int col;
   private int row;
 
-
   private ArrayList<Items> listOfItems; // list of items in the map
-  private ArrayList<Items> listOfPokemon; // list of pokemon in the map
+  private ArrayList<Pokemon> listOfPokemon; // list of pokemon in the map
 
   private boolean didGameEnd;
 
@@ -35,17 +36,11 @@ public class Map{
 	 initializeBoard();
   }
 
-
-  /*
-   * NOTE
-   * NEEDS CHANGE
-   */
-
   public void initializeBoard() {
 
 	 this.board = new Items[row][col];		//Access elements x,y style
 	 this.characterBoard = new char[row][col];
-	 this.listOfItems = new ArrayList<Items>(5);
+	 this.listOfPokemon = new ArrayList<Pokemon>(5);
 	 this.listOfItems = new ArrayList<Items>(5);
   }
 
@@ -60,134 +55,6 @@ public class Map{
   /*
    * *********************************************************
    */
-  public void setPokemonTown() {
-	 /*
-	  * G for grass
-	  * B for Bush (Pokemon can only be found here), So maintain a list of its position
-	  * P for Pokemon
-	  * O for Trainer
-	  * T for Tree
-	  * R for River
-	  * H for House
-	  *	 N for NPC 
-	  *	 D for Door
-	  */
-
-	 characterBoard = new char[row][col];
-
-	 for(int i = 0; i < col; i++) {
-		for(int j = 0; j < row; j++) {
-		  characterBoard[i][j] = 'G';
-		}
-	 }
-
-	 /*
-	  * (24,24) []     []
-	  * []      []     []
-	  * []      [D]    (26,26)
-	  */
-	 setHouse1(12,12);
-	 setHouse2(10,35);
-	 setHouse3(24,24);
-
-	 // setMall()
-
-  }
-
-  public boolean setCharacter(int x, int y, char z) {
-
-	 if(characterBoard[x][y] == 'G' || characterBoard[x][y] == 'T') {
-		characterBoard[x][y] = z;
-		return true;
-	 }
-	 return false;
-  }
-
-  /*
-   * (row,col)   []     []
-   *     []      []     []
-   *     []      [D]    (row+2,col+2)
-   */
-  public void setHouse1(int row, int col) {
-
-	 setCharacter(row, col,'H');
-	 setCharacter(row, col + 1,'H');
-	 setCharacter(row, col + 2,'H');
-
-	 setCharacter(row + 1, col,'H');
-	 setCharacter(row + 1, col + 1,'H');
-	 setCharacter(row + 1, col + 2,'H');
-
-	 setCharacter(row + 2, col,'H');
-	 setCharacter(row + 2, col + 1,'D');  	//Door to the house
-	 setCharacter(row + 2, col + 2,'H');
-  }
-
-  public void setHouse2(int row, int col) {
-	 setCharacter(row, col,'H');
-	 setCharacter(row, col + 1,'H');
-	 setCharacter(row, col + 2,'H');
-	 setCharacter(row, col + 3,'H');
-	 setCharacter(row, col + 4,'H');
-
-	 setCharacter(row + 1, col,'H');
-	 setCharacter(row + 1, col + 1,'H');
-	 setCharacter(row + 1, col + 2,'H');
-	 setCharacter(row + 1, col + 3,'H');
-	 setCharacter(row + 1, col + 4,'H');
-
-
-	 setCharacter(row + 2, col,'H');
-	 setCharacter(row + 2, col + 1,'H');
-	 setCharacter(row + 2, col + 2,'H');
-	 setCharacter(row + 2, col + 3,'H');
-	 setCharacter(row + 2, col + 4,'H');
-
-	 setCharacter(row + 3, col,'H');
-	 setCharacter(row + 3, col + 1,'H');
-	 setCharacter(row + 3, col + 2,'D');
-	 setCharacter(row + 3, col + 3,'H');
-	 setCharacter(row + 3, col + 4,'H');
-
-  }
-
-
-  public void setHouse3(int row, int col) {
-	 setCharacter(row, col,'H');
-	 setCharacter(row, col + 1,'H');
-	 setCharacter(row, col + 2,'H');
-	 setCharacter(row, col + 3,'H');
-	 setCharacter(row, col + 4,'H');
-	 setCharacter(row, col + 5,'H');
-	 setCharacter(row, col + 6,'H');
-
-	 setCharacter(row + 1, col,'H');
-	 setCharacter(row + 1, col + 1,'H');
-	 setCharacter(row + 1, col + 2,'H');
-	 setCharacter(row + 1, col + 3,'H');
-	 setCharacter(row + 1, col + 4,'H');
-	 setCharacter(row + 1, col + 5,'H');
-	 setCharacter(row + 1, col + 6,'H');
-
-
-	 setCharacter(row + 2, col,'H');
-	 setCharacter(row + 2, col + 1,'H');
-	 setCharacter(row + 2, col + 2,'H');
-	 setCharacter(row + 2, col + 3,'H');
-	 setCharacter(row + 2, col + 4,'H');
-	 setCharacter(row + 2, col + 5,'H');
-	 setCharacter(row + 2, col + 6,'H');
-
-
-	 setCharacter(row + 3, col + 2,'H');
-	 setCharacter(row + 3, col + 3,'H');
-	 setCharacter(row + 3, col + 4,'H');
-
-	 setCharacter(row + 4, col + 2,'H');
-	 setCharacter(row + 4, col + 3,'D');
-	 setCharacter(row + 4, col + 4,'H');
-
-  }
 
   /*
    * *********************************************************
@@ -195,7 +62,7 @@ public class Map{
   public void geniusMethod(String file) throws FileNotFoundException {
 
 	 System.out.println(file);
-	 
+
 	 int numberOfLines = 0;
 	 int charInEachLine = 0;
 
@@ -210,10 +77,10 @@ public class Map{
 
 	 this.row = numberOfLines;
 	 this.col = charInEachLine;
-	 
+
 	 this.board = new Items[row][col];		//Access elements x,y style
 	 this.characterBoard = new char[row][col];
-	 
+
 	 System.out.println("row "+row+", col "+col);
 
 	 int i = 0;
@@ -236,12 +103,72 @@ public class Map{
 	 }
 
 	 ac.close();
+
+	 initializeMapObjects();
   }
 
 
   /*
    * *********************************************************
    */
+
+  private void initializeMapObjects() throws FileNotFoundException {
+
+	 Scanner rp = new Scanner(new File("src/PokemonNames.txt"));
+
+	 int doorCount = 1;
+	 int i = 0;
+	 int j = 0;
+
+	 while(i < row) {
+
+		j = 0;
+		while(j < col) {
+
+		  if(characterBoard[i][j] == 'P') {
+			 try{
+				String line = rp.nextLine();
+				String[] pokemonInitializer = new String[3];
+				pokemonInitializer = line.split("\\s+");
+
+				Pokemon currentPokemon = new Pokemon(pokemonInitializer[0], pokemonInitializer[1], pokemonInitializer[2]);
+				//Location of the pokemon is important
+				board[i][j] = (currentPokemon);
+				currentPokemon.setLocation(i, j);
+			 }
+			 catch (NoSuchElementException e) {
+				rp = new Scanner(new File("src/PokemonNames.txt"));
+			 }
+		  }
+		  else if(characterBoard[i][j] == 'D') {
+
+			 /*
+			  * IF THERE IS MORE THAN 4 DOOR Files
+			  * change the number '4' to something else
+			  */
+			 if(doorCount > 4) {
+				doorCount = 1;
+			 }
+			 
+			 String file = "src/Door"+doorCount+".txt";
+
+			 Door currentDoor = new Door(i, j, file);
+			 board[i][j] = currentDoor;
+			 doorCount += 1;
+		  }
+		  else if(characterBoard[i][j] == 'N') {
+			 
+		  }
+		  else {
+			 
+		  }
+		  
+		  j++;
+		}
+		i++;
+	 }
+
+  }
 
   /*
    * Get the character from the location the player moved
@@ -288,7 +215,7 @@ public class Map{
 		 */
 		//if(board[x][y].isWalkable()) {
 
-		if(characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D' || characterBoard[x][y] == 'P') {
+		if(characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D' || characterBoard[x][y] == 'P' || characterBoard[x][y] == 'I') {
 		  return true;
 		}
 	 }
