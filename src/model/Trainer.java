@@ -8,7 +8,7 @@ public class Trainer extends Items{
   private String filepath;			//TODO: need to set proper filepath for the user or Image of the player
   private String trainer;
 
-  private ArrayList<Pokemon> capturedPokemons;
+  private ArrayList<Pokemon> capturedPokemon;
   private ArrayList<Items> inventory;
   private int money;
 
@@ -28,10 +28,10 @@ public class Trainer extends Items{
 	 super('O');
 	 this.trainer = name;
 	 this.money = 5000;
-	 this.capturedPokemons = new ArrayList<Pokemon>(1);
+	 this.capturedPokemon = new ArrayList<Pokemon>(1);
 	 this.inventory = new ArrayList<Items>(1);
 	 addPokemon(new String("Pikachu"));
-	 setBattlePokemon(capturedPokemons.get(0));
+	 setBattlePokemon(capturedPokemon.get(0));
 
 	 // Set this to 500 when the trainer pays money to NPC or menu option
 	 this.safariSteps = 0;
@@ -45,21 +45,21 @@ public class Trainer extends Items{
 
   // Add 1)
   public void addPokemon(String str) {
-	 capturedPokemons.add(new Pokemon(str));
+	 capturedPokemon.add(new Pokemon(str));
   }
   //Add 2)
   public void addPokemon(String name, String rareOfPokemon, String typeOfPokemon) {
 	 Pokemon s = new Pokemon(name, rareOfPokemon, typeOfPokemon);
-	 capturedPokemons.add(s);
+	 capturedPokemon.add(s);
   }
   //Add 3)
   public void addPokemon(String name, char rareOfPokemon, char typeOfPokemon) {
-	 Pokemon s = new Pokemon(name, rareOfPokemon, typeOfPokemon);
-	 capturedPokemons.add(s);
+	 Pokemon s = new Pokemon(name, rareOfPokemon, typeOfPokemon, null);
+	 capturedPokemon.add(s);
   }
   //Add 4)
   public void addPokemon(Pokemon s) {
-	 capturedPokemons.add(s);
+	 capturedPokemon.add(s);
   }
 
   /*
@@ -137,7 +137,7 @@ public class Trainer extends Items{
 	 return true;
   }
 
-  // Throwing Bait makes a Pokémon less likely to run, but makes it harder to catch;
+  // Throwing Bait makes a PokeÌ�mon less likely to run, but makes it harder to catch;
   public void throwBait() {
 
   }
