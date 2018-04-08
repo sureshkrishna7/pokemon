@@ -39,19 +39,19 @@ public class BattleLogicTest {
 	  Pokemon a = new Pokemon("A", 'R', 'E', null);
 	  Pokemon b = new Pokemon("B", 'C', 'W', null);
 	  
-	  System.out.println("b.getHP()="+b.getHP());
+	  //System.out.println("b.getHP()="+b.getHP());
 	  int before = b.getHP();
 	  // baseDmg of this attack is 100 * 3 = 300
 	  a.attack(2, b);
-	  // will have boost of 50-349, attack range: 300-649
+	  // will have boost of 50-349, attack range: 300-649, or might be 0 (random)
 	  //System.out.println("b.getHP()="+b.getHP());
 	  int after = b.getHP();
 	  //System.out.println("attack="+(before-after));
-	  assertTrue(after < before - 300);
+	  assertTrue(after == before || after < before - 300);
   }
   
   @Test
-  public void battleTest_attackWithBurn() {
+  public void battleTest_attackWithDeBufBurn() {
 	  Pokemon a = new Pokemon("A", 'M', 'F', null);
 	  Pokemon b = new Pokemon("B", 'M', 'W', null);
 	  
@@ -66,18 +66,54 @@ public class BattleLogicTest {
   }
   
   @Test
-  public void battleTest_attackWithRandomBuf() {
+  public void battleTest_attackWithDeBufRandom() {
 	  Pokemon a = new Pokemon("A", 'M', 'F', null);
 	  Pokemon b = new Pokemon("B", 'M', 'E', null);
 	  
-	  System.out.println("before="+b.getHP());
 	  int before = b.getHP();
 	  // baseDmg of this attack is 100. Might miss, random hit, or be critical
 	  a.attack(1, b);
-	  // will have boost -100, 0, or 100
+	  // will have boost *0, *1, or *2
 	  int after = b.getHP();
-	  System.out.println("after="+b.getHP());
-	  System.out.println("attack="+(before-after));
-	  assertTrue(after == before - 0 || after == before - 100 || after == before - 200);
+	  assertTrue(after == before - 0 || after < before - 100 || after < before - 200);
   }
+  
+  @Test
+  public void battleTest_attackWithDeBufExtra() {
+	  Pokemon a = new Pokemon("A", 'M', 'E', null);
+	  Pokemon b = new Pokemon("B", 'M', 'W', null);
+	  
+	  int before = b.getHP();
+	  // baseDmg of this attack is 200. Will triple if opponent polar opposite
+	  a.attack(3, b);
+	  // will have boost *3
+	  int after = b.getHP();
+	  assertTrue(after < before - 600);
+  }
+  
+  @Test
+  public void battleTest_attackPolarOpposite() {
+	  Pokemon a = new Pokemon("A", 'M', 'E', null);
+	  Pokemon b = new Pokemon("B", 'M', 'W', null);
+	  
+	  int before = b.getHP();
+	  a.attack(0, b);
+	  int after = b.getHP();
+	  // this test could be tightened
+	  assertTrue(after < before);
+  }
+  
+  @Test
+  public void battleTest_checkMPWithdrawal() {
+	  Pokemon a = new Pokemon("A", 'C', 'I', null);
+	  Pokemon b = new Pokemon("B", 'C', 'W', null);
+	  
+	  a.attack(0, b);
+	  int mp = a.getMP();
+	  //System.out.println("a.getMP()="+a.getMP());
+	  assertTrue(mp == 13);
+  }
+  
+  // need tests for win/lose conditions
+  
 }

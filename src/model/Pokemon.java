@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Pokemon extends Items {
 
@@ -20,7 +21,6 @@ public class Pokemon extends Items {
 		this.specialMove = specialMove;
 		this.moves = type.getPokemonAttacks();
 		moves.add(specialMove);
-
 	}
 
 	public Pokemon(String name, String rareOfPokemon, String typeOfPokemon) {
@@ -56,15 +56,17 @@ public class Pokemon extends Items {
 
 	public void attack(int i, Pokemon p) {
 		Attack attack = moves.get(i);
+		boolean diffBoostFactor = false;
 		int boostFactor = 1;
 		int burnBoost = 0;
-		if (attack.getBuf() != null) {
-			switch (attack.getBuf()) {
+		if (attack.getDebuf() != null) {
+			switch (attack.getDebuf()) {
 			case "double":
 				boostFactor = 2;
 				break;
 			case "random":
-				boostFactor = (int) (Math.random() * 2);
+				Random ran = new Random();
+				boostFactor = ran.nextInt(3);
 				break;
 			case "burn":
 				attack.setBurnCount(3);
@@ -76,15 +78,20 @@ public class Pokemon extends Items {
 			case "slow":
 				break;
 			case "extra":
+				diffBoostFactor = true;
+				boostFactor = 3;
 				break;
 			}
 		}
-		if(isOpposingType(p)) boostFactor = (int)(boostFactor * 1.25);
+		if(isOpposingType(p) && !diffBoostFactor) boostFactor = (int)(boostFactor * 1.25);
 		if(attack.getBurnCount() > 0) {
 			// this adds 35 each time if did a burn attack, will add for 3 turns (can be layered)
 			burnBoost += 35;
 			attack.setBurnCount(attack.getBurnCount() - 1);
 		}
+		// if move not going to miss, subtract MP
+	    if(boostFactor != 0) this.rarity.subtractMP(attack.getCost());
+	    // adjust HP level of Pokemon
 		p.rarity.takeDamage(this.getDamage(i) * boostFactor + burnBoost);
 	}
 	
@@ -116,6 +123,10 @@ public class Pokemon extends Items {
 		return rarity.getHP();
 	}
 
+	public int getMP() {
+		return rarity.getMP();
+	}
+	
 	public int getRunnable() {
 		return rarity.getRunnable();
 	}

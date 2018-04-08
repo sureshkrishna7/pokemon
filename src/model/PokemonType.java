@@ -93,10 +93,10 @@ public class PokemonType {
 		moves.add(new Attack("Maelstrom", "water", baseDmg * 2,     null,  "dmgAll", 6));
 	 }
 	 else{
-		moves.add(new Attack(        "Rock", "earth",     baseDmg, null,    null, 1));
-		moves.add(new Attack(       "Drill", "earth",     baseDmg, null,  "slow", 2));
-		moves.add(new Attack("Earth Bender", "earth", baseDmg * 3, null,    null, 5));
-		moves.add(new Attack(       "Quake", "earth", baseDmg * 2, null, "extra", 7));
+		moves.add(new Attack(        "Rock", "earth",     baseDmg, null,     null, 1));
+		moves.add(new Attack(       "Drill", "earth",     baseDmg, null,   "slow", 2));
+		moves.add(new Attack("Earth Bender", "earth", baseDmg * 3, null, "random", 5));
+		moves.add(new Attack(       "Quake", "earth", baseDmg * 2, null,  "extra", 8));
 	 }
   }
 
