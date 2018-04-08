@@ -9,6 +9,9 @@ public class Game {
   private boolean playerWon;
 
   private Map pokeTown;
+  private Map currCameraMap;
+  private Map door1;
+  private Map door2;
   private Trainer ash;
 
   private final int camWidth = 10;
@@ -23,6 +26,10 @@ public class Game {
 	 playerWon = false;
 
 	 pokeTown = new Map();
+	 door1    = new Map();
+	 door2    = new Map();
+	 currCameraMap = new Map();
+	 
 	 try {
 		pokeTown.geniusMethod("src/PokemonTown.txt");
 	 } catch (FileNotFoundException e) {
@@ -32,12 +39,20 @@ public class Game {
 
 	 ash = new Trainer(new String("Ash"));
 	 //ash.setLocation(27, 25);
-	 ash.setLocation(9,25);
+	 ash.setLocation(5,13);
 
 	 this.cameraArray = new Items[camHeight][camWidth];
 	 this.camera = new char[camHeight][camWidth];
   }
+  
+  public void setCurrCameraMap(Map map) {
+	  currCameraMap = map;
+  }
 
+  public void setTrainerLocation(Point point) {
+	  ash.setLocation(point);
+	  //ash.setPosition(point);
+  }
   // direction could be n,s,e,w or N, S, E, W
   public char playerMove(char direction) {
 
@@ -48,36 +63,36 @@ public class Game {
 		newPoint.x = player.x - 1;
 		newPoint.y = player.y;
 
-		if(pokeTown.isWalkable(newPoint)) {
+		if(currCameraMap.isWalkable(newPoint)) {
 		  ash.setLocation(newPoint);
-		  return pokeTown.getCharacterFromLocation(newPoint);
+		  return currCameraMap.getCharacterFromLocation(newPoint);
 		}
 	 }
 	 else if(direction == 's' || direction == 'S') {
 		newPoint.x = player.x + 1;
 		newPoint.y = player.y;
 
-		if(pokeTown.isWalkable(newPoint)) {
+		if(currCameraMap.isWalkable(newPoint)) {
 		  ash.setLocation(newPoint);
-		  return pokeTown.getCharacterFromLocation(newPoint);
+		  return currCameraMap.getCharacterFromLocation(newPoint);
 		}
 	 }
 	 else if(direction == 'e' || direction == 'E') {
 		newPoint.x = player.x;
 		newPoint.y = player.y + 1;
 
-		if(pokeTown.isWalkable(newPoint)) {
+		if(currCameraMap.isWalkable(newPoint)) {
 		  ash.setLocation(newPoint);
-		  return pokeTown.getCharacterFromLocation(newPoint);
+		  return currCameraMap.getCharacterFromLocation(newPoint);
 		}
 	 }
 	 else if(direction == 'w' || direction == 'W') {
 		newPoint.x = player.x;
 		newPoint.y = player.y - 1;
 
-		if(pokeTown.isWalkable(newPoint)) {
+		if(currCameraMap.isWalkable(newPoint)) {
 		  ash.setLocation(newPoint);
-		  return pokeTown.getCharacterFromLocation(newPoint);
+		  return currCameraMap.getCharacterFromLocation(newPoint);
 		}
 	 }
 	 return '0';
@@ -86,9 +101,14 @@ public class Game {
   public Point getTrainerLocation() {
 	  return ash.getLocation();
   }
+  
+//  public void setTrainerLocation(Point newLocation) {
+//	  ash.setPosition(newLocation);
+//  }
 
   public char[][] getCamera(){
 	 Point playerPos = ash.getLocation(); 
+	 
 	 
 	 int g = playerPos.x - 4;
 	 
@@ -100,6 +120,8 @@ public class Game {
 	 int x;
 	 int y;
 	 
+	 //System.out.println("CurrentMapHeight = " +  currCameraMap.getMapHeight());
+	 //System.out.println("CurrentMapWidth  = " +  currCameraMap.getMapWidth());
 	 
 	 while(i < camHeight) {
 		
@@ -109,7 +131,7 @@ public class Game {
 		  
 		  y = h  + j;
 		  
-		  if(x < 0 || x >= pokeTown.getMapHeight() || y < 0 || y >= pokeTown.getMapWidth()) {
+		  if(x < 0 || x >= currCameraMap.getMapHeight() || y < 0 || y >= currCameraMap.getMapWidth()) {
 			 camera[i][j] = '1';
 		  }
 		  else if(i == (camHeight-1)/2 && j == (camWidth-1)/2){ 
@@ -118,7 +140,8 @@ public class Game {
 			 camera[i][j] = 'O';
 		  }
 		  else {
-			 camera[i][j] = pokeTown.getCharacterFromLocation(x,y);
+			  //System.out.print(currCameraMap.getCharacterFromLocation(x,y)w);
+			 camera[i][j] = currCameraMap.getCharacterFromLocation(x,y);
 		  }
 		  j++;
 		}
@@ -127,5 +150,9 @@ public class Game {
 	 
 	 return camera; 
   }
+
+public Map getPokeTown() {
+	return pokeTown;
+}
   
 }

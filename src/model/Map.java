@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -17,6 +18,7 @@ public class Map{
 
   private Items[][] board;
   private char[][] characterBoard;
+  private Point currentPlayerPos;
 
   //Crucial for walking of player to work
   private int col;
@@ -51,6 +53,10 @@ public class Map{
   public int getMapHeight() {
 	 return row;
   }
+  
+  public Items[][] getItemsBoard(){
+	  return board;
+  }
 
   /*
    * *********************************************************
@@ -65,13 +71,17 @@ public class Map{
 
 	 int numberOfLines = 0;
 	 int charInEachLine = 0;
-
+	 boolean start = true;
+	 
 	 Scanner sc = new Scanner(new File(file));
 
 	 while(sc.hasNext()) {
 
 		String line = sc.nextLine();
-		charInEachLine = line.length();
+		//System.out.println("line: " + line.length());
+		if (start)
+			charInEachLine = line.length(); start = false;
+		
 		numberOfLines += 1;
 	 }
 
@@ -88,7 +98,8 @@ public class Map{
 
 	 sc.close();
 	 Scanner ac = new Scanner(new File(file));
-
+	 
+	 currentPlayerPos = new Point();
 	 while(ac.hasNext()) {
 
 		String read = ac.nextLine();
@@ -96,17 +107,39 @@ public class Map{
 		System.out.println(read);
 		i = 0;
 		while(i < read.length()) {
-		  characterBoard[j][i] = read.charAt(i);
-		  i++;
+//			System.out.println("i: " + i + ", j: "+ j);
+//			System.out.println("len: " + read.length());
+//			System.out.println("len: " + characterBoard[j].length);
+			//if (!(characterBoard[j][i] == ' ')){
+
+			//System.out.println(" CURR CHAR --> " + characterBoard[j][i]);
+			characterBoard[j][i] = read.charAt(i);	
+			
+			if (characterBoard[j][i] == ' '){
+				//System.out.println("i: " + i + ", J: " + j);
+				currentPlayerPos.x = i;
+				currentPlayerPos.y = j;
+			}
+			
+			i++;
+
+			
 		}
 		j++;
 	 }
 
 	 ac.close();
-
+	 
+	 if (this.getClass().getName().equals("Door"))
+		 System.out.println("Door class accessing map class");
+	 else 
+		 System.out.println(this.getClass().getName() + " accessing map class");
 	 initializeMapObjects();
   }
 
+  public Point getPlayerLocation() {
+	  return currentPlayerPos;
+  }
 
   /*
    * *********************************************************
@@ -114,6 +147,7 @@ public class Map{
 
   private void initializeMapObjects() throws FileNotFoundException {
 
+	  System.out.println("Initializing objects...");
 	 Scanner rp = new Scanner(new File("src/PokemonNames.txt"));
 
 	 int doorCount = 1;
@@ -130,7 +164,7 @@ public class Map{
 				String line = rp.nextLine();
 				String[] pokemonInitializer = new String[3];
 				pokemonInitializer = line.split("\\s+");
-
+	
 				Pokemon currentPokemon = new Pokemon(pokemonInitializer[0], pokemonInitializer[1], pokemonInitializer[2]);
 				//Location of the pokemon is important
 				board[i][j] = (currentPokemon);
@@ -153,6 +187,7 @@ public class Map{
 			 String file = "src/Door"+doorCount+".txt";
 
 			 Door currentDoor = new Door(i, j, file);
+			 //Map doorMap = new Map();
 			 board[i][j] = currentDoor;
 			 doorCount += 1;
 		  }
@@ -160,7 +195,7 @@ public class Map{
 			 
 		  }
 		  else {
-			 
+			 //Items 
 		  }
 		  
 		  j++;
@@ -215,7 +250,7 @@ public class Map{
 		 */
 		//if(board[x][y].isWalkable()) {
 
-		if(characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D' || characterBoard[x][y] == 'P' || characterBoard[x][y] == 'I') {
+		if(characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D' || characterBoard[x][y] == 'P' || characterBoard[x][y] == 'I' || characterBoard[x][y] == ' ') {
 		  return true;
 		}
 	 }

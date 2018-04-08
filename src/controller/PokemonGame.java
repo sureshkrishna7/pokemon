@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.Vector;
 
 import model.Attack;
+import model.Door;
 import model.Game;
 
 
@@ -16,6 +17,7 @@ public class PokemonGame {
 
   private static Scanner sc;
   private static Game theGame;
+  private static Point playerOldLocation = new Point();
   
   public static void main(String[] args) {
 	 theGame = new Game();
@@ -26,7 +28,7 @@ public class PokemonGame {
 	 char east = 'e';
 	 String direction = "n";
 	 char gameLogic = 0;
-
+	 theGame.setCurrCameraMap(theGame.getPokeTown());
 	 /* if(direction.equals(""+north)) {
 		System.out.print("It's True\n");
 	 }
@@ -40,6 +42,7 @@ public class PokemonGame {
 		while(i < 10) {
 		  j = 0;
 		  while(j < 10) {
+//			 System.out.print(" "+theGame.getCamera(theGame.getPokeTown())[i][j]);
 			 System.out.print(" "+theGame.getCamera()[i][j]);
 			 j++;
 		  }
@@ -69,14 +72,28 @@ public class PokemonGame {
 		  gameLogic = theGame.playerMove(east);
 		}
 
+		System.out.println(theGame.getTrainerLocation());
 		if(gameLogic == 'D') {
+			
 		  System.out.print("Encountered a Door\n");
+		  playerOldLocation.x = theGame.getTrainerLocation().x;
+		  playerOldLocation.y = theGame.getTrainerLocation().y;
+		  
+		  Door door = (Door) theGame.getPokeTown().getItemsBoard()[theGame.getTrainerLocation().x][theGame.getTrainerLocation().y];
+		  theGame.setCurrCameraMap(door.getInsideMap());
+		  theGame.setTrainerLocation(door.getInsideMap().getPlayerLocation());
+		  
+		  theGame.getCamera();
 		}
 		else if(gameLogic == 'P') {
 		  System.out.print("Encountered a Pokemon\n");
 		}
 		else if(gameLogic == 'N') {
 		  System.out.print("Encountered a NPC\n");
+		}
+		else if(gameLogic == ' ') {
+			theGame.setTrainerLocation(playerOldLocation);
+			theGame.setCurrCameraMap(theGame.getPokeTown());
 		}
 
 	 }

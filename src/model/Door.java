@@ -31,5 +31,19 @@ public class Door extends Items {
 	 }
   }
   
+  public void setInsideMap(Map map) {
+	  insideMap = map;
+  }
+  
+  public Map getInsideMap() {
+	  if (insideMap == null) {
+		  System.out.println("NULL MAP");
+	  }
+	  else {
+		  System.out.println("MAP :)");
+	  }
+	  return insideMap;
+  }
+  
   
 }
