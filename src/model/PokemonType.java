@@ -89,7 +89,7 @@ public class PokemonType {
 	 else if(attackType.equals("water")) {
 		moves.add(new Attack(     "Soak", "water",     baseDmg,     null,      null, 2));
 		moves.add(new Attack(    "Brine", "water",           0, "double",      null, 3));
-		moves.add(new Attack( "Aqualung", "water", baseDmg * 2,     null, "bubbles", 5));
+		moves.add(new Attack( "Aqualung", "water", baseDmg * 2,     null, "accDown", 5));
 		moves.add(new Attack("Maelstrom", "water", baseDmg * 2,     null,  "dmgAll", 6));
 	 }
 	 else{
