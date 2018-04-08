@@ -16,7 +16,6 @@ public class PokemonGame {
 
   private static Scanner sc;
   private static Game theGame;
-  private static ArrayList<Attack> attackList;
   
   public static void main(String[] args) {
 	 theGame = new Game();

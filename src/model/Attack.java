@@ -10,6 +10,7 @@ public class Attack {
   private String type;
   private int damage;
   private int cost;
+  private int burnCount;
   
   private Random rand;
   
@@ -21,6 +22,7 @@ public class Attack {
 	 this.buf = buf;
 	 this.debuf = debuf;
 	 this.cost = cost;
+	 this.burnCount = 0;
 	 //damage = rand.nextInt(400) + 100;
   }
   
@@ -42,6 +44,14 @@ public class Attack {
   
   public int getCost() {
 	  return cost;
+  }
+  
+  public void setBurnCount(int i) {
+	  this.burnCount = i;
+  }
+  
+  public int getBurnCount() {
+	  return burnCount;
   }
 }
 
