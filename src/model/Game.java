@@ -10,8 +10,6 @@ public class Game {
 
   private Map pokeTown;
   private Map currCameraMap;
-  private Map door1;
-  private Map door2;
   private Trainer ash;
 
   private final int camWidth = 10;
@@ -26,8 +24,6 @@ public class Game {
 	 playerWon = false;
 
 	 pokeTown = new Map();
-	 door1    = new Map();
-	 door2    = new Map();
 	 currCameraMap = new Map();
 	 
 	 try {
@@ -39,7 +35,7 @@ public class Game {
 
 	 ash = new Trainer(new String("Ash"));
 	 //ash.setLocation(27, 25);
-	 ash.setLocation(5,13);
+	 ash.setLocation(10,38);
 
 	 this.cameraArray = new Items[camHeight][camWidth];
 	 this.camera = new char[camHeight][camWidth];
