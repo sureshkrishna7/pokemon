@@ -161,15 +161,19 @@ public class Rare {
    *		blank : not accessible
    */
 
-  int getHP() {
+  public int getHP() {
 	 return this.HP;
   }
 
-  int getRunnable() {
+  public void takeDamage(int i) {
+	  this.HP -= i;
+  }
+    
+  public int getRunnable() {
 	 return this.runnable;
   }
 
-  int getDamageBoost() {
+  public int getDamageBoost() {
 	 return this.damageBoost;
   }
 }

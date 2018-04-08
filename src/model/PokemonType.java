@@ -19,7 +19,7 @@ public class PokemonType {
 
   private String type;
   private ArrayList<Attack> moves;
-  private final static int baseDmg = 25;
+  private final static int baseDmg = 100;
   
   public PokemonType(char typeChar) {
 	 //FIRE type
@@ -63,8 +63,11 @@ public class PokemonType {
 
   /*
    * *********************************
-   * Needs improvement
+   * Adds attacks, the standard four for each Pokemon type. One more will be added as a
+   * special move when the Pokemon are added in the Map class.
    * 
+   * constructor for Attack object:
+   * public Attack(String name, String type, int damage, String buf, String debuf, int cost)
    * *********************************
    */
 
