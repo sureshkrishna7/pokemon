@@ -51,7 +51,7 @@ public class PokemonGame {
 		}
 		
 
-		System.out.print("Move (n, e, s, w)?");
+		System.out.print("Move (n, e, s, w)? enter sz to go to Safari zone!: ");
 
 		sc = new Scanner(System.in);
 		direction=sc.next().toLowerCase();
@@ -67,6 +67,9 @@ public class PokemonGame {
 		}//hunter moved east
 		else if(direction.equals(""+east)) {
 		  gameLogic = theGame.playerMove(east);
+		}else if (direction.equals("sz")) {
+			theGame.setTrainerLocation(playerStartLocation);
+			theGame.setCurrCameraMap(theGame.getPokeTown().getSafariZoneMap());
 		}
 
 		
