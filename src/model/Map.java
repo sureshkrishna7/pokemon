@@ -138,7 +138,8 @@ public class Map{
   private void initializeMapObjects() throws FileNotFoundException {
 
 	 Scanner rp = new Scanner(new File("src/PokemonNames.txt"));
-
+	 Scanner rui = new Scanner(new File("src/UsableItems.txt"));
+	 
 	 int doorCount = 1;
 	 int i = 0;
 	 int j = 0;
@@ -189,8 +190,16 @@ public class Map{
 		  else if(characterBoard[i][j] == 'N') {
 			 
 		  }
-		  else {
+		  else if(characterBoard[i][j] == 'U'){
 			 //Items 
+		    String potion = rui.nextLine();
+		    String[] uIArr = new String[4];
+		    uIArr= potion.split("\\s+");
+		    
+		    UsableItems curItem = new UsableItems(uIArr[0], Integer.parseInt(uIArr[1]), Integer.parseInt(uIArr[2]), uIArr[3]);
+		    board[i][j] = curItem;
+		    curItem.setLocation(i, j);
+		    
 		  }
 		  
 		  j++;
@@ -249,7 +258,7 @@ public class Map{
 		 */
 		//if(board[x][y].isWalkable()) {
 
-		if(characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D' || characterBoard[x][y] == 'P' || characterBoard[x][y] == 'I' || characterBoard[x][y] == 'S' || characterBoard[x][y] == 'X'|| characterBoard[x][y] == ' ') {
+		if(characterBoard[x][y] == 'U' || characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D' || characterBoard[x][y] == 'P' || characterBoard[x][y] == 'I' || characterBoard[x][y] == 'S' || characterBoard[x][y] == 'X'|| characterBoard[x][y] == ' ') {
 		  return true;
 		}
 	 }
