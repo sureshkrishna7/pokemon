@@ -24,13 +24,13 @@ public class Trainer extends Items{
    * Initialize with one pokemon or can make Player pick it up
    * Rick Mercer as easter egg, professor that gives you a pokemon
    */
-  public Trainer(String name) {
+  public Trainer(String name, Pokemon p) {
 	 super('O');
 	 this.trainer = name;
 	 this.money = 5000;
 	 this.capturedPokemon = new ArrayList<Pokemon>(1);
 	 this.inventory = new ArrayList<Items>(1);
-	 addPokemon(new String("Pikachu"));
+	 addPokemon(p);
 	 setBattlePokemon(capturedPokemon.get(0));
 
 	 // Set this to 500 when the trainer pays money to NPC or menu option
@@ -41,6 +41,10 @@ public class Trainer extends Items{
 
   public void setBattlePokemon(Pokemon p) {
 	 this.currentPokemon = p;
+  }
+  
+  public Pokemon getCurPokemon() {
+	  return currentPokemon;
   }
 
   // Add 1)
@@ -105,6 +109,10 @@ public class Trainer extends Items{
 
   public int getCurrentBalls() {
 	 return this.currentBalls;
+  }
+  
+  public ArrayList<Pokemon> getPokeList(){
+	  return capturedPokemon;
   }
 
   public void setPosition(int x, int y) {

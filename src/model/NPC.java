@@ -11,15 +11,19 @@ public abstract class NPC extends Items {
 	public String name;
 	public ArrayList<String>dialogues;
 	protected ArrayList<Pokemon> allPokemon;
-	private Boolean hostile;
+	private boolean hostile;
 	
-	public NPC(String npcName, Boolean hostility, Vector<Pokemon> NPCPokemon) {
+	public NPC(String npcName, boolean hostility, Vector<Pokemon> NPCPokemon) {
 	  super('N');
 		this.name = npcName;
 		this.hostile = hostility;
 	}
 	
-	public Boolean checkHostility() {
+	public void addPokemon(Pokemon p) {
+		allPokemon.add(p);
+	}
+	
+	public boolean checkHostility() {
 		return hostile;
 	}
 }

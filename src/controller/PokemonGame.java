@@ -133,7 +133,7 @@ public class PokemonGame {
 		else if(gameLogic == 'P') {
 		  System.out.print("Encountered a Pokemon\n");
 		}
-		else if (gameLogic == 'S') {
+		else if (gameLogic == 'S') {				//S represents Safari Pokemon for now, until Safari Map is created
 			System.out.println("Encountered a Safari Pokemon");
 			Pokemon b = new Pokemon("Sandslash", 'C', 'I', null);
 			SafariEncounter(theGame.getTrainer(), b);
