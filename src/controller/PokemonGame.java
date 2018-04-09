@@ -23,7 +23,7 @@ public class PokemonGame {
   private static Point playerOldLocation = new Point();
   
   public static void SafariEncounter(Trainer currTrainer, Pokemon currPoke) {
-	  System.out.println("You have encountered a " + currPoke.getPokemon());
+	  System.out.println("You have encountered a " + currPoke.getName());
 	  String nextMove = "z";
 	  int roundCounter = 0;
 	  while (!nextMove.equals("f")) {
@@ -50,7 +50,7 @@ public class PokemonGame {
 			  int x = random.nextInt(currPoke.catchLikelihood);
 			  if (x == 0) {
 				  System.out.println("Pokemon Caught");
-				  currTrainer.addPokemon(currPoke.getPokemon());
+				  currTrainer.addPokemon(currPoke.getName());
 				  return;
 			  }
 		  }

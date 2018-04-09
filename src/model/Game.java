@@ -52,9 +52,6 @@ public class Game {
 	 this.camera = new char[camHeight][camWidth];
   }
   
-  public Trainer getTrainer() {
-	  return this.ash;
-  }
   
   public void setCurrCameraMap(Map map) {
 	  currCameraMap = map;
