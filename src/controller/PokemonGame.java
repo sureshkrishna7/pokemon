@@ -17,6 +17,7 @@ public class PokemonGame {
 
   private static Scanner sc;
   private static Game theGame;
+  private static Point playerStartLocation = new Point(11,25);
   private static Point playerOldLocation = new Point();
   
   public static void main(String[] args) {
@@ -42,7 +43,6 @@ public class PokemonGame {
 		while(i < 10) {
 		  j = 0;
 		  while(j < 10) {
-//			 System.out.print(" "+theGame.getCamera(theGame.getPokeTown())[i][j]);
 			 System.out.print(" "+theGame.getCamera()[i][j]);
 			 j++;
 		  }
@@ -50,11 +50,8 @@ public class PokemonGame {
 		  i++;
 		}
 		
-		//System.out.println(theGame.getTrainerLocation().x  + "" + theGame.getTrainerLocation().y);
-		//System.out.print(Arrays.toString(theGame.getCamera()));
 
-
-		System.out.print("Move (n, e, s, w)?");
+		System.out.print("Move (n, e, s, w)? enter sz to go to Safari zone!: ");
 
 		sc = new Scanner(System.in);
 		direction=sc.next().toLowerCase();
@@ -70,6 +67,9 @@ public class PokemonGame {
 		}//hunter moved east
 		else if(direction.equals(""+east)) {
 		  gameLogic = theGame.playerMove(east);
+		}else if (direction.equals("sz")) {
+			theGame.setTrainerLocation(playerStartLocation);
+			theGame.setCurrCameraMap(theGame.getPokeTown().getSafariZoneMap());
 		}
 
 		
@@ -95,6 +95,10 @@ public class PokemonGame {
 		else if(gameLogic == ' ') {
 			theGame.setTrainerLocation(playerOldLocation);
 			theGame.setCurrCameraMap(theGame.getPokeTown());
+		}	
+		else if(gameLogic == 'S' || theGame.getTrainer().getSafariSteps() >= 500) { 
+			theGame.setTrainerLocation(playerStartLocation);
+			theGame.setCurrCameraMap(theGame.getPokeTown().getSafariZoneMap());
 		}
 
 	 }
