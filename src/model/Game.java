@@ -42,10 +42,11 @@ public class Game {
 		e.printStackTrace();
 	 }
 
-	 ash = new Trainer(new String("Ash"));
-	 
-	 // middle-ish of both PokemonTown and SafariZone
-	 ash.setLocation(11,25);
+	 ash = new Trainer(new String("Ash"), null);
+	 //ash.setLocation(27, 25);
+	 //ash.setLocation(5,12);
+	 ash.setLocation(10,38);
+
 
 	 this.cameraArray = new Items[camHeight][camWidth];
 	 this.camera = new char[camHeight][camWidth];
