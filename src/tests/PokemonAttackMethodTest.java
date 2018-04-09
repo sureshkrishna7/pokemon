@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import model.Pokemon;
 
-public class BattleLogicTest {
+public class PokemonAttackMethodTest {
   
   @Test
   public void battleTest_MattacksC() {
@@ -119,9 +119,10 @@ public class BattleLogicTest {
 	  Pokemon a = new Pokemon("A", 'C', 'W', null);
 	  Pokemon b = new Pokemon("B", 'C', 'W', null);
 	  
+	  //System.out.println("b.getHP()="+b.getCurHP());
 	  a.attack(1, b);
+	  //System.out.println("b.getHP()="+b.getCurHP());
 	  assertTrue(b.getCurHP() == b.getMaxHP());
-	  
   }
   // need tests for win/lose conditions
   
