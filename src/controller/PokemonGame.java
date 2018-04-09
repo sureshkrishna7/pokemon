@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
+
 import model.Attack;
 import model.Door;
 import model.Game;
@@ -19,7 +20,9 @@ public class PokemonGame {
 
   private static Scanner sc;
   private static Game theGame;
+  private static Point playerStartLocation = new Point(11,25);
   private static Point playerOldLocation = new Point();
+  
   
   public static void SafariEncounter(Trainer currTrainer, Pokemon currPoke) {
 	  System.out.println("You have encountered a " + currPoke.getName());
@@ -85,7 +88,6 @@ public class PokemonGame {
 		while(i < 10) {
 		  j = 0;
 		  while(j < 10) {
-//			 System.out.print(" "+theGame.getCamera(theGame.getPokeTown())[i][j]);
 			 System.out.print(" "+theGame.getCamera()[i][j]);
 			 j++;
 		  }
@@ -93,11 +95,10 @@ public class PokemonGame {
 		  i++;
 		}
 		
-		//System.out.println(theGame.getTrainerLocation().x  + "" + theGame.getTrainerLocation().y);
-		//System.out.print(Arrays.toString(theGame.getCamera()));
-
-
-		System.out.print("Move (n, e, s, w)?");
+		if (theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap())
+			System.out.print("Move (n, e, s, w)? pt for PokemonTown!: ");
+		else
+			System.out.print("Move (n, e, s, w)? sz for Safari Zone!: ");
 
 		sc = new Scanner(System.in);
 		direction=sc.next().toLowerCase();
@@ -113,6 +114,14 @@ public class PokemonGame {
 		}//hunter moved east
 		else if(direction.equals(""+east)) {
 		  gameLogic = theGame.playerMove(east);
+		}
+		else if (direction.equals("sz") && !(theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap())) {
+			theGame.setTrainerLocation(playerStartLocation);
+			theGame.setCurrCameraMap(theGame.getPokeTown().getSafariZoneMap());
+		}
+		else if (direction.equals("pt") && theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap()) {
+			theGame.setTrainerLocation(playerStartLocation);
+			theGame.setCurrCameraMap(theGame.getPokeTown());
 		}
 
 		
@@ -132,24 +141,22 @@ public class PokemonGame {
 		else if(gameLogic == 'P') {
 		  System.out.print("Encountered a Pokemon\n");
 		}
-		else if (gameLogic == 'S') {				//S represents Safari Pokemon for now, until Safari Map is created
-			System.out.println("Encountered a Safari Pokemon");
-			Pokemon b = new Pokemon("Sandslash", 'C', 'I', null);
-			SafariEncounter(theGame.getTrainer(), b);
-		}
 		else if(gameLogic == 'N') {
 		  System.out.print("Encountered a NPC\n");
 		}
 		else if(gameLogic == ' ') {
 			theGame.setTrainerLocation(playerOldLocation);
 			theGame.setCurrCameraMap(theGame.getPokeTown());
-<<<<<<< HEAD
 		}	
 		else if(gameLogic == 'S' ) { 
 			theGame.setTrainerLocation(playerStartLocation);
 			theGame.setCurrCameraMap(theGame.getPokeTown().getSafariZoneMap());
-=======
->>>>>>> branch 'master' of https://github.com/335spring18/pokemon-purple-rain.git
+		}
+		// X represents Safari Pokemon for now, until Safari Map is created
+		else if (gameLogic == 'X') {				
+			System.out.println("Encountered a Safari Pokemon");
+			Pokemon b = new Pokemon("Sandslash", 'C', 'I', null);
+			SafariEncounter(theGame.getTrainer(), b);
 		}
 		// after exhausting 500 steps in Safari Zone, eject back to PokemonTown
 		else if(theGame.getTrainer().getSafariSteps() >= 500) {
