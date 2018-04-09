@@ -103,9 +103,14 @@ public class PokemonGame {
 			theGame.setTrainerLocation(playerOldLocation);
 			theGame.setCurrCameraMap(theGame.getPokeTown());
 		}	
-		else if(gameLogic == 'S' || theGame.getTrainer().getSafariSteps() >= 500) { 
+		else if(gameLogic == 'S' ) { 
 			theGame.setTrainerLocation(playerStartLocation);
 			theGame.setCurrCameraMap(theGame.getPokeTown().getSafariZoneMap());
+		}
+		// after exhausting 500 steps in Safari Zone, eject back to PokemonTown
+		else if(theGame.getTrainer().getSafariSteps() >= 500) {
+			theGame.setTrainerLocation(playerStartLocation);
+			theGame.setCurrCameraMap(theGame.getPokeTown());
 		}
 
 	 }
