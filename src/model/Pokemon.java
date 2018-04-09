@@ -14,6 +14,9 @@ public class Pokemon extends Items {
 	private Attack specialMove;
 	private boolean boostFactorSet;
 	private int accuracy;
+	public int runLikelihood = 5;		// have to change to make this different for different pokemon later
+	public int catchLikelihood = 5;		//have to change to make this different for different pokemon later	
+	public int maxDuration = 3;			//have to change to make this different for different pokemon later
 
 	public Pokemon(String name, char rareOfPokemon, char typeOfPokemon, Attack specialMove) {
 		super('P');
