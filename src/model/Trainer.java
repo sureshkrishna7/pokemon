@@ -9,7 +9,7 @@ public class Trainer extends Items{
   private String trainer;
 
   private ArrayList<Pokemon> capturedPokemon;
-  private ArrayList<Items> inventory;
+  private ArrayList<UsableItems> inventory;
   private int money;
 
   private Point currentPos = new Point();
@@ -153,5 +153,11 @@ public class Trainer extends Items{
   // Throwing a Rock does the reverse, making it easier to catch but more likely to run
   public void throwRock() {
 
+  }
+  
+  
+  public void usePotion(UsableItems pot) {
+    pot.getPotionName();
+    
   }
 }
