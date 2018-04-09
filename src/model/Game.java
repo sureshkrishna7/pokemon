@@ -167,5 +167,10 @@ public Map getPokeTown() {
 public Trainer getTrainer() {
 	return ash;
 }
+
+public Map getCurrCameraMap() {
+	// TODO Auto-generated method stub
+	return currCameraMap;
+}
   
 }

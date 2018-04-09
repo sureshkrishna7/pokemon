@@ -50,8 +50,10 @@ public class PokemonGame {
 		  i++;
 		}
 		
-
-		System.out.print("Move (n, e, s, w)? enter sz to go to Safari zone!: ");
+		if (theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap())
+			System.out.print("Move (n, e, s, w)? pt for PokemonTown!: ");
+		else
+			System.out.print("Move (n, e, s, w)? sz for Safari Zone!: ");
 
 		sc = new Scanner(System.in);
 		direction=sc.next().toLowerCase();
@@ -67,9 +69,13 @@ public class PokemonGame {
 		}//hunter moved east
 		else if(direction.equals(""+east)) {
 		  gameLogic = theGame.playerMove(east);
-		}else if (direction.equals("sz")) {
+		}else if (direction.equals("sz") && !(theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap())) {
 			theGame.setTrainerLocation(playerStartLocation);
 			theGame.setCurrCameraMap(theGame.getPokeTown().getSafariZoneMap());
+		}
+		else if (direction.equals("pt") && theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap()) {
+			theGame.setTrainerLocation(playerStartLocation);
+			theGame.setCurrCameraMap(theGame.getPokeTown());
 		}
 
 		
