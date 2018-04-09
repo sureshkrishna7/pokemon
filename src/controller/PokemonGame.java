@@ -69,7 +69,8 @@ public class PokemonGame {
 		}//hunter moved east
 		else if(direction.equals(""+east)) {
 		  gameLogic = theGame.playerMove(east);
-		}else if (direction.equals("sz") && !(theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap())) {
+		}
+		else if (direction.equals("sz") && !(theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap())) {
 			theGame.setTrainerLocation(playerStartLocation);
 			theGame.setCurrCameraMap(theGame.getPokeTown().getSafariZoneMap());
 		}
