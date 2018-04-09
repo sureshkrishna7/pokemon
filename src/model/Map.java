@@ -19,6 +19,7 @@ public class Map{
   private Items[][] board;
   private char[][] characterBoard;
   private Point currentPlayerPos;
+  private Map safariZone;
 
   //Crucial for walking of player to work
   private int col;
@@ -179,6 +180,12 @@ public class Map{
 			 board[i][j] = currentDoor;
 			 doorCount += 1;
 		  }
+		  else if(characterBoard[i][j] == 'S') {
+			  String file = "src/SafariZone.txt";
+			  safariZone = new Map();
+			  //safariZone.get
+			 
+		  }
 		  else if(characterBoard[i][j] == 'N') {
 			 
 		  }
@@ -191,6 +198,10 @@ public class Map{
 		i++;
 	 }
 
+  }
+  
+  public Map getSafariZoneMap() {
+	  return safariZone;
   }
 
   /*
@@ -238,7 +249,7 @@ public class Map{
 		 */
 		//if(board[x][y].isWalkable()) {
 
-		if(characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D' || characterBoard[x][y] == 'P' || characterBoard[x][y] == 'I' || characterBoard[x][y] == ' ') {
+		if(characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D' || characterBoard[x][y] == 'P' || characterBoard[x][y] == 'I' || characterBoard[x][y] == 'S' || characterBoard[x][y] == ' ') {
 		  return true;
 		}
 	 }

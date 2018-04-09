@@ -9,6 +9,7 @@ public class Game {
   private boolean playerWon;
 
   private Map pokeTown;
+  private Map safariZone;
   private Map currCameraMap;
   private Trainer ash;
 
@@ -24,19 +25,27 @@ public class Game {
 	 playerWon = false;
 
 	 pokeTown = new Map();
+	 safariZone = new Map();
 	 currCameraMap = new Map();
 	 
 	 try {
 		pokeTown.geniusMethod("src/PokemonTown.txt");
+		
+		// in Poketown bc player must be able to go to 'S' and be transferred to safariZone
+		// genuisMethod will read the txt file and convert it to a map, assigning the values 
+		// for items[][] board and char[][] board for safariZone.
+		safariZone = pokeTown.getSafariZoneMap();
+		safariZone.geniusMethod("src/SafariZone.txt");
+		
 	 } catch (FileNotFoundException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	 }
 
 	 ash = new Trainer(new String("Ash"));
-	 //ash.setLocation(27, 25);
-	 //ash.setLocation(5,12);
-	 ash.setLocation(10,38);
+	 
+	 // middle-ish of both PokemonTown and SafariZone
+	 ash.setLocation(11,25);
 
 	 this.cameraArray = new Items[camHeight][camWidth];
 	 this.camera = new char[camHeight][camWidth];
@@ -48,8 +57,8 @@ public class Game {
 
   public void setTrainerLocation(Point point) {
 	  ash.setLocation(point);
-	  //ash.setPosition(point);
   }
+  
   // direction could be n,s,e,w or N, S, E, W
   public char playerMove(char direction) {
 
@@ -99,6 +108,13 @@ public class Game {
 	  return ash.getLocation();
   }
   
+  public void setSafariZone(Map newMap) {
+	  safariZone = newMap;
+  }
+  public Map getSafariZone() {
+	  return safariZone;
+  }
+  
 
   public char[][] getCamera(){
 	 Point playerPos = ash.getLocation(); 
@@ -134,7 +150,6 @@ public class Game {
 			 camera[i][j] = 'O';
 		  }
 		  else {
-			  //System.out.print(currCameraMap.getCharacterFromLocation(x,y)w);
 			 camera[i][j] = currCameraMap.getCharacterFromLocation(x,y);
 		  }
 		  j++;
@@ -147,6 +162,10 @@ public class Game {
 
 public Map getPokeTown() {
 	return pokeTown;
+}
+
+public Trainer getTrainer() {
+	return ash;
 }
   
 }
