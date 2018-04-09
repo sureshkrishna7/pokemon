@@ -14,6 +14,9 @@ public class Pokemon extends Items {
 	private Attack specialMove;
 	private boolean boostFactorSet;
 	private int accuracy;
+	public int runLikelihood = 5;		// have to change to make this different for different pokemon later
+	public int catchLikelihood = 5;		//have to change to make this different for different pokemon later	
+	public int maxDuration = 3;			//have to change to make this different for different pokemon later
 
 	public Pokemon(String name, char rareOfPokemon, char typeOfPokemon, Attack specialMove) {
 		super('P');
@@ -22,7 +25,7 @@ public class Pokemon extends Items {
 		this.type = new PokemonType(typeOfPokemon);
 		this.specialMove = specialMove;
 		this.moves = type.getPokemonAttacks();
-		moves.add(specialMove);
+		//moves.add(specialMove);
 		boostFactorSet = false;
 		accuracy = 10;
 	}
@@ -67,6 +70,12 @@ public class Pokemon extends Items {
 
 	public void attack(int i, Pokemon p) {
 		Attack attack = moves.get(i);
+		
+		// reject move if not enough MP
+		//if(attack.getCost() > this.getCurMP()) {
+		//	return false;
+		//}
+		
 		boolean diffBoostFactor = false;
 		int boostFactor = 1;
 		if(boostFactorSet) boostFactor = 2;
@@ -114,6 +123,7 @@ public class Pokemon extends Items {
 		}
 		// if move not going to miss, subtract MP
 	    if(boostFactor != 0) this.rarity.subtractMP(attack.getCost());
+	    
 	    // adjust HP level of Pokemon
 		if(success()) {
 			p.rarity.takeDamage(this.getDamage(i) * boostFactor + burnBoost);
@@ -176,6 +186,13 @@ public class Pokemon extends Items {
 		return rarity.getCurMP();
 	}
 	
+	public boolean mPExhausted() {
+		if(this.getCurMP() <= 0) {
+			return true;
+		}
+		return false;
+	}
+	
 	public int getRunnable() {
 		return rarity.getRunnable();
 	}
@@ -185,18 +202,41 @@ public class Pokemon extends Items {
 		return ran.nextInt(4);
 	}
 	
+	public void printMoves() {
+		int i = 0;
+		for(Attack a: this.getAttacks()) {
+			System.out.printf("  %d: %13s  Power:%d  MP:%d  Effect:", i, a.getName(), 
+					(a.baseDamage() + this.rarity.getDamageBoost()), a.getCost());
+			if(a.getBuf() != null) System.out.printf("%s\n", a.getBuf());
+			else if(a.getDebuf() != null) System.out.printf("%s\n", a.getDebuf());
+			else System.out.printf("None\n");
+			i++;
+		}
+		
+	}
+	
 	public void printData() {
 		System.out.printf("\tname: %s\n\tHP: %d/%d\n\tMP: %d/%d\n", 
 				this.getName(), this.getCurHP(), this.getMaxHP(), 
 				this.getCurMP(), this.getMaxMP());
 	}
 	
-	/*
-	 * this is a temp method for testing purposes.
-	 * The real check for battleOver will be in the Game Class..or PokemonGame Class...
-	 */
-	public boolean battleOver(Pokemon enemy) {
-		if(this.getCurHP() <= 0 || this.getCurMP() <= 0 || enemy.getCurHP() <= 0 || enemy.getCurMP() <= 0) {
+	public boolean isExhausted() {
+		if(this.getCurHP() < 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean canMove() {
+		if(this.getCurMP() < this.getAttacks().get(0).getCost()) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean invalidMove(int i) {
+		if(this.getAttacks().get(i).getCost() > this.getCurMP()) {
 			return true;
 		}
 		return false;

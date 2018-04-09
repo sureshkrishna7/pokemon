@@ -52,6 +52,7 @@ public class Game {
 	 this.camera = new char[camHeight][camWidth];
   }
   
+  
   public void setCurrCameraMap(Map map) {
 	  currCameraMap = map;
   }
