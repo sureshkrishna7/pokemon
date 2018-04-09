@@ -26,6 +26,10 @@ public class Attack {
 	 //damage = rand.nextInt(400) + 100;
   }
   
+  public String getName() {
+	  return name;
+  }
+  
   public int baseDamage() {
 	 return damage;
   }
