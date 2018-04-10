@@ -4,30 +4,32 @@ import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
+import java.util.Random;
 import java.util.Scanner;
 
-import javafx.scene.shape.Line;
+import model.UsableItems.FullTonic;
+import model.UsableItems.MidTonic;
+import model.UsableItems.Tonic;
 
 /*The idea for this class is to allow Polymorphism of this class.
   This class will simply provide the DIMENSIONS and the Board 
   We can use "HouseMap extends Map" "SafariMap extends Map" ""PokeTown extends Map" etc.*/
 
-public class Map{
+public class Map {
 
   private Items[][] board;
   private char[][] characterBoard;
   private Point currentPlayerPos;
   private Map safariZone;
 
-  //Crucial for walking of player to work
+  // ten entries for usable items
+  private String[] usableItemCode = { "t", "mt", "ft", "e", "me", "fe", "el", "mel", "rev", "heal"};
+
+  // Crucial for walking of player to work
   private int col;
   private int row;
-
-  private ArrayList<Items> listOfItems; // list of items in the map
   private ArrayList<Pokemon> listOfPokemon; // list of pokemon in the map
-
   private boolean didGameEnd;
 
   /*
@@ -35,28 +37,27 @@ public class Map{
    */
   public Map() {
 
-	 didGameEnd = false;
-	 initializeBoard();
+    didGameEnd = false;
+    initializeBoard();
   }
 
   public void initializeBoard() {
 
-	 this.board = new Items[row][col];		//Access elements x,y style
-	 this.characterBoard = new char[row][col];
-	 this.listOfPokemon = new ArrayList<Pokemon>(5);
-	 this.listOfItems = new ArrayList<Items>(5);
+    this.board = new Items[row][col]; // Access elements x,y style
+    this.characterBoard = new char[row][col];
+    this.listOfPokemon = new ArrayList<Pokemon>(5);
   }
 
   public int getMapWidth() {
-	 return col;
+    return col;
   }
 
   public int getMapHeight() {
-	 return row;
+    return row;
   }
-  
-  public Items[][] getItemsBoard(){
-	  return board;
+
+  public Items[][] getItemsBoard() {
+    return board;
   }
 
   /*
@@ -68,67 +69,67 @@ public class Map{
    */
   public void geniusMethod(String file) throws FileNotFoundException {
 
-	 System.out.println(file);
+    System.out.println(file);
 
-	 int numberOfLines = 0;
-	 int charInEachLine = 0;
-	 boolean start = true;
-	 
-	 Scanner sc = new Scanner(new File(file));
+    int numberOfLines = 0;
+    int charInEachLine = 0;
+    boolean start = true;
 
-	 while(sc.hasNext()) {
+    Scanner sc = new Scanner(new File(file));
 
-		String line = sc.nextLine();
-		//System.out.println("line: " + line.length());
-		if (start)
-			charInEachLine = line.length(); start = false;
-		
-		numberOfLines += 1;
-	 }
+    while (sc.hasNext()) {
 
-	 this.row = numberOfLines;
-	 this.col = charInEachLine;
+      String line = sc.nextLine();
+      // System.out.println("line: " + line.length());
+      if (start)
+        charInEachLine = line.length();
+      start = false;
 
-	 this.board = new Items[row][col];		//Access elements x,y style
-	 this.characterBoard = new char[row][col];
+      numberOfLines += 1;
+    }
 
-	 System.out.println("row "+row+", col "+col);
+    this.row = numberOfLines;
+    this.col = charInEachLine;
 
-	 int i = 0;
-	 int j = 0;
+    this.board = new Items[row][col]; // Access elements x,y style
+    this.characterBoard = new char[row][col];
 
-	 sc.close();
-	 Scanner ac = new Scanner(new File(file));
-	 
-	 currentPlayerPos = new Point();
-	 while(ac.hasNext()) {
+    System.out.println("row " + row + ", col " + col);
 
-		String read = ac.nextLine();
+    int i = 0;
+    int j = 0;
 
-		System.out.println(read);
-		i = 0;
-		while(i < read.length()) {
-			characterBoard[j][i] = read.charAt(i);	
-			
-			if (characterBoard[j][i] == ' '){
-				currentPlayerPos.x = j;
-				currentPlayerPos.y = i;
-			}
-			
-			i++;
+    sc.close();
+    Scanner ac = new Scanner(new File(file));
 
-			
-		}
-		j++;
-	 }
+    currentPlayerPos = new Point();
+    while (ac.hasNext()) {
 
-	 ac.close();
-	 
-	 initializeMapObjects();
+      String read = ac.nextLine();
+
+      System.out.println(read);
+      i = 0;
+      while (i < read.length()) {
+        characterBoard[j][i] = read.charAt(i);
+
+        if (characterBoard[j][i] == ' ') {
+          currentPlayerPos.x = j;
+          currentPlayerPos.y = i;
+        }
+
+        i++;
+
+      }
+      j++;
+    }
+
+    ac.close();
+
+    initializeMapObjects();
   }
 
   public Point getPlayerLocation() {
-	  return currentPlayerPos;
+    return currentPlayerPos;
   }
 
   /*
@@ -137,100 +138,109 @@ public class Map{
 
   private void initializeMapObjects() throws FileNotFoundException {
 
-	 Scanner rp = new Scanner(new File("src/PokemonNames.txt"));
-	 Scanner rui = new Scanner(new File("src/UsableItems.txt"));
-	 
-	 int doorCount = 1;
-	 int i = 0;
-	 int j = 0;
+    Scanner rp = new Scanner(new File("src/PokemonNames.txt"));
+    Scanner rui = new Scanner(new File("src/UsableItems.txt"));
 
-	 while(i < row) {
+    int doorCount = 1;
+    int i = 0;
+    int j = 0;
 
-		j = 0;
-		while(j < col) {
+    while (i < row) {
 
-		  if(characterBoard[i][j] == 'P') {
-			 try{
-				String line = rp.nextLine();
-				String[] pokemonInitializer = new String[3];
-				pokemonInitializer = line.split("\\s+");
-	
-				Pokemon currentPokemon = new Pokemon(pokemonInitializer[0], pokemonInitializer[1], pokemonInitializer[2]);
-				//Location of the pokemon is important
-				board[i][j] = (currentPokemon);
-				currentPokemon.setLocation(i, j);
-			 }
-			 catch (NoSuchElementException e) {
-				rp = new Scanner(new File("src/PokemonNames.txt"));
-			 }
-		  }
-		  else if(characterBoard[i][j] == 'D') {
+      j = 0;
+      while (j < col) {
 
-			 /*
-			  * IF THERE IS MORE THAN 4 DOOR Files
-			  * change the number '4' to something else
-			  */
-			 if(doorCount > 4) {
-				doorCount = 1;
-			 }
-			 
-			 String file = "src/Door"+doorCount+".txt";
+        if (characterBoard[i][j] == 'P') {
+          try {
+            String line = rp.nextLine();
+            String[] pokemonInitializer = new String[3];
+            pokemonInitializer = line.split("\\s+");
 
-			 Door currentDoor = new Door(i, j, file);
-			 //Map doorMap = new Map();
-			 board[i][j] = currentDoor;
-			 doorCount += 1;
-		  }
-		  else if(characterBoard[i][j] == 'S') {
-			  String file = "src/SafariZone.txt";
-			  safariZone = new Map();
-			  //safariZone.get
-			 
-		  }
-		  else if(characterBoard[i][j] == 'N') {
-			 
-		  }
-		  else if(characterBoard[i][j] == 'U'){
-			 //Items 
-		    String potion = rui.nextLine();
-		    String[] uIArr = new String[4];
-		    uIArr= potion.split("\\s+");
-		    
-		    UsableItems curItem = new UsableItems(uIArr[0], Integer.parseInt(uIArr[1]), Integer.parseInt(uIArr[2]), uIArr[3]);
-		    board[i][j] = curItem;
-		    curItem.setLocation(i, j);
-		    
-		  }
-		  
-		  j++;
-		}
-		i++;
-	 }
+            Pokemon currentPokemon = new Pokemon(pokemonInitializer[0], pokemonInitializer[1], pokemonInitializer[2]);
+            // Location of the pokemon is important
+            board[i][j] = (currentPokemon);
+            currentPokemon.setLocation(i, j);
+          } catch (NoSuchElementException e) {
+            rp = new Scanner(new File("src/PokemonNames.txt"));
+          }
+        } else if (characterBoard[i][j] == 'D') {
+
+          /*
+           * IF THERE IS MORE THAN 4 DOOR Files change the number '4' to something else
+           */
+          if (doorCount > 4) {
+            doorCount = 1;
+          }
+
+          String file = "src/Door" + doorCount + ".txt";
+
+          Door currentDoor = new Door(i, j, file);
+          // Map doorMap = new Map();
+          board[i][j] = currentDoor;
+          doorCount += 1;
+        } else if (characterBoard[i][j] == 'S') {
+          String file = "src/SafariZone.txt";
+          safariZone = new Map();
+          // safariZone.get
+
+        } else if (characterBoard[i][j] == 'N') {
+
+        } else if (characterBoard[i][j] == 'U') {
+          // here we find a random index in the list of identifiers for usable items
+          Random ran = new Random();
+          int index = ran.nextInt(10);
+          String id = usableItemCode[index];
+          // this method is called which creates the correct object due to the identifier
+          // and returns it to be
+          // placed on the board.
+          board[i][j] = placeUsableItem(id, i, j);
+        }
+        j++;
+      }
+      i++;
+    }
 
   }
-  
+
+  // "t", "mt", "ft", "e", "me", "fe", "el", "mel", "rev", "heal"
+  private Items placeUsableItem(String id, int i, int j) {
+	  switch(id) {
+	  case "t":
+		Tonic t = new Tonic('U', i, j);
+	    return t;
+	  case "mt":
+	    MidTonic mt = new MidTonic('U', i, j);
+	    return mt;
+	  case "ft":
+	    FullTonic ft = new FullTonic('U', i, j);
+	    return ft;
+	  default:
+	    return null;
+	  }
+  }
+
   public Map getSafariZoneMap() {
-	  return safariZone;
+    return safariZone;
   }
 
   /*
-   * Get the character from the location the player moved
-   * If we cannot access that point then return 0 (ZERO) 
+   * Get the character from the location the player moved If we cannot access that
+   * point then return 0 (ZERO)
    */
   public char getCharacterFromLocation(Point pos) {
 
-	 if((pos.x >= 0 && pos.x < row) && (pos.y>= 0 && pos.y < col)) {
-		return characterBoard[pos.x][pos.y];
-	 }
-	 return '0';
+    if ((pos.x >= 0 && pos.x < row) && (pos.y >= 0 && pos.y < col)) {
+      return characterBoard[pos.x][pos.y];
+    }
+    return '0';
   }
 
   public char getCharacterFromLocation(int x, int y) {
 
-	 if((x >= 0 && x < row) && (y>= 0 && y < col)) {
-		return characterBoard[x][y];
-	 }
-	 return '0';
+    if ((x >= 0 && x < row) && (y >= 0 && y < col)) {
+      return characterBoard[x][y];
+    }
+    return '0';
   }
 
   /*
@@ -242,33 +252,33 @@ public class Map{
    */
   public boolean isWalkable(int x, int y) {
 
-	 // Checking if its a valid existing point
-	 // If not then return false
+    // Checking if its a valid existing point
+    // If not then return false
 
-	 // If its a valid range of access
-	 if((x >= 0 && x < row) && (y>= 0 && y < col)) {
+    // If its a valid range of access
+    if ((x >= 0 && x < row) && (y >= 0 && y < col)) {
 
-		/*
-		 * *************
-		 * Note:
-		 * 
-		 * WE NEED TO INITIALIZE THE MAP AND RUN A LOOP CREATING ALL THE APPROPRIATE OBJECTS
-		 * *************** COMMENTED OUT THIS SO THAT WE CAN TEST THIS ***************
-		 * *************
-		 */
-		//if(board[x][y].isWalkable()) {
+      /*
+       * ************* Note:
+       * 
+       * WE NEED TO INITIALIZE THE MAP AND RUN A LOOP CREATING ALL THE APPROPRIATE
+       * OBJECTS *************** COMMENTED OUT THIS SO THAT WE CAN TEST THIS
+       * *************** *************
+       */
+      // if(board[x][y].isWalkable()) {
 
-		if(characterBoard[x][y] == 'U' || characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D' || characterBoard[x][y] == 'P' || characterBoard[x][y] == 'I' || characterBoard[x][y] == 'S' || characterBoard[x][y] == 'X'|| characterBoard[x][y] == ' ') {
-		  return true;
-		}
-	 }
-	 return false;
+      if (characterBoard[x][y] == 'U' || characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B'
+          || characterBoard[x][y] == 'D' || characterBoard[x][y] == 'P' || characterBoard[x][y] == 'I'
+          || characterBoard[x][y] == 'S' || characterBoard[x][y] == 'X' || characterBoard[x][y] == ' ') {
+        return true;
+      }
+    }
+    return false;
   }
 
   public boolean isWalkable(Point pos) {
 
-	 return isWalkable(pos.x, pos.y);
+    return isWalkable(pos.x, pos.y);
   }
-
 
 }
