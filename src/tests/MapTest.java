@@ -11,8 +11,8 @@ public class MapTest
 	
 	  @Test
 	  public void startGame() {
-	    Pokemon a = new Pokemon("Charmeleon", 'M', 'F', null);
-	    Pokemon b = new Pokemon("Sandslash", 'C', 'I', null);
+	    Pokemon a = new Pokemon("Charmeleon", 3, 'M', 'F', null);
+	    Pokemon b = new Pokemon("Sandslash", 4, 'C', 'I', null);
 	    
 	    int before = b.getCurHP();
 	    // baseDmg of this attack is 100

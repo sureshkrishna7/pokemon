@@ -79,7 +79,7 @@ public class Trainer extends Items {
       }
       break;
     }
-    this.getSafariInventory().get(s).remove(0);
+    if(result != "Failed!") this.getSafariInventory().get(s).remove(0);
     return result;
   }
 

@@ -17,7 +17,7 @@ public class SafariEncounterTest {
   public void mainTest() {
     Scanner in = new Scanner(System.in);
     Trainer guy = new Trainer("Moose");
-    Pokemon wild = new Pokemon("Vulpix", 6, 'M', 'F', null);
+    Pokemon wild = new Pokemon("Vulpix", 1, 'M', 'F', null);
     System.out.println("Encountered a " + wild.getName() + "!" + " (" + wild.getPokemonType() + " type)");
     
     while(true) {

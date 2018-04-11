@@ -18,7 +18,7 @@ public class PokemonStrategy {
 		pokemonFound = false;
 		
 		pokemonType  = "";
-		pokemon = new Pokemon("");
+		//pokemon = new Pokemon("");
 		random  = new Random();
 		
 	}
@@ -62,9 +62,11 @@ public class PokemonStrategy {
 		while(i < allPokemon.length) {
 			int x = random.nextInt(allPokemon.length);
 			
+			/*
 			if (allPokemon[x].getRarity().equals(pokemonType)) {
 				return allPokemon[x];
 			}
+			*/
 			i++;
 		}
 		

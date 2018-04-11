@@ -172,8 +172,8 @@ public class PokemonGame {
 			
 			Pokemon foundPokemon = pokemonStrategy.getPokemonInBush(allPokemon);
 			
-			System.out.println("Ecountered Pokemon! ");
-			SafariEncounter(theGame.getTrainer(), foundPokemon);
+			System.out.println("Encountered Pokemon! ");
+			//SafariEncounter(theGame.getTrainer(), foundPokemon);
 			
 		}
 

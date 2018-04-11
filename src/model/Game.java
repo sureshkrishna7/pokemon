@@ -38,13 +38,13 @@ public class Game {
 		Scanner scanner = new Scanner(new File("src/PokemonNames.txt"));
 		 
 		for(int i = 0; i < 10; i++) {
-			pokemons[i] = new Pokemon("");
+			//pokemons[i] = new Pokemon("");
 			String line = scanner.nextLine();
 			String[] pokemonInitializer = new String[3];
 			pokemonInitializer = line.split("\\s+");
 
-			Pokemon currentPokemon = new Pokemon(pokemonInitializer[0], pokemonInitializer[1], pokemonInitializer[2]);	
-			pokemons[i] = currentPokemon;
+			//Pokemon currentPokemon = new Pokemon(pokemonInitializer[0], pokemonInitializer[1], pokemonInitializer[2]);	
+			//pokemons[i] = currentPokemon;
 		}
 
 		//Location of the pokemon is important
