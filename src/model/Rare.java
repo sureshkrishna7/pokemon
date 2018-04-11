@@ -155,7 +155,7 @@ public class Rare {
    * *************
    */
 
-<<<<<<< HEAD
+
 	/*
 	 * Difference between package private, public, protected, and private
 	 * 

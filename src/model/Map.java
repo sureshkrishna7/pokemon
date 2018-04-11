@@ -196,6 +196,7 @@ public class Map{
 		}
 		i++;
 	 }
+  }
 
   // "t", "mt", "ft", "e", "me", "fe", "el", "mel", "rev", "heal"
   private Items placeUsableItem(String id, int i, int j) {
