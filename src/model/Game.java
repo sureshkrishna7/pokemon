@@ -1,7 +1,9 @@
 package model;
 
 import java.awt.Point;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class Game {
 
@@ -16,6 +18,7 @@ public class Game {
   private final int camWidth = 10;
   private final int camHeight = 10;
   private Items[][] cameraArray; 
+  private Pokemon[] pokemons;
 
   private char[][] camera;
   
@@ -27,9 +30,34 @@ public class Game {
 	 pokeTown = new Map();
 	 safariZone = new Map();
 	 currCameraMap = new Map();
+	 pokemons = new Pokemon[10];
 	 
 	 try {
 		pokeTown.geniusMethod("src/PokemonTown.txt");
+		
+		Scanner scanner = new Scanner(new File("src/PokemonNames.txt"));
+		 
+		for(int i = 0; i < 10; i++) {
+			pokemons[i] = new Pokemon("");
+			String line = scanner.nextLine();
+			String[] pokemonInitializer = new String[3];
+			pokemonInitializer = line.split("\\s+");
+
+			Pokemon currentPokemon = new Pokemon(pokemonInitializer[0], pokemonInitializer[1], pokemonInitializer[2]);	
+			pokemons[i] = currentPokemon;
+		}
+
+		//Location of the pokemon is important
+		//board[i][j] = (currentPokemon);
+		//currentPokemon.setLocation(i, j);
+		
+		
+//		 try{
+
+//		 }
+//		 catch (NoSuchElementException e) {
+//			rp = new Scanner(new File("src/PokemonNames.txt"));
+//		 }
 		
 		// in Poketown bc player must be able to go to 'S' and be transferred to safariZone
 		// genuisMethod will read the txt file and convert it to a map, assigning the values 
@@ -173,6 +201,12 @@ public Trainer getTrainer() {
 public Map getCurrCameraMap() {
 	// TODO Auto-generated method stub
 	return currCameraMap;
+}
+
+
+public Pokemon[] getPokemons() {
+	// TODO Auto-generated method stub
+	return pokemons;
 }
   
 }

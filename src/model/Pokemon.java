@@ -39,7 +39,6 @@ public class Pokemon extends Items {
     this.name = name;
     this.status = "normal";
     this.level = level;
-    //this.rarity = new Rare(rareOfPokemon);
     this.type = new PokemonType(typeOfPokemon);
     this.moves = type.getPokemonAttacks();
     boostFactorSet = false;

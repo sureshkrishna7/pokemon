@@ -43,19 +43,20 @@ public class PokemonType {
 
   public PokemonType(String typeChar) {
 	 //FIRE type
-	 if(typeChar.toLowerCase().equals("fire")) {
+	 if(typeChar.toLowerCase().equals("f")) {
 		type = "fire";
 	 }
 	 //ICE type
-	 else if(typeChar.toLowerCase().equals("ice")) {
+	 else if(typeChar.toLowerCase().equals("i")) {
 		type = "ice";
 	 }
 	 //WATER type
-	 else if(typeChar.toLowerCase().equals("water")) {
+	 else if(typeChar.toLowerCase().equals("w")) {
 		type = "water";
 	 }
 	 //EARTH type
 	 else {
+		 //System.out.println(typeChar);
 		type = "earth";
 	 }
 	 initializeAttacks(type);
