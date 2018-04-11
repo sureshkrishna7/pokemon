@@ -3,63 +3,59 @@ package model;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Pokemon extends Items {
 
   private String filepath;
   private String name;
   private String status;
-  private Rare rarity;
+  private char rareDegree;
+  private int level;
+  private Statistics stats;
   private PokemonType type;
   private ArrayList<Attack> moves;
   private Attack specialMove;
   private boolean boostFactorSet;
-  private int accuracy;
-  public int runLikelihood = 5; // have to change to make this different for different pokemon later
-  public int catchLikelihood = 5; // have to change to make this different for different pokemon later
-  public int maxDuration = 3; // have to change to make this different for different pokemon later
+  //public int runLikelihood = 5; // have to change to make this different for different pokemon later
+  //public int catchLikelihood = 5; // have to change to make this different for different pokemon later
+  // public int maxDuration = 3; // have to change to make this different for different pokemon later
 
-  public Pokemon(String name, char rareOfPokemon, char typeOfPokemon, Attack specialMove) {
+  public Pokemon(String name, int level, char rarity, char typeOfPokemon, Attack specialMove) {
     super('P');
     this.name = name;
     this.status = "normal";
-    this.rarity = new Rare(rareOfPokemon);
+    this.level = level;
+    this.stats = new Statistics(level, rarity);
     this.type = new PokemonType(typeOfPokemon);
     this.specialMove = specialMove;
     this.moves = type.getPokemonAttacks();
     // moves.add(specialMove);
     boostFactorSet = false;
-    accuracy = 10;
   }
 
-  public Pokemon(String name, String rareOfPokemon, String typeOfPokemon) {
+  public Pokemon(String name, int level, String rareOfPokemon, String typeOfPokemon) {
     super('P');
     this.name = name;
     this.status = "normal";
-    this.rarity = new Rare(rareOfPokemon);
+    this.level = level;
+    //this.rarity = new Rare(rareOfPokemon);
     this.type = new PokemonType(typeOfPokemon);
     this.moves = type.getPokemonAttacks();
     boostFactorSet = false;
-    accuracy = 10;
   }
 
   // Create common pokemon of specific Earth type
-  public Pokemon(String name) {
+  public Pokemon(String name, int level) {
     super('P');
     this.name = name;
     this.status = "normal";
-    this.rarity = new Rare("common");
+    this.level = level;
     this.type = new PokemonType("earth");
     this.moves = type.getPokemonAttacks();
     boostFactorSet = false;
-    accuracy = 10;
   }
-
-  // getDamage 1)
-  public int getDamage() {
-    return moves.get(0).baseDamage() + rarity.getDamageBoost();
-  }
-
+  
   /*
    * getDamage(int) -- returns baseDamage for specific attack. If baseDamage != 0
    * add the random boost, else return simply zero(indicating the move is a buf
@@ -67,19 +63,13 @@ public class Pokemon extends Items {
    */
   public int getDamage(int i) {
     if (moves.get(i).baseDamage() != 0) {
-      return moves.get(i).baseDamage() + rarity.getDamageBoost();
+      return moves.get(i).baseDamage() + stats.getDamageBoost();
     }
     return moves.get(i).baseDamage();
-
   }
 
   public void attack(int i, Pokemon enemy) {
     Attack attack = moves.get(i);
-
-    // reject move if not enough MP
-    // if(attack.getCost() > this.getCurMP()) {
-    // return false;
-    // }
 
     boolean diffBoostFactor = false;
     int boostFactor = 1;
@@ -99,7 +89,7 @@ public class Pokemon extends Items {
         attack.setBurnCount(3);
         break;
       case "accDown":
-        enemy.accuracy /= 2;
+        enemy.stats.setAccuracy(enemy.stats.getAccuracy() / 2);
         break;
       case "dmgAll":
         // in this case we will need the object that contains the list of Pokemon
@@ -130,12 +120,12 @@ public class Pokemon extends Items {
     }
     // if move not going to miss, subtract MP
     if (boostFactor != 0)
-      this.rarity.subtractMP(attack.getCost());
+      this.stats.subtractMP(attack.getCost());
 
     // check if attack was success by applying accuracy factor
     if (success()) {
       // apply damage to enemy
-      enemy.rarity.takeDamage(this.getDamage(i) * boostFactor + burnBoost);
+      enemy.stats.takeDamage(this.getDamage(i) * boostFactor + burnBoost);
       // if attack has debuf, set enemies status to be this particular debuf (effect)
       if(attack.getDebuf() != null) {
         enemy.setStatus(attack.getDebuf());
@@ -156,19 +146,18 @@ public class Pokemon extends Items {
   }
 
   /*
-   * success() -- fills array with ones for indices 0 - accuracy, then chooses one
-   * at random. If chooses a 1, return true, else return false(zero chosen). If
-   * accuracy == 10, will always return success (array populated with ones).
+   * success() -- chooses a random double between 0.0 and 1.0. It compares this value
+   * with the accuracy of the Pokemon, which is in the range 0.0 to 1.0. If the value 
+   * chosen is less than the accuracy of the Pokemon, then true is returned, else false
+   * is returned. Thus, the higher the accuracy of the Pokemon, the higher the likelihood
+   * of true being returned.
    */
   public boolean success() {
-    int[] arr = new int[10];
-    for (int i = 0; i < accuracy; i++) {
-      arr[i] = 1;
-    }
     Random ran = new Random();
-    int index = ran.nextInt(10);
-    if (arr[index] == 1)
+    double pivot = ran.nextDouble();
+    if(pivot < this.stats.getAccuracy()) {
       return true;
+    }
     return false;
   }
 
@@ -179,7 +168,7 @@ public class Pokemon extends Items {
   public String getName() {
     return this.name;
   }
-
+  
   // If status == null, Pokemon is healthy (has no ailment)
   public String getStatus() {
     return this.status;
@@ -194,27 +183,31 @@ public class Pokemon extends Items {
   }
 
   public int getMaxHP() {
-    return rarity.getMaxHP();
+    return stats.getMaxHP();
   }
 
   public int getCurHP() {
-    return rarity.getCurHP();
+    return stats.getCurHP();
   }
 
   public void setCurHP(int i) {
-    rarity.setCurHP(i);
+    stats.setCurHP(i);
   }
 
   public int getMaxMP() {
-    return rarity.getMaxMP();
+    return stats.getMaxMP();
   }
 
   public int getCurMP() {
-    return rarity.getCurMP();
+    return stats.getCurMP();
   }
 
   public void setCurMP(int i) {
-    rarity.setCurMP(i);
+    stats.setCurMP(i);
+  }
+  
+  public int getLevel() {
+    return this.level;
   }
 
   public boolean mPExhausted() {
@@ -224,10 +217,22 @@ public class Pokemon extends Items {
     return false;
   }
 
-  public int getRunnable() {
-    return rarity.getRunnable();
+  public double getAccuracy() {
+    return stats.getAccuracy();
+  }
+  
+  public double getRunChance() {
+    return stats.getRunChance();
+  }
+  
+  public double getTakeBaitChance() {
+    return stats.getTakeBaitChance();
   }
 
+  public double getCatchChance() {
+    return stats.getCatchChance();
+  }
+  
   public int randomMove() {
     Random ran = new Random();
     return ran.nextInt(4);
@@ -237,7 +242,7 @@ public class Pokemon extends Items {
     int i = 0;
     for (Attack a : this.getAttacks()) {
       System.out.printf("  %d: %13s  Power:%d  MP:%d  Effect:", i, a.getName(),
-          (a.baseDamage() + this.rarity.getDamageBoost()), a.getCost());
+          (a.baseDamage() + this.stats.getDamageBoost()), a.getCost());
       if (a.getBuf() != null)
         System.out.printf("%s\n", a.getBuf());
       else if (a.getDebuf() != null)
@@ -250,7 +255,7 @@ public class Pokemon extends Items {
   }
 
   public void printData() {
-    System.out.printf("\tname: %s\n\tstatus: %s\n\tHP: %d/%d\n\tMP: %d/%d\n", this.getName(), this.getStatus(), this.getCurHP(), this.getMaxHP(),
+    System.out.printf("\tname: %s\n\tlevel: %d\n\tstatus: %s\n\tHP: %d/%d\n\tMP: %d/%d\n", this.getName(), this.getLevel(), this.getStatus(), this.getCurHP(), this.getMaxHP(),
         this.getCurMP(), this.getMaxMP());
   }
 
@@ -261,7 +266,7 @@ public class Pokemon extends Items {
     }
     return false;
   }
-
+  
   public boolean canMove() {
     if (this.getCurMP() < this.getAttacks().get(0).getCost()) {
       return false;
@@ -274,6 +279,17 @@ public class Pokemon extends Items {
 
   public boolean invalidMove(int i) {
     if (this.getAttacks().get(i).getCost() > this.getCurMP()) {
+      return true;
+    }
+    return false;
+  }
+  
+  public boolean timeToRun() {
+    // this is a simple random generator, looks weird but works better than Random
+    double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+    
+    //System.out.printf("pivot= %.2f, run chance= %.2f\n", pivot, this.stats.getRunChance());
+    if(pivot > this.stats.getRunChance()) {
       return true;
     }
     return false;

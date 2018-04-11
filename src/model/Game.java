@@ -42,7 +42,7 @@ public class Game {
 		e.printStackTrace();
 	 }
 
-	 ash = new Trainer(new String("Ash"), null);
+	 ash = new Trainer(new String("Ash"));
 	 //ash.setLocation(27, 25);
 	 //ash.setLocation(5,12);
 	 ash.setLocation(5,20);

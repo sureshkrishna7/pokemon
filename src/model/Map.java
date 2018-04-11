@@ -150,6 +150,7 @@ public class Map {
       j = 0;
       while (j < col) {
 
+        /*
         if (characterBoard[i][j] == 'P') {
           try {
             String line = rp.nextLine();
@@ -163,7 +164,10 @@ public class Map {
           } catch (NoSuchElementException e) {
             rp = new Scanner(new File("src/PokemonNames.txt"));
           }
-        } else if (characterBoard[i][j] == 'D') {
+        }  
+        */  
+        
+        if (characterBoard[i][j] == 'D') {
 
           /*
            * IF THERE IS MORE THAN 4 DOOR Files change the number '4' to something else
