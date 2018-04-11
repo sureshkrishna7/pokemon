@@ -9,6 +9,7 @@ public class Pokemon extends Items {
 	private String filepath;
 	private String name;
 	private Rare rarity;
+	private String howRare;
 	private PokemonType type;
 	private ArrayList<Attack> moves;
 	private Attack specialMove;
@@ -22,6 +23,7 @@ public class Pokemon extends Items {
 		super('P');
 		this.name = name;
 		this.rarity = new Rare(rareOfPokemon);
+		//this.howRare = rareOfPokemon;
 		this.type = new PokemonType(typeOfPokemon);
 		this.specialMove = specialMove;
 		this.moves = type.getPokemonAttacks();
@@ -34,6 +36,7 @@ public class Pokemon extends Items {
 		super('P');
 		this.name = name;
 		this.rarity = new Rare(rareOfPokemon);
+		this.howRare = rareOfPokemon;
 		this.type = new PokemonType(typeOfPokemon);
 		this.moves = type.getPokemonAttacks();
 		boostFactorSet = false;
@@ -45,10 +48,15 @@ public class Pokemon extends Items {
 		super('P');
 		this.name = name;
 		this.rarity = new Rare("common");
+		this.howRare = "";
 		this.type = new PokemonType("earth");
 		this.moves = type.getPokemonAttacks();
 		boostFactorSet = false;
 		accuracy = 10;
+	}
+	
+	public String getRarity() {
+		return howRare;
 	}
 
 	// getDamage 1)

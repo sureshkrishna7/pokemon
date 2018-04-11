@@ -11,6 +11,7 @@ import model.Attack;
 import model.Door;
 import model.Game;
 import model.Pokemon;
+import model.PokemonStrategy;
 import model.Trainer;
 
 
@@ -22,10 +23,12 @@ public class PokemonGame {
   private static Game theGame;
   private static Point playerStartLocation = new Point(11,25);
   private static Point playerOldLocation = new Point();
+  private static PokemonStrategy pokemonStrategy = new PokemonStrategy();
   
   
   public static void SafariEncounter(Trainer currTrainer, Pokemon currPoke) {
 	  System.out.println("You have encountered a " + currPoke.getName());
+	  
 	  String nextMove = "z";
 	  int roundCounter = 0;
 	  while (!nextMove.equals("f")) {
@@ -162,6 +165,15 @@ public class PokemonGame {
 		else if(theGame.getTrainer().getSafariSteps() >= 500) {
 			theGame.setTrainerLocation(playerStartLocation);
 			theGame.setCurrCameraMap(theGame.getPokeTown());
+		}
+		else if(gameLogic == 'B' && pokemonStrategy.isPokemonInBush()) {
+			Pokemon[] allPokemon = theGame.getPokemons();
+			
+			Pokemon foundPokemon = pokemonStrategy.getPokemonInBush(allPokemon);
+			
+			System.out.println("Ecountered Pokemon! ");
+			SafariEncounter(theGame.getTrainer(), foundPokemon);
+			
 		}
 
 	 }

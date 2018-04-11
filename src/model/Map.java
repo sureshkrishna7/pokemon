@@ -149,19 +149,19 @@ public class Map{
 		while(j < col) {
 
 		  if(characterBoard[i][j] == 'P') {
-			 try{
-				String line = rp.nextLine();
-				String[] pokemonInitializer = new String[3];
-				pokemonInitializer = line.split("\\s+");
-	
-				Pokemon currentPokemon = new Pokemon(pokemonInitializer[0], pokemonInitializer[1], pokemonInitializer[2]);
-				//Location of the pokemon is important
-				board[i][j] = (currentPokemon);
-				currentPokemon.setLocation(i, j);
-			 }
-			 catch (NoSuchElementException e) {
-				rp = new Scanner(new File("src/PokemonNames.txt"));
-			 }
+//			 try{
+//				String line = rp.nextLine();
+//				String[] pokemonInitializer = new String[3];
+//				pokemonInitializer = line.split("\\s+");
+//	
+//				Pokemon currentPokemon = new Pokemon(pokemonInitializer[0], pokemonInitializer[1], pokemonInitializer[2]);
+//				//Location of the pokemon is important
+//				board[i][j] = (currentPokemon);
+//				currentPokemon.setLocation(i, j);
+//			 }
+//			 catch (NoSuchElementException e) {
+//				rp = new Scanner(new File("src/PokemonNames.txt"));
+//			 }
 		  }
 		  else if(characterBoard[i][j] == 'D') {
 
@@ -183,8 +183,6 @@ public class Map{
 		  else if(characterBoard[i][j] == 'S') {
 			  String file = "src/SafariZone.txt";
 			  safariZone = new Map();
-			  //safariZone.get
-			 
 		  }
 		  else if(characterBoard[i][j] == 'N') {
 			 
