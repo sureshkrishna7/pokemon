@@ -10,8 +10,8 @@ public class PokemonAttackMethodTest {
 
   @Test
   public void battleTest_MattacksC() {
-    Pokemon a = new Pokemon("Charmeleon", 'M', 'F', null);
-    Pokemon b = new Pokemon("Sandslash", 'C', 'I', null);
+    Pokemon a = new Pokemon("Charmeleon", 2, 'M', 'F', null);
+    Pokemon b = new Pokemon("Sandslash", 3, 'C', 'I', null);
 
     int before = b.getCurHP();
     // baseDmg of this attack is 100
@@ -23,8 +23,8 @@ public class PokemonAttackMethodTest {
 
   @Test
   public void battleTest_CattacksM() {
-    Pokemon a = new Pokemon("A", 'C', 'W', null);
-    Pokemon b = new Pokemon("B", 'M', 'W', null);
+    Pokemon a = new Pokemon("A", 2, 'C', 'W', null);
+    Pokemon b = new Pokemon("B", 3, 'M', 'W', null);
 
     int before = b.getCurHP();
     // baseDmg of this attack is 100
@@ -36,8 +36,8 @@ public class PokemonAttackMethodTest {
 
   @Test
   public void battleTest_RattacksC() {
-    Pokemon a = new Pokemon("A", 'R', 'E', null);
-    Pokemon b = new Pokemon("B", 'C', 'W', null);
+    Pokemon a = new Pokemon("A", 2, 'R', 'E', null);
+    Pokemon b = new Pokemon("B", 3, 'C', 'W', null);
 
     // System.out.println("b.getHP()="+b.getHP());
     int before = b.getCurHP();
@@ -52,8 +52,8 @@ public class PokemonAttackMethodTest {
 
   @Test
   public void battleTest_attackWithDeBufBurn() {
-    Pokemon a = new Pokemon("A", 'M', 'F', null);
-    Pokemon b = new Pokemon("B", 'M', 'W', null);
+    Pokemon a = new Pokemon("A", 2, 'M', 'F', null);
+    Pokemon b = new Pokemon("B", 3, 'M', 'W', null);
 
     // System.out.println("b.getHP()="+b.getHP());
     int before = b.getCurHP();
@@ -67,8 +67,8 @@ public class PokemonAttackMethodTest {
 
   @Test
   public void battleTest_attackWithDeBufRandom() {
-    Pokemon a = new Pokemon("A", 'M', 'F', null);
-    Pokemon b = new Pokemon("B", 'M', 'E', null);
+    Pokemon a = new Pokemon("A", 2, 'M', 'F', null);
+    Pokemon b = new Pokemon("B", 3, 'M', 'E', null);
 
     int before = b.getCurHP();
     // baseDmg of this attack is 100. Might miss, random hit, or be critical
@@ -80,8 +80,8 @@ public class PokemonAttackMethodTest {
 
   @Test
   public void battleTest_attackWithDeBufExtra() {
-    Pokemon a = new Pokemon("A", 'M', 'E', null);
-    Pokemon b = new Pokemon("B", 'M', 'W', null);
+    Pokemon a = new Pokemon("A", 2, 'M', 'E', null);
+    Pokemon b = new Pokemon("B", 3, 'M', 'W', null);
 
     int before = b.getCurHP();
     // baseDmg of this attack is 200. Will triple if opponent polar opposite
@@ -93,8 +93,8 @@ public class PokemonAttackMethodTest {
 
   @Test
   public void battleTest_attackPolarOpposite() {
-    Pokemon a = new Pokemon("A", 'M', 'E', null);
-    Pokemon b = new Pokemon("B", 'M', 'W', null);
+    Pokemon a = new Pokemon("A", 2, 'M', 'E', null);
+    Pokemon b = new Pokemon("B", 3, 'M', 'W', null);
 
     int before = b.getCurHP();
     a.attack(0, b);
@@ -105,19 +105,19 @@ public class PokemonAttackMethodTest {
 
   @Test
   public void battleTest_checkMPWithdrawal() {
-    Pokemon a = new Pokemon("A", 'C', 'I', null);
-    Pokemon b = new Pokemon("B", 'C', 'W', null);
+    Pokemon a = new Pokemon("A", 2, 'C', 'I', null);
+    Pokemon b = new Pokemon("B", 3, 'C', 'W', null);
 
     a.attack(0, b);
     int mp = a.getCurMP();
     // System.out.println("a.getCurMP()="+a.getCurMP());
-    assertTrue(mp == 13);
+    assertTrue(mp == 12);
   }
 
   @Test
   public void battleTest_checkBufDouble() {
-    Pokemon a = new Pokemon("A", 'C', 'W', null);
-    Pokemon b = new Pokemon("B", 'C', 'W', null);
+    Pokemon a = new Pokemon("A", 2, 'C', 'W', null);
+    Pokemon b = new Pokemon("B", 3, 'C', 'W', null);
 
     // System.out.println("b.getHP()="+b.getCurHP());
     a.attack(1, b);
@@ -127,8 +127,8 @@ public class PokemonAttackMethodTest {
 
   @Test
   public void battleTest_checkDebufChangesStatus() {
-    Pokemon a = new Pokemon("A", 'C', 'I', null);
-    Pokemon b = new Pokemon("B", 'C', 'W', null);
+    Pokemon a = new Pokemon("A", 2, 'C', 'I', null);
+    Pokemon b = new Pokemon("B", 3, 'C', 'W', null);
     
     a.attack(1, b);
     assertTrue(b.getStatus() == "freeze");

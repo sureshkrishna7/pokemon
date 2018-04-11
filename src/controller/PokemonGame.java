@@ -23,7 +23,7 @@ public class PokemonGame {
   private static Point playerStartLocation = new Point(11,25);
   private static Point playerOldLocation = new Point();
   
-  
+  /*
   public static void SafariEncounter(Trainer currTrainer, Pokemon currPoke) {
 	  System.out.println("You have encountered a " + currPoke.getName());
 	  String nextMove = "z";
@@ -64,6 +64,7 @@ public class PokemonGame {
 		  }
 	  }
   }
+  */
   
   public static void main(String[] args) {
 	 theGame = new Game();
@@ -155,8 +156,8 @@ public class PokemonGame {
 		// X represents Safari Pokemon for now, until Safari Map is created
 		else if (gameLogic == 'X') {				
 			System.out.println("Encountered a Safari Pokemon");
-			Pokemon b = new Pokemon("Sandslash", 'C', 'I', null);
-			SafariEncounter(theGame.getTrainer(), b);
+			Pokemon b = new Pokemon("Sandslash", 3, 'C', 'I', null);
+			//SafariEncounter(theGame.getTrainer(), b);
 		}
 		// after exhausting 500 steps in Safari Zone, eject back to PokemonTown
 		else if(theGame.getTrainer().getSafariSteps() >= 500) {

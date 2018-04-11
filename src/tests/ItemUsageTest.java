@@ -12,7 +12,7 @@ import model.UsableItems.Tonic;
 public class ItemUsageTest {
   @Test
   public void useTonicWhenHPLow() {
-    Pokemon p = new Pokemon("A", 'R', 'I', null);
+    Pokemon p = new Pokemon("A", 3, 'R', 'I', null);
     p.setCurHP(p.getMaxHP() - 400);
 
     int before = p.getCurHP();
@@ -24,7 +24,7 @@ public class ItemUsageTest {
   
   @Test
   public void useTonicWhenWithinRangeOfMax() {
-    Pokemon p = new Pokemon("A", 'R', 'I', null);
+    Pokemon p = new Pokemon("A", 3, 'R', 'I', null);
     p.setCurHP(p.getMaxHP() - 50);
 
     Tonic t = new Tonic('U');
@@ -35,7 +35,7 @@ public class ItemUsageTest {
   
   @Test
   public void useHealWhenStatusNotNormal() {
-    Pokemon p = new Pokemon("A", 'R', 'I', null);
+    Pokemon p = new Pokemon("A", 3, 'R', 'I', null);
     p.setStatus("freeze");
     
     Heal h = new Heal('U');
@@ -45,7 +45,7 @@ public class ItemUsageTest {
   
   @Test
   public void useReviveWhenPokemonNotExhausted() {
-    Pokemon p = new Pokemon("A", 'R', 'I', null);
+    Pokemon p = new Pokemon("A", 3, 'R', 'I', null);
     
     int hPbefore = p.getCurHP();
     int mPbefore = p.getCurMP();
@@ -60,7 +60,7 @@ public class ItemUsageTest {
   
   @Test
   public void useReviveWhenPokemonIsExhausted() {
-    Pokemon p = new Pokemon("A", 'R', 'I', null);
+    Pokemon p = new Pokemon("A", 3, 'R', 'I', null);
     p.setCurHP(0);
     p.setCurMP(2);
     
@@ -72,7 +72,7 @@ public class ItemUsageTest {
   
   @Test
   public void useTonicWhenPokemonIsExhausted() {
-    Pokemon p = new Pokemon("A", 'R', 'I', null);
+    Pokemon p = new Pokemon("A", 3, 'R', 'I', null);
     p.setCurHP(0);
     
     Tonic t = new Tonic('U');

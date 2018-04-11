@@ -22,8 +22,8 @@ public class WildPokemonBattleTest {
   public void test1() {
 
     Scanner in = new Scanner(System.in);
-    Trainer guy = new Trainer("Andrew", new Pokemon("Charmeleon", 'M', 'F', null));
-    Pokemon enemy = new Pokemon("Sandslash", 'C', 'I', null);
+    Trainer guy = new Trainer("Andrew");
+    Pokemon enemy = new Pokemon("Sandslash", 3, 'C', 'I', null);
     System.out.println("Encountered a " + enemy.getName() + "!" + " (" + enemy.getPokemonType() + " type)");
 
     while (true) {
@@ -40,10 +40,10 @@ public class WildPokemonBattleTest {
       if (guy.getCurPokemon().canMove()) {
         // this loop takes input for move from list.
         // if move is invalid, it starts over
-        
+
         do {
           if (invalid)
-            System.out.println("Invalid move! try again!");
+            System.out.println("Invalid move! Try again.");
           guy.getCurPokemon().printMoves();
           System.out.println("Your move (type a number, 0-3, or 4 for item list):");
           choice = in.nextInt();
@@ -60,15 +60,16 @@ public class WildPokemonBattleTest {
           choice = in.nextInt();
           String s = guy.inventoryByIndex(choice).getKey();
           System.out.println("Chose " + s + "!");
-          /* 
-           * Here we get the item from the inventory via a String, the ArrayList of whatever item is chosen is returned.
-           * The use() method for that particular item is called on the Trainer's current Pokemon.
-           * Then the item is removed from the ArrayList.
+          /*
+           * Here we get the item from the inventory via a String, the ArrayList of
+           * whatever item is chosen is returned. The use() method for that particular
+           * item is called on the Trainer's current Pokemon. Then the item is removed
+           * from the ArrayList.
            */
           itemUseResult = guy.getInventory().get(s).get(0).use(guy.getCurPokemon());
           guy.getInventory().get(s).remove(0);
           System.out.println(itemUseResult);
-        }else {
+        } else {
           beforeHP = enemy.getCurHP();
           guy.getCurPokemon().attack(choice, enemy);
           afterHP = enemy.getCurHP();
@@ -80,7 +81,12 @@ public class WildPokemonBattleTest {
         }
 
       } else {
-        System.out.println("Insufficient MP! Turn forfeited.");
+        if (enemy.getStatus() == "freeze") {
+          System.out.println("Frozen! Turn forfeited.");
+        } else {
+          System.out.println("Insufficient MP! Turn forfeited.");
+        }
+
       }
 
       // if move killed enemy Pokemon, set boolean and break out of loop
