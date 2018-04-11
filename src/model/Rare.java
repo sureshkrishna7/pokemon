@@ -49,6 +49,7 @@ public class Rare {
      * damage obviously Common would have less damage
      * *****************************************************************************
      * *************
+     * 
      */
 
     // Medium rarity
