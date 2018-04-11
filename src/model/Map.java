@@ -4,11 +4,13 @@ import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
+import java.util.Random;
 import java.util.Scanner;
 
-import javafx.scene.shape.Line;
+import model.UsableItems.FullTonic;
+import model.UsableItems.MidTonic;
+import model.UsableItems.Tonic;
 
 /*The idea for this class is to allow Polymorphism of this class.
   This class will simply provide the DIMENSIONS and the Board 
@@ -21,13 +23,13 @@ public class Map{
   private Point currentPlayerPos;
   private Map safariZone;
 
-  //Crucial for walking of player to work
+  // ten entries for usable items
+  private String[] usableItemCode = { "t", "mt", "ft", "e", "me", "fe", "el", "mel", "rev", "heal"};
+
+  // Crucial for walking of player to work
   private int col;
   private int row;
-
-  private ArrayList<Items> listOfItems; // list of items in the map
   private ArrayList<Pokemon> listOfPokemon; // list of pokemon in the map
-
   private boolean didGameEnd;
 
   /*
@@ -41,18 +43,17 @@ public class Map{
 
   public void initializeBoard() {
 
-	 this.board = new Items[row][col];		//Access elements x,y style
-	 this.characterBoard = new char[row][col];
-	 this.listOfPokemon = new ArrayList<Pokemon>(5);
-	 this.listOfItems = new ArrayList<Items>(5);
+    this.board = new Items[row][col]; // Access elements x,y style
+    this.characterBoard = new char[row][col];
+    this.listOfPokemon = new ArrayList<Pokemon>(5);
   }
 
   public int getMapWidth() {
-	 return col;
+    return col;
   }
 
   public int getMapHeight() {
-	 return row;
+    return row;
   }
   
   public Items[][] getItemsBoard(){
@@ -196,8 +197,23 @@ public class Map{
 		i++;
 	 }
 
+  // "t", "mt", "ft", "e", "me", "fe", "el", "mel", "rev", "heal"
+  private Items placeUsableItem(String id, int i, int j) {
+	  switch(id) {
+	  case "t":
+		Tonic t = new Tonic('U', i, j);
+	    return t;
+	  case "mt":
+	    MidTonic mt = new MidTonic('U', i, j);
+	    return mt;
+	  case "ft":
+	    FullTonic ft = new FullTonic('U', i, j);
+	    return ft;
+	  default:
+	    return null;
+	  }
   }
-  
+
   public Map getSafariZoneMap() {
 	  return safariZone;
   }

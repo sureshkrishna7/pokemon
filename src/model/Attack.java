@@ -47,7 +47,8 @@ public class Attack {
   }
   
   public int getCost() {
-	  return cost;
+	  
+    return cost;
   }
   
   public void setBurnCount(int i) {

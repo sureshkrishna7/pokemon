@@ -73,7 +73,7 @@ public class Game {
 	 ash = new Trainer(new String("Ash"), null);
 	 //ash.setLocation(27, 25);
 	 //ash.setLocation(5,12);
-	 ash.setLocation(10,38);
+	 ash.setLocation(5,20);
 
 
 	 this.cameraArray = new Items[camHeight][camWidth];
