@@ -16,12 +16,12 @@ import model.UsableItems.Tonic;
   This class will simply provide the DIMENSIONS and the Board 
   We can use "HouseMap extends Map" "SafariMap extends Map" ""PokeTown extends Map" etc.*/
 
-public class Map{
+public class MainMap{
 
   private Items[][] board;
   private char[][] characterBoard;
   private Point currentPlayerPos;
-  private Map safariZone;
+  private MainMap safariZone;
 
   // ten entries for usable items
   private String[] usableItemCode = { "t", "mt", "ft", "e", "me", "fe", "el", "mel", "rev", "heal"};
@@ -35,7 +35,7 @@ public class Map{
   /*
    * *********************************************************
    */
-  public Map() {
+  public MainMap() {
 
 	 didGameEnd = false;
 	 initializeBoard();
@@ -184,7 +184,7 @@ public class Map{
           doorCount += 1;
         } else if (characterBoard[i][j] == 'S') {
           String file = "src/SafariZone.txt";
-          safariZone = new Map();
+          safariZone = new MainMap();
           // safariZone.get
 
         } else if (characterBoard[i][j] == 'N') {
@@ -251,7 +251,7 @@ public class Map{
 		  }
 		  else if(characterBoard[i][j] == 'S') {
 			  String file = "src/SafariZone.txt";
-			  safariZone = new Map();
+			  safariZone = new MainMap();
 		  }
 		  else if(characterBoard[i][j] == 'N') {
 			 
@@ -283,7 +283,7 @@ public class Map{
 	  }
   }
 
-  public Map getSafariZoneMap() {
+  public MainMap getSafariZoneMap() {
 	  return safariZone;
   }
 

@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Random;
-
 public class Attack {
 
   private String name;
@@ -11,11 +9,9 @@ public class Attack {
   private int damage;
   private int cost;
   private int burnCount;
-  
-  private Random rand;
+ 
   
   public Attack(String name, String type, int damage, String buf, String debuf, int cost) {
-	 rand = new Random();
 	 this.name = name;
 	 this.type = type.toLowerCase();
 	 this.damage = damage;
@@ -23,7 +19,6 @@ public class Attack {
 	 this.debuf = debuf;
 	 this.cost = cost;
 	 this.burnCount = 0;
-	 //damage = rand.nextInt(400) + 100;
   }
   
   public String getName() {
