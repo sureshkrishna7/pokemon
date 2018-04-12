@@ -1,19 +1,12 @@
 package controller;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 import java.util.Scanner;
-import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
-import model.Attack;
 import model.Battle;
 import model.Door;
 import model.Game;
 import model.Pokemon;
-import model.PokemonStrategy;
-import model.Trainer;
 
 //Simply Create the User and insert User into PokeTownMap, the rest of the maps will be embedded within PokeTownMap
 
@@ -23,7 +16,6 @@ public class PokemonGame {
   private static Game theGame;
   private static Point playerStartLocation = new Point(11, 25);
   private static Point playerOldLocation = new Point();
-  private static PokemonStrategy pokemonStrategy = new PokemonStrategy();
   private static boolean foundPokemon;
   private static boolean wonBattle;
   private static final double encounterChance = 0.6;

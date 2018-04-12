@@ -1,7 +1,6 @@
 package model;
 
 import java.util.Scanner;
-import org.junit.Test;
 import model.Pokemon;
 import model.Trainer;
 
@@ -112,6 +111,7 @@ public class Battle {
 
     } // end while(true)
 
+    in.close();
     if (lost) {
       System.out.println("You lose...");
       return true;
