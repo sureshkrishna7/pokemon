@@ -1,26 +1,20 @@
 package model;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Pokemon extends Items {
 
-  private String filepath;
   private String name;
   private String status;
-  private char rareDegree;
   private int level;
   private Statistics stats;
   private PokemonType type;
   private ArrayList<Attack> moves;
-  private Attack specialMove;
+  //private Attack specialMove;
   private boolean boostFactorSet;
-  //public int runLikelihood = 5; // have to change to make this different for different pokemon later
-  //public int catchLikelihood = 5; // have to change to make this different for different pokemon later
-  // public int maxDuration = 3; // have to change to make this different for different pokemon later
-
+  
   public Pokemon(String name, int level, char rarity, char typeOfPokemon, Attack specialMove) {
     super('P');
     this.name = name;
@@ -28,7 +22,7 @@ public class Pokemon extends Items {
     this.level = level;
     this.stats = new Statistics(level, rarity);
     this.type = new PokemonType(typeOfPokemon);
-    this.specialMove = specialMove;
+    //this.specialMove = specialMove;
     this.moves = type.getPokemonAttacks();
     // moves.add(specialMove);
     boostFactorSet = false;
@@ -270,9 +264,6 @@ public class Pokemon extends Items {
     if (this.getCurMP() < this.getAttacks().get(0).getCost()) {
       return false;
     }
-    if(this.status == "freeze") {
-      return false;
-    }
     return true;
   }
 
@@ -289,6 +280,13 @@ public class Pokemon extends Items {
     
     //System.out.printf("pivot= %.2f, run chance= %.2f\n", pivot, this.stats.getRunChance());
     if(pivot > this.stats.getRunChance()) {
+      return true;
+    }
+    return false;
+  }
+  
+  public boolean isDisabled() {
+    if(this.getStatus() == "frozen") {
       return true;
     }
     return false;

@@ -2,11 +2,13 @@ package tests;
 
 import java.util.Scanner;
 import org.junit.Test;
+
+import model.Battle;
 import model.Pokemon;
 import model.Trainer;
 
 public class WildPokemonBattleTest {
-
+  
   boolean invalid;
   boolean lost;
   boolean usingItem;
@@ -14,8 +16,15 @@ public class WildPokemonBattleTest {
   int beforeHP;
   int afterHP;
   String itemUseResult;
-
+  
   @Test
+  public void test0() {
+    Trainer guy = new Trainer("Andrew");
+    Pokemon enemy = new Pokemon("Sandslash", 3, 'C', 'I', null);
+    Battle.battle(guy, enemy);
+  }
+  
+  
   public void test1() {
 
     Scanner in = new Scanner(System.in);
@@ -122,4 +131,5 @@ public class WildPokemonBattleTest {
       System.out.println("You win!!");
     }
   }
+  
 }

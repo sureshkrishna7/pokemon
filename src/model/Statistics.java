@@ -4,15 +4,6 @@ import java.util.Random;
 
 public class Statistics {
 
-  /*
-   * *****************************************************************************
-   * ************* ****NOTE**** Catchable depends on the health of the pokemon
-   * Lower health is easily catchable, rare have high health and hence they are
-   * harder to catch
-   * *****************************************************************************
-   * *************
-   */
-
   private int maxMP;
   private int curMP;
   private int maxHP;
@@ -133,38 +124,7 @@ public class Statistics {
     this.curHP = maxHP;
     this.curMP = maxMP;
   }
-  /*
-   * *****************************************************************************
-   * ************* ****NO MODIFIER METHODS**** So that nobody can see these This
-   * is to STREAMLINE the process of getting POKEMON HEALTH and RUN VALUE
-   * 
-   * ****TO USE***** pokemon.getHP() ***************
-   * 
-   * ****INSTEAD OF********* pokemon.rarity.getHP(); ***********************
-   * *****************************************************************************
-   * *************
-   */
-
-  /*
-   * Difference between package private, public, protected, and private
-   * 
-   * | Class | Package | Subclass | Subclass | World | | |(same pkg)|(diff pkg)|
-   * ————————————+———————+——————
-   * ———+——————————+——————————+—�
-   * �—————— public | + | + | + | + | +
-   * ————————————+———————+——————
-   * ———+——————————+——————————+—�
-   * �—————— protected | + | + | + | + |
-   * ————————————+———————+——————
-   * ———+——————————+——————————+—�
-   * �—————— no modifier | + | + | + | |
-   * ————————————+———————+——————
-   * ———+——————————+——————————+—�
-   * �—————— private | + | | | |
-   *
-   * + : accessible blank : not accessible
-   */
-
+  
   public int getMaxHP() {
     return this.maxHP;
   }

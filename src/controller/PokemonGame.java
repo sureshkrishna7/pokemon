@@ -203,6 +203,6 @@ public class PokemonGame {
       return true;
     }
     return false;
-  }// end checkBust()
+  }// end checkBush()
 
 }
