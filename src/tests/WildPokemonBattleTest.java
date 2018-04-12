@@ -20,7 +20,7 @@ public class WildPokemonBattleTest {
   @Test
   public void test0() {
     Trainer guy = new Trainer("Andrew");
-    Pokemon enemy = new Pokemon("Sandslash", 3, 'C', 'I', null);
+    Pokemon enemy = new Pokemon("Sandslash", 1, 'C', 'I', null);
     Battle.battle(guy, enemy);
   }
   

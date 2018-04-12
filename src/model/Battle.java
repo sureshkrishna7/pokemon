@@ -3,6 +3,7 @@ package model;
 import java.util.Scanner;
 import model.Pokemon;
 import model.Trainer;
+import model.NPC.NPC;
 
 public class Battle {
 

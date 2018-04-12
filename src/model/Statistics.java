@@ -19,10 +19,9 @@ public class Statistics {
 
   /*
    * Statistics(int char) -- constructor takes two params, int for level and char
-   * for rareDegree. Calls setStats() and setRunChance() to determine damage boost by level 
-   * and runChance by rareDegree.
+   * for rareDegree. Calls setStats() and setRunChance() to determine damage boost
+   * by level and runChance by rareDegree.
    */
-
   public Statistics(int level, char rareDegree) {
     this.level = level;
     this.rareDegree = rareDegree;
@@ -31,16 +30,17 @@ public class Statistics {
   }
 
   /*
-   * setChanceVars() -- sets the runChance, catchChance, and takeBaitChance by the rareDegree
-   * of the Pokemon. Uses double to represent in a range of 0.0 - 1.0, which can be used as percentages.
+   * setChanceVars() -- sets the runChance, catchChance, and takeBaitChance by the
+   * rareDegree of the Pokemon. Uses double to represent in a range of 0.0 - 1.0,
+   * which can be used as percentages.
    */
   private void setChanceVars() {
     if (rareDegree == 'C') {
-      this.runChance = 0.55;
+      this.runChance = 0.35;
       this.catchChance = 0.75;
       this.takeBaitChance = 0.75;
     } else if (rareDegree == 'M') {
-      this.runChance = 0.67;
+      this.runChance = 0.57;
       this.catchChance = 0.58;
       this.takeBaitChance = 0.50;
     } else if (rareDegree == 'R') {
@@ -52,13 +52,11 @@ public class Statistics {
 
   /*
    * setStats() -- sets the stats of this object which is a composite of Pokemon.
-   * It does so in 4 branches based on the level of the Pokemon:
-   *    lvls 0-5
-   *    lvls 6-10
-   *    lvls 11-15
-   *    lvls 16 and above. (20 should be max level possible..)
-   * The HP and damageBoost are varied by a random buffer, ranges provided in comments.
-   * runChance is incremented slightly depending on the level, which is initialized in setRunChance();
+   * It does so in 4 branches based on the level of the Pokemon: lvls 0-5 lvls
+   * 6-10 lvls 11-15 lvls 16 and above. (20 should be max level possible..) The HP
+   * and damageBoost are varied by a random buffer, ranges provided in comments.
+   * runChance is incremented slightly depending on the level, which is
+   * initialized in setRunChance();
    */
   private void setStats() {
     rand = new Random();
@@ -74,13 +72,12 @@ public class Statistics {
       damageBoost = rand.nextInt(300) + 50;
       this.damageBoost = damageBoost;
       // runChance: incremented by 0.6 (initially determined by rareDegree)
-      //this.runChance += 0.6;
+      // this.runChance += 0.6;
       // MP: hard coded
       this.maxMP = 20;
       // accuracy: hard coded
       this.accuracy = 0.95;
-    } 
-    else if (level > 10) {
+    } else if (level > 10) {
       // HP range: 1500 - 2099
       base = rand.nextInt(500) + buffer + 1500;
       this.maxHP = base;
@@ -88,13 +85,12 @@ public class Statistics {
       damageBoost = rand.nextInt(250) + 50;
       this.damageBoost = damageBoost;
       // runChance: incremented by 0.4 (initially determined by rareDegree)
-      //this.runChance += 0.4;
+      // this.runChance += 0.4;
       // MP: hard coded
       this.maxMP = 18;
       // accuracy: hard coded
       this.accuracy = 0.85;
-    } 
-    else if (level > 5) {
+    } else if (level > 5) {
       // HP range: 1000 - 1599
       base = rand.nextInt(500) + buffer + 1000;
       this.maxHP = base;
@@ -102,7 +98,7 @@ public class Statistics {
       damageBoost = rand.nextInt(200) + 50;
       this.damageBoost = damageBoost;
       // runChance: incremented by 0.3 (initially determined by rareDegree)
-      //this.runChance += 0.3;
+      // this.runChance += 0.3;
       // MP: hard coded
       this.maxMP = 16;
       // accuracy: hard coded
@@ -115,7 +111,7 @@ public class Statistics {
       damageBoost = rand.nextInt(175) + 50;
       this.damageBoost = damageBoost;
       // runChance: incremented by 0.2 (initially determined by rareDegree)
-      //this.runChance += 0.2;
+      // this.runChance += 0.2;
       // MP: hard coded
       this.maxMP = 14;
       // accuracy: hard coded
@@ -124,11 +120,11 @@ public class Statistics {
     this.curHP = maxHP;
     this.curMP = maxMP;
   }
-  
+
   public int getMaxHP() {
     return this.maxHP;
   }
-  
+
   public int getCurHP() {
     return this.curHP;
   }
@@ -160,7 +156,7 @@ public class Statistics {
   public double getRunChance() {
     return this.runChance;
   }
-  
+
   public double getCatchChance() {
     return this.catchChance;
   }
@@ -168,17 +164,17 @@ public class Statistics {
   public double getTakeBaitChance() {
     return this.takeBaitChance;
   }
-  
+
   public int getDamageBoost() {
     return this.damageBoost;
   }
-  
+
   public double getAccuracy() {
     return this.accuracy;
   }
-  
+
   public void setAccuracy(double d) {
     this.accuracy = d;
   }
-  
+
 }
