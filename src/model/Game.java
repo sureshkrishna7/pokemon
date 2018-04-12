@@ -4,21 +4,25 @@ import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Game {
 
   private boolean didGameEnd;
   private boolean playerWon;
 
-  private Map pokeTown;
-  private Map safariZone;
-  private Map currCameraMap;
+  private MainMap pokeTown;
+  private MainMap safariZone;
+  private MainMap currCameraMap;
   private Trainer ash;
 
   private final int camWidth = 10;
   private final int camHeight = 10;
   private Items[][] cameraArray; 
-  private Pokemon[] pokemons;
+  private Map<String, String> allPokemonList;
+  private ArrayList<String> pokemonNameList;
 
   private char[][] camera;
   
@@ -27,10 +31,10 @@ public class Game {
 	 didGameEnd = false;
 	 playerWon = false;
 
-	 pokeTown = new Map();
-	 safariZone = new Map();
-	 currCameraMap = new Map();
-	 pokemons = new Pokemon[10];
+	 pokeTown = new MainMap();
+	 safariZone = new MainMap();
+	 currCameraMap = new MainMap();
+	 initializePokeLists();
 	 
 	 try {
 		pokeTown.geniusMethod("src/PokemonTown.txt");
@@ -80,8 +84,41 @@ public class Game {
 	 this.camera = new char[camHeight][camWidth];
   }
   
-  
-  public void setCurrCameraMap(Map map) {
+  /*
+   * initializePokeLists() -- initialize the Map object for the list of Pokemon as a HashMap,
+   * adds all the Pokemon with their names as keys and their rareDegree and types as values, contained
+   * in a two character String where the first character is the rareDegree and the second is the type.
+   * Also initializes and fills an ArrayList of all the names of the Pokemon.
+   */
+  private void initializePokeLists() {
+    allPokemonList = new HashMap<>();
+    pokemonNameList = new ArrayList<String>(); 
+    
+    pokemonNameList.add("Charmeleon");
+    pokemonNameList.add("Charmander");
+    pokemonNameList.add("Vulpix");
+    pokemonNameList.add("Sandslash");
+    pokemonNameList.add("Glaceon");
+    pokemonNameList.add("Seadra");
+    pokemonNameList.add("Starmie");
+    pokemonNameList.add("Seaking");
+    pokemonNameList.add("Cubone");
+    pokemonNameList.add("Rhydon");
+    
+    allPokemonList.put("Charmeleon", "MF");
+    allPokemonList.put("Charmander", "RF");
+    allPokemonList.put("Vulpix", "RF");
+    allPokemonList.put("Sandslash", "CI");
+    allPokemonList.put("Sandslash", "MI");
+    allPokemonList.put("Seadra", "CW");
+    allPokemonList.put("Starmie", "MW");
+    allPokemonList.put("Seaking", "RW");
+    allPokemonList.put("Cubone", "CE");
+    allPokemonList.put("Rhydon", "ME");
+  }// end initializePokeLists()
+
+
+  public void setCurrCameraMap(MainMap map) {
 	  currCameraMap = map;
   }
 
@@ -138,10 +175,10 @@ public class Game {
 	  return ash.getLocation();
   }
   
-  public void setSafariZone(Map newMap) {
+  public void setSafariZone(MainMap newMap) {
 	  safariZone = newMap;
   }
-  public Map getSafariZone() {
+  public MainMap getSafariZone() {
 	  return safariZone;
   }
   
@@ -190,7 +227,7 @@ public class Game {
 	 return camera; 
   }
 
-public Map getPokeTown() {
+public MainMap getPokeTown() {
 	return pokeTown;
 }
 
@@ -198,15 +235,18 @@ public Trainer getTrainer() {
 	return ash;
 }
 
-public Map getCurrCameraMap() {
+public MainMap getCurrCameraMap() {
 	// TODO Auto-generated method stub
 	return currCameraMap;
 }
 
 
-public Pokemon[] getPokemons() {
-	// TODO Auto-generated method stub
-	return pokemons;
+public Map<String, String> getAllPokemonList() {
+	return allPokemonList;
+}
+
+public ArrayList<String> getPokemonNameList(){
+  return pokemonNameList;
 }
   
 }

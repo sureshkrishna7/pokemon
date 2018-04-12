@@ -5,12 +5,12 @@ import java.io.FileNotFoundException;
 
 public class Door extends Items {
   private String filepath;			//TODO: Need to add picture of door to filepath
-  private Map insideMap;
+  private MainMap insideMap;
   
   public Door(int x, int y, String file) {
 	 super('D', x, y);
 	 //setImage(filepath);
-	 this.insideMap = new Map();
+	 this.insideMap = new MainMap();
 	 try {
 		insideMap.geniusMethod(file);
 	 } catch (FileNotFoundException e) {
@@ -22,7 +22,7 @@ public class Door extends Items {
   public Door(Point pos, String file) {
 	 super('D', pos);
 	 //setImage(filepath);
-	 this.insideMap = new Map();
+	 this.insideMap = new MainMap();
 	 try {
 		insideMap.geniusMethod(file);
 	 } catch (FileNotFoundException e) {
@@ -31,11 +31,11 @@ public class Door extends Items {
 	 }
   }
   
-  public void setInsideMap(Map map) {
+  public void setInsideMap(MainMap map) {
 	  insideMap = map;
   }
   
-  public Map getInsideMap() {
+  public MainMap getInsideMap() {
 	  if (insideMap == null) {
 		  System.out.println("NULL MAP");
 	  }
