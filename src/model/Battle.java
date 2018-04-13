@@ -48,8 +48,10 @@ public class Battle {
         break;
       }
 
+      //System.out.println("npc curPoke: " + npc.getCurPokemon().getName());
       // the enemy's turn
       npcMove(trainer, npc);
+      //System.out.println("npc curPoke: " + npc.getCurPokemon().getName());
       
       // print trainer's curPokemon stats after move has been made
       trainer.getCurPokemon().printData();
@@ -129,12 +131,28 @@ public class Battle {
   }
   
   private static void npcMove(Trainer trainer, NPC npc) {
+    String result = null;
     
     if(npc.getCurPokemon().isDisabled()) {
       System.out.println(npc.getCurPokemon().getName() + "is " + npc.getCurPokemon().getStatus());
     } else {
-      npc.switchPokemon();
-      npc.useItem();
+      /*
+       *  the conditional returns a String of the Pokemon switched to if a switch was made, 
+       *  meaning it's time to return. (turn consumed)
+       */
+      if ((result = npc.switchPokemon()) != null) {
+        System.out.println(npc.getName() + " chose " + result + ".");
+        //System.out.println("npc curPoke: " + npc.getCurPokemon().getName());
+        return;
+      }
+      /*
+       *  the conditional returns a String of the item name if an it was used, 
+       *  meaning it's time to return. (turn consumed)
+       */
+      if ((result = npc.useItem()) != null) {
+        System.out.println(npc.getName() + " used " + result + " on " + npc.getCurPokemon().getName() + ".");
+        return;
+      }
       choice = npc.getAttack(trainer);
       System.out.println(npc.getName() + " has " + npc.getCurPokemon().getName() + " use " + npc.getCurPokemon().getAttacks().get(choice).getName());
       beforeHP = trainer.getCurPokemon().getCurHP();
@@ -284,7 +302,7 @@ public class Battle {
     boolean invalid = false;
 
     for (Pokemon p : trainer.getPokeList()) {
-      System.out.print(i);
+      System.out.print(i++);
       p.printData();
     }
 
@@ -304,7 +322,7 @@ public class Battle {
         changedMind = true;
         return;
       }
-      if (choice < 1 || choice > trainer.getPokeList().size() - 1 || trainer.getPokeList().get(choice).isExhausted()) {
+      if (choice < 1 || choice > trainer.getPokeList().size() || trainer.getPokeList().get(choice - 1).isExhausted()) {
         invalid = true;
       }
     } while (invalid);

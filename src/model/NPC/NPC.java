@@ -34,8 +34,8 @@ public abstract class NPC extends Items {
    */
   public void setRandomCurPoke() {
     Random ran = new Random();
-    int index = ran.nextInt(listOfPokemon.size());
-    this.currentPokemon = listOfPokemon.get(index);
+    int index = ran.nextInt(this.listOfPokemon.size());
+    this.currentPokemon = this.listOfPokemon.get(index);
   }
   
   public String getName() {
@@ -57,7 +57,7 @@ public abstract class NPC extends Items {
    * returns true if the list is traversed and this condition is not met.
    */
   public boolean allPokemonExhausted() {
-    for (Pokemon p : listOfPokemon) {
+    for (Pokemon p : this.listOfPokemon) {
       if (p.isExhausted() == false)
         return false;
     }
@@ -78,15 +78,13 @@ public abstract class NPC extends Items {
    *  this method in the class of the specific NPC has different strategies for when the NPC will
    *  switch out their Pokemon. This will be called at every move, and will switch or won't. 
    */
-  public abstract void switchPokemon();
+  public abstract String switchPokemon();
   
   /*
    *  this method will use an item, dependent on the strategy of the specific NPC implementing this 
    *  method.
    */
-  
-  
-  public abstract void useItem();
+  public abstract String useItem();
   
   public abstract int getAttack(Trainer trainer);
   
