@@ -150,7 +150,7 @@ public class Statistics {
   }
 
   public void takeDamage(int i) {
-    this.curHP -= i;
+    this.curHP = (this.curHP - i < 0) ? 0 : this.curHP - i;
   }
 
   public double getRunChance() {

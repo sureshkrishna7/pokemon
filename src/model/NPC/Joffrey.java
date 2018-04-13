@@ -57,29 +57,52 @@ public class Joffrey extends NPC {
     }
   }
 
+  /*
+   * switchPokemon() -- will switch the NPC's curPokemon in battle under varied conditions.
+   * Will return true if a switch was made thus indicating a turn was consumed, else will return false.
+   */
   @Override
-  public void switchPokemon() {
-    if (this.currentPokemon.getCurHP() < (int) (this.currentPokemon.getMaxHP() * 0.25)) {
+  public String switchPokemon() {
+    /*
+     * switch if curPokemon curHP less than 1/4 of it's max HP
+     */
+    if (this.currentPokemon.getCurHP() < (int)(this.currentPokemon.getMaxHP() * 0.25)) {
       for (Pokemon p : this.listOfPokemon) {
-        if (p.getCurHP() < (int) (p.getMaxHP() * 0.25))
+        if (p.getCurHP() >= (int)(p.getMaxHP() * 0.25)) {
           this.currentPokemon = p;
+          return p.getName();
+        }
       }
+      
     }
-    else if(!this.currentPokemon.canMove()) {
+    
+    /*
+     * if cur Pokemon has insufficient MP to make any move...
+     */
+    if(!this.currentPokemon.canMove()) {
       for (Pokemon p : this.listOfPokemon) {
         if (p.canMove())
           this.currentPokemon = p;
+          return p.getName();
       }
     }
+    
+    return null;
   }
 
+  /*
+   * useItem() -- will use an item on the NPC's curPokemon in battle under varied conditions.
+   * Will return true if an item was used thus indicating a turn was consumed, else will return false.
+   */
   @Override
-  public void useItem() {
+  public String useItem() {
     if (this.currentPokemon.getCurHP() < (int) (this.currentPokemon.getMaxHP() * 0.20)) {
       if (this.inventory.containsKey("tonic")) {
         this.inventory.get("tonic").get(0).use(this.currentPokemon);
+        return "tonic";
       }
     }
+    return null;
   }
 
   @Override
@@ -87,7 +110,7 @@ public class Joffrey extends NPC {
     this.listOfPokemon.add(new Pokemon("Rhydon", 3, 'M', 'E', null));
     this.listOfPokemon.add(new Pokemon("Sandslash", 4, 'C', 'I', null));
     this.listOfPokemon.add(new Pokemon("Cubone", 5, 'C', 'E', null));
-    this.listOfPokemon.add(new Pokemon("Rhydon", 6, 'M', 'E', null));
+    this.listOfPokemon.add(new Pokemon("Glaceon", 6, 'M', 'I', null));
   }
 
   @Override
