@@ -2,9 +2,12 @@ package model.NPC;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
+import model.Attack;
 import model.Items;
 import model.Pokemon;
+import model.Trainer;
 import model.UsableItems.UsableItem;
 
 public abstract class NPC extends Items {
@@ -25,9 +28,41 @@ public abstract class NPC extends Items {
     this.hostile = hostile;
   }
   
+  /*
+   * setRandomCurPoke() -- this method is called in the constructor of each NPC. 
+   * It sets the NPC's current Pokemon to a random Pokemon in the listOfPokemon.
+   */
+  public void setRandomCurPoke() {
+    Random ran = new Random();
+    int index = ran.nextInt(listOfPokemon.size());
+    this.currentPokemon = listOfPokemon.get(index);
+  }
+  
+  public String getName() {
+    return name;
+  }
+  
+  public Pokemon getCurPokemon() {
+    return currentPokemon;
+  }
+  
   public boolean getHostility() {
     return hostile;
   }
+  
+  /*
+   * allPokemonExhausted(NPC) -- this method iterates through all of the
+   * Pokemon in the NPC's pokeList. It returns false as soon as it finds one
+   * Pokemon that is not exhausted (pokemon.isExhausted() == false), otherwise
+   * returns true if the list is traversed and this condition is not met.
+   */
+  public boolean allPokemonExhausted() {
+    for (Pokemon p : listOfPokemon) {
+      if (p.isExhausted() == false)
+        return false;
+    }
+    return true;
+  }// end allPokemonExhausted()
 
   /*
    *  this method in the class of the specific NPC has hard coded Strings, it returns one specific
@@ -49,7 +84,11 @@ public abstract class NPC extends Items {
    *  this method will use an item, dependent on the strategy of the specific NPC implementing this 
    *  method.
    */
+  
+  
   public abstract void useItem();
+  
+  public abstract int getAttack(Trainer trainer);
   
   public abstract void initializePokeList();
   

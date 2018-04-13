@@ -6,6 +6,7 @@ import org.junit.Test;
 import model.Battle;
 import model.Pokemon;
 import model.Trainer;
+import model.NPC.Joffrey;
 
 public class WildPokemonBattleTest {
   
@@ -17,15 +18,22 @@ public class WildPokemonBattleTest {
   int afterHP;
   String itemUseResult;
   
-  @Test
-  public void test0() {
+  //@Test
+  public void battleWithWildPoke() {
     Trainer guy = new Trainer("Andrew");
+    guy.getCurPokemon().setCurHP(100);
     Pokemon enemy = new Pokemon("Sandslash", 1, 'C', 'I', null);
     Battle.battle(guy, enemy);
   }
   
+  @Test
+  public void battleWithNPC() {
+    Trainer guy = new Trainer("Andrew");
+    Battle.battle(guy, new Joffrey("Joffrey", true)); 
+  }
   
-  public void test1() {
+  //@Test
+  public void standAloneSystemTest() {
 
     Scanner in = new Scanner(System.in);
     Trainer guy = new Trainer("Andrew");

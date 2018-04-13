@@ -15,21 +15,15 @@ public class Battle {
   private static int afterHP;
   private static String itemUseResult;
 
-  public static boolean battle(Trainer trainer, NPC enemy) {
+  public static boolean battle(Trainer trainer, NPC npc) {
     Scanner in = new Scanner(System.in);
-    return true;
-  }
-
-  public static boolean battle(Trainer trainer, Pokemon enemy) {
-    Scanner in = new Scanner(System.in);
-    System.out.println("Encountered a " + enemy.getName() + "!" + " (" + enemy.getPokemonType() + " type)");
-
+    
     while (true) {
       invalid = false;
       changedMind = false;
 
       // lose condition: all Pokemon are exhausted
-      if (allPokemonExhausted(trainer)) {
+      if (trainer.allPokemonExhausted()) {
         trainer.getCurPokemon().printData();
         lost = true;
         break;
@@ -39,86 +33,88 @@ public class Battle {
       if (trainer.getCurPokemon().isExhausted()) {
         System.out.println("Current Pokemon exhausted! Switch now.");
         switchPokemon(trainer, in);
-      }else {
-        trainerMove(trainer,enemy, in);
+      } else {
+        trainerMove(trainer, npc.getCurPokemon(), in);
+        // changedMind is set in any of the three sub-menus, which are entered in trainerMove
+        if (changedMind) continue;
       }
 
-      /*
-      if (trainer.getCurPokemon().isDisabled()) {
-        System.out.println(trainer.getCurPokemon().getName() + "can't move!");
-      } else {
-        // this loop takes input for option to attack, change Pokemon, or use item.
-        // if selection is invalid, it starts over.
-
-        do {
-          if (invalid) {
-            System.out.println("Invalid selection!");
-            invalid = false;
-          }
-          System.out.println("Select option:");
-          System.out.printf("1: Attack\n2. Use Item\n3. Switch Pokemon\n4. Run away\n");
-          choice = in.nextInt();
-          if (choice < 1 || choice > 4) {
-            invalid = true;
-          }
-        } while (invalid);
-
-        // chose to attack
-        if (choice == 1) {
-          attack(trainer, enemy, in);
-        }
-        // chose to use item
-        else if (choice == 2) {
-          useItem(trainer, in);
-        }
-        // chose to switch Pokemon
-        else if (choice == 3) {
-          switchPokemon(trainer, in);
-        }
-        // chose to run away
-        else {
-          lost = true;
-          break;
-        }
-      } // end if curPokemon not disabled
-      
-
-      /*
-       * if the user changed their mind in a menu, we continue from the main menu (the
-       * beginning of the while(true) loop).
-       */
-      //if (changedMind)
-      //  continue;
-         
-      // print enemy status after move has been made
-      enemy.printData();
+      // print enemy stats after move has been made
+      npc.getCurPokemon().printData();
 
       // if move killed enemy Pokemon, set boolean and break out of loop
-      if (enemy.isExhausted()) {
+      if (npc.allPokemonExhausted()) {
         lost = false;
         break;
       }
 
       // the enemy's turn
-      if (enemy.isDisabled()) {
-        System.out.println(enemy.getName() + "is " + enemy.getStatus());
-      } else if (!enemy.canMove()) {
-        System.out.println("Enemy has insufficient MP! Turn forfeited.");
-      } else {
-        do {
-          choice = enemy.randomMove();
-        } while (enemy.invalidMove(choice));
-        System.out.println(enemy.getName() + " chose " + enemy.getAttacks().get(choice).getName());
-        beforeHP = trainer.getCurPokemon().getCurHP();
-        enemy.attack(choice, trainer.getCurPokemon());
-        afterHP = trainer.getCurPokemon().getCurHP();
-        if (beforeHP == afterHP) {
-          System.out.println("Attack missed!");
-        } else {
-          System.out.println("Damage inflicted: " + (beforeHP - afterHP));
-        }
+      npcMove(trainer, npc);
+      
+      // print trainer's curPokemon stats after move has been made
+      trainer.getCurPokemon().printData();
+
+    } // end while(true)
+    
+    
+    in.close();
+
+    if (lost) {
+      System.out.println("You lose...");
+      System.out.println("\"" + npc.getDialogue(3) + "\" - " + npc.getName());
+      return false;
+    } else {
+      System.out.println("You win!!");
+      System.out.println("\"" + npc.getDialogue(4) + "\" - " + npc.getName());
+      // what happens when you beat a NPC? A reward perhaps?
+      // items and a Pokemon
+      
+      return true;
+    }
+  }
+
+
+  public static boolean battle(Trainer trainer, Pokemon wildPoke) {
+    Scanner in = new Scanner(System.in);
+    System.out.println("Encountered a " + wildPoke.getName() + "!" + " (" + wildPoke.getPokemonType() + " type)");
+
+    while (true) {
+      invalid = false;
+      changedMind = false;
+
+      // lose condition: all Pokemon are exhausted
+      if (trainer.allPokemonExhausted()) {
         trainer.getCurPokemon().printData();
+        lost = true;
+        break;
       }
+
+      // if your curPokemon is out of HP
+      if (trainer.getCurPokemon().isExhausted()) {
+        System.out.println("Current Pokemon exhausted! Switch now.");
+        switchPokemon(trainer, in);
+      } else {
+        trainerMove(trainer, wildPoke, in);
+        // changedMind is set in any of the three sub-menus, which are entered in trainerMove
+        if (changedMind) continue;
+        
+      }
+
+      // print enemy stats after move has been made
+      wildPoke.printData();
+
+      // if move killed enemy Pokemon, set boolean and break out of loop
+      if (wildPoke.isExhausted()) {
+        lost = false;
+        break;
+      }
+
+      // the enemy's turn
+      wildPokeMove(trainer, wildPoke);
+      
+      // print trainer's curPokemon stats after move has been made
+      trainer.getCurPokemon().printData();
+
     } // end while(true)
 
     in.close();
@@ -131,49 +127,90 @@ public class Battle {
       return true;
     }
   }
+  
+  private static void npcMove(Trainer trainer, NPC npc) {
+    
+    if(npc.getCurPokemon().isDisabled()) {
+      System.out.println(npc.getCurPokemon().getName() + "is " + npc.getCurPokemon().getStatus());
+    } else {
+      npc.switchPokemon();
+      npc.useItem();
+      choice = npc.getAttack(trainer);
+      System.out.println(npc.getName() + " has " + npc.getCurPokemon().getName() + " use " + npc.getCurPokemon().getAttacks().get(choice).getName());
+      beforeHP = trainer.getCurPokemon().getCurHP();
+      npc.getCurPokemon().attack(choice, trainer.getCurPokemon());
+      afterHP = trainer.getCurPokemon().getCurHP();
+      if (beforeHP == afterHP) {
+        System.out.println("Attack missed!");
+        System.out.println("\"" + npc.getDialogue(2) + "\" - " + npc.getName());
+      } else {
+        System.out.println("Damage inflicted: " + (beforeHP - afterHP));
+        System.out.println("\"" + npc.getDialogue(1) + "\" - " + npc.getName());
+      }
+    }
+    
+    
+  }
+
+  private static void wildPokeMove(Trainer trainer, Pokemon enemy) {
+    if (enemy.isDisabled()) {
+      System.out.println(enemy.getName() + "is " + enemy.getStatus());
+    } else if (!enemy.canMove()) {
+      System.out.println("Enemy has insufficient MP! Turn forfeited.");
+    } else {
+      do {
+        choice = enemy.randomMove();
+      } while (enemy.invalidMove(choice));
+      System.out.println(enemy.getName() + " chose " + enemy.getAttacks().get(choice).getName());
+      beforeHP = trainer.getCurPokemon().getCurHP();
+      enemy.attack(choice, trainer.getCurPokemon());
+      afterHP = trainer.getCurPokemon().getCurHP();
+      if (beforeHP == afterHP) {
+        System.out.println("Attack missed!");
+      } else {
+        System.out.println("Damage inflicted: " + (beforeHP - afterHP));
+      }
+    }
+  }
 
   private static void trainerMove(Trainer trainer, Pokemon enemy, Scanner in) {
 
-    changedMind = true;
-    while (changedMind == true) {
-      if (trainer.getCurPokemon().isDisabled()) {
-        System.out.println(trainer.getCurPokemon().getName() + "can't move!");
-      } else {
-        // this loop takes input for option to attack, change Pokemon, or use item.
-        // if selection is invalid, it starts over.
+    if (trainer.getCurPokemon().isDisabled()) {
+      System.out.println(trainer.getCurPokemon().getName() + "can't move!");
+    } else {
+      // this loop takes input for option to attack, change Pokemon, or use item.
+      // if selection is invalid, it starts over.
 
-        do {
-          if (invalid) {
-            System.out.println("Invalid selection!");
-            invalid = false;
-          }
-          System.out.println("Select option:");
-          System.out.printf("1: Attack\n2. Use Item\n3. Switch Pokemon\n4. Run away\n");
-          choice = in.nextInt();
-          if (choice < 1 || choice > 4) {
-            invalid = true;
-          }
-        } while (invalid);
+      do {
+        if (invalid) {
+          System.out.println("Invalid selection!");
+          invalid = false;
+        }
+        System.out.println("Select option:");
+        System.out.printf("1: Attack\n2. Use Item\n3. Switch Pokemon\n4. Run away\n");
+        choice = in.nextInt();
+        if (choice < 1 || choice > 4) {
+          invalid = true;
+        }
+      } while (invalid);
 
-        // chose to attack
-        if (choice == 1) {
-          attack(trainer, enemy, in);
-        }
-        // chose to use item
-        else if (choice == 2) {
-          useItem(trainer, in);
-        }
-        // chose to switch Pokemon
-        else if (choice == 3) {
-          switchPokemon(trainer, in);
-        }
-        // chose to run away
-        else {
-          lost = true;
-        }
-      } // end if curPokemon not disabled
-
-    }
+      // chose to attack
+      if (choice == 1) {
+        attack(trainer, enemy, in);
+      }
+      // chose to use item
+      else if (choice == 2) {
+        useItem(trainer, in);
+      }
+      // chose to switch Pokemon
+      else if (choice == 3) {
+        switchPokemon(trainer, in);
+      }
+      // chose to run away
+      else {
+        lost = true;
+      }
+    } // end if curPokemon not disabled
 
   }// end trainerMove()
 
@@ -276,19 +313,5 @@ public class Battle {
     System.out.println("Chose " + trainer.getCurPokemon().getName() + "!");
 
   }// end switchPokemon()
-
-  /*
-   * allPokemonExhausted(Trainer) -- this method iterates through all of the
-   * Pokemon in the Trainer's pokeList. It returns false as soon as it finds one
-   * Pokemon that is not exhausted (pokemon.isExhausted() == false), otherwise
-   * returns true if the list is traversed and this condition is not met.
-   */
-  private static boolean allPokemonExhausted(Trainer trainer) {
-    for (Pokemon p : trainer.getPokeList()) {
-      if (p.isExhausted() == false)
-        return false;
-    }
-    return true;
-  }// end allPokemonExhausted()
 
 }// end battle()

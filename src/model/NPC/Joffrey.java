@@ -2,8 +2,8 @@ package model.NPC;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import model.Pokemon;
+import model.Trainer;
 import model.UsableItems.Ether;
 import model.UsableItems.Heal;
 import model.UsableItems.Tonic;
@@ -17,13 +17,24 @@ public class Joffrey extends NPC {
     this.listOfPokemon = new ArrayList<Pokemon>();
     initializeInventory();
     initializePokeList();
+    setRandomCurPoke();
   }
-
+  
+  @Override
+  public int getAttack(Trainer trainer) {
+    int choice;
+    do {
+      choice = this.currentPokemon.randomMove();
+    }while(this.currentPokemon.invalidMove(choice));
+    return choice;  
+  }
+  
   /*
    * 0 - Pokemon took damage 
-   * 1 - Pokemon afflicted damage 
-   * 2 - won battle 
-   * 3 - lost battle
+   * 1 - Pokemon afflicted damage
+   * 2 - Pokemon attack missed 
+   * 3 - won battle 
+   * 4 - lost battle
    */
   @Override
   public String getDialogue(int i) {
@@ -34,9 +45,14 @@ public class Joffrey extends NPC {
       return "Bring me his head...";
     }
     if (i == 2) {
+      return "Stupid half Pokemon.";
+    } 
+    if ( i == 3) {
       return "Run away. Now.";
-    } else {
+    }
+    else {
       return "It's not over...";
+      
     }
   }
 
@@ -45,6 +61,12 @@ public class Joffrey extends NPC {
     if (this.currentPokemon.getCurHP() < (int) (this.currentPokemon.getMaxHP() * 0.25)) {
       for (Pokemon p : this.listOfPokemon) {
         if (p.getCurHP() < (int) (p.getMaxHP() * 0.25))
+          this.currentPokemon = p;
+      }
+    }
+    else if(!this.currentPokemon.canMove()) {
+      for (Pokemon p : this.listOfPokemon) {
+        if (p.canMove())
           this.currentPokemon = p;
       }
     }
@@ -82,4 +104,6 @@ public class Joffrey extends NPC {
     this.inventory.put("ether", l2);
     this.inventory.put("heal", l3);
   }
+
+
 }

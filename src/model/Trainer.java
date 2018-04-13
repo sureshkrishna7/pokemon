@@ -249,6 +249,20 @@ public class Trainer extends Items {
     currentPos.x = pos.x;
     currentPos.y = pos.y;
   }
+  
+  /*
+   * allPokemonExhausted(Trainer) -- this method iterates through all of the
+   * Pokemon in the Trainer's pokeList. It returns false as soon as it finds one
+   * Pokemon that is not exhausted (pokemon.isExhausted() == false), otherwise
+   * returns true if the list is traversed and this condition is not met.
+   */
+  public boolean allPokemonExhausted() {
+    for (Pokemon p : listOfPokemon) {
+      if (p.isExhausted() == false)
+        return false;
+    }
+    return true;
+  }// end allPokemonExhausted()
 
   /*
    * throwSafariBall(Pokemon) -- Trainer throws a safari ball at the wild Pokemon
