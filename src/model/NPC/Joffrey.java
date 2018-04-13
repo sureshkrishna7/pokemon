@@ -30,6 +30,7 @@ public class Joffrey extends NPC {
   }
   
   /*
+   * (from the NPC's perspective)
    * 0 - Pokemon took damage 
    * 1 - Pokemon afflicted damage
    * 2 - Pokemon attack missed 
@@ -42,13 +43,13 @@ public class Joffrey extends NPC {
       return "Wait til my mom hears about this!";
     }
     if (i == 1) {
-      return "Bring me his head...";
+      return "Run away. Now.";
     }
     if (i == 2) {
       return "Stupid half Pokemon.";
     } 
     if ( i == 3) {
-      return "Run away. Now.";
+      return "Bring me his head...";
     }
     else {
       return "It's not over...";
