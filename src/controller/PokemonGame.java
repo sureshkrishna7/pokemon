@@ -20,27 +20,6 @@ public class PokemonGame {
   private static boolean wonBattle;
   private static final double encounterChance = 0.6;
 
-  /*
-   * public static void SafariEncounter(Trainer currTrainer, Pokemon currPoke) {
-   * System.out.println("You have encountered a " + currPoke.getName());
-   * 
-   * String nextMove = "z"; int roundCounter = 0; while (!nextMove.equals("f")) {
-   * if (roundCounter == currPoke.maxDuration) {
-   * System.out.println("Pokemon Ran Away"); return; }
-   * System.out.println("Choose next move (r, b, p, f: )"); sc = new
-   * Scanner(System.in); nextMove=sc.next().toLowerCase(); if
-   * (nextMove.equals("r")) { //Throws a Rock roundCounter++;
-   * currPoke.catchLikelihood--; currPoke.runLikelihood--; } if
-   * (nextMove.equals("b")) { //Throws Bait roundCounter++;
-   * currPoke.catchLikelihood++; currPoke.runLikelihood++; } if
-   * (nextMove.equals("p")) { //Throws Pokeball roundCounter++; Random random =
-   * new Random(); int x = random.nextInt(currPoke.catchLikelihood); if (x == 0) {
-   * System.out.println("Pokemon Caught");
-   * currTrainer.addPokemon(currPoke.getName()); return; } } Random random = new
-   * Random(); int run = random.nextInt(currPoke.runLikelihood); if (run == 0) {
-   * System.out.println("Pokemon Ran Away"); return; } } }
-   */
-
   public static void main(String[] args) {
     theGame = new Game();
     foundPokemon = false;
@@ -133,6 +112,8 @@ public class PokemonGame {
       else if (theGame.getTrainer().getSafariSteps() >= 500) {
         theGame.setTrainerLocation(playerStartLocation);
         theGame.setCurrCameraMap(theGame.getPokeTown());
+        
+      // bush, check will battle at random, start battle with randomly instantiated Pokemon
       } else if (gameLogic == 'B') {
         foundPokemon = checkBush();
         if (foundPokemon) {

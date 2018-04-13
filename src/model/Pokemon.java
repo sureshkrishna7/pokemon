@@ -232,7 +232,7 @@ public class Pokemon extends Items {
   }
 
   public void printMoves() {
-    int i = 0;
+    int i = 1;
     for (Attack a : this.getAttacks()) {
       System.out.printf("  %d: %13s  Power:%d  MP:%d  Effect:", i, a.getName(),
           (a.baseDamage() + this.stats.getDamageBoost()), a.getCost());
