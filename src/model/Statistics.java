@@ -74,7 +74,7 @@ public class Statistics {
       // runChance: incremented by 0.6 (initially determined by rareDegree)
       // this.runChance += 0.6;
       // MP: hard coded
-      this.maxMP = 20;
+      this.maxMP = 37;
       // accuracy: hard coded
       this.accuracy = 0.95;
     } else if (level > 10) {
@@ -87,7 +87,7 @@ public class Statistics {
       // runChance: incremented by 0.4 (initially determined by rareDegree)
       // this.runChance += 0.4;
       // MP: hard coded
-      this.maxMP = 18;
+      this.maxMP = 35;
       // accuracy: hard coded
       this.accuracy = 0.85;
     } else if (level > 5) {
@@ -100,7 +100,7 @@ public class Statistics {
       // runChance: incremented by 0.3 (initially determined by rareDegree)
       // this.runChance += 0.3;
       // MP: hard coded
-      this.maxMP = 16;
+      this.maxMP = 33;
       // accuracy: hard coded
       this.accuracy = 0.80;
     } else {
@@ -113,7 +113,7 @@ public class Statistics {
       // runChance: incremented by 0.2 (initially determined by rareDegree)
       // this.runChance += 0.2;
       // MP: hard coded
-      this.maxMP = 14;
+      this.maxMP = 31;
       // accuracy: hard coded
       this.accuracy = 0.75;
     }

@@ -15,26 +15,28 @@ public abstract class Items {
 
   /*
    * ************
-   * 12 Items
+   * 13 Items
    * ************
    * G for grass
    * B for Bush (Pokemon can only be found here), So maintain a list of its position
-   * P for Pokemon
    * O for Trainer
-   * 1 for Black
    * T for Tree
    * W for Water
-   * H for House
-   * N for NPC 
+   * H for House 
    * D for Door
    * R for Rock
-   * I for Items
+   * U for UsableItem
+   * 
+   * J for Joffrey
+   * N for Tain
+   * A for Anika
+   * E for Elroy
    */
   public Items(char item) {
 	 location = new Point();
 	 type = item;
 
-	 if(type == 'G' || type == 'B' || type == 'D' || type == 'P' || type == 'I') {
+	 if(type == 'G' || type == 'B' || type == 'D' || type == 'I') {
 		setWalkable();
 	 }
   }
@@ -44,7 +46,7 @@ public abstract class Items {
 	 location = new Point();
 	 type = item;
 
-	 if(type == 'G' || type == 'B' || type == 'D' || type == 'P' || type == 'I') {
+	 if(type == 'G' || type == 'B' || type == 'D' || type == 'I') {
 		setWalkable();
 	 }
 	 setLocation(xpos, ypos);
@@ -54,7 +56,7 @@ public abstract class Items {
 	 location = new Point();
 	 type = item;
 
-	 if(type == 'G' || type == 'B' || type == 'D' || type == 'P' || type == 'I') {
+	 if(type == 'G' || type == 'B' || type == 'D' || type == 'I') {
 		setWalkable();
 	 }
 	 setLocation(pos);
