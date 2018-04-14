@@ -1,6 +1,7 @@
 package controller;
 
 import java.awt.Point;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 import model.Battle;
@@ -134,7 +135,9 @@ public class PokemonGame {
    */
   private static Pokemon getWildPoke() {
     // this is a simple random generator, looks weird but works better than Random
-    double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+    //double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+    
+    
     int level = getRandomLevel();
     
     // will return the index for use in Pokemon name ArrayList
@@ -156,30 +159,34 @@ public class PokemonGame {
    */
   private static int getRandomLevel() {
     // this is a simple random generator, looks weird but works better than Random
-    double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+    //double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+    Random ran = new Random();
+    double pivot = ran.nextDouble();
     
     // return level 15-20
     if(pivot > 0.90) {
-      return ThreadLocalRandom.current().nextInt(15-21);
+      return (int)(Math.random() * 5) + 15;
     }
     // return level 10-14
     else if(pivot > 0.70) {
-      return ThreadLocalRandom.current().nextInt(10-15);
+      return (int)(Math.random() * 5) + 10;
     }
     // return level 5-9
     else if(pivot > 0.40) {
-      return ThreadLocalRandom.current().nextInt(5-10);
+      return (int)(Math.random() * 5) + 5;
     }
     // return level 1-4
     else {
-      return ThreadLocalRandom.current().nextInt(1-5);
+      return (int)(Math.random() * 5) + 1;
     }
   }// end getRandomLevel()
 
   private static boolean checkBush() {
     // this is a simple random generator, looks weird but works better than Random
-    double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
-
+    //double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+    Random ran = new Random();
+    double pivot = ran.nextDouble();
+    
     if (pivot > encounterChance) {
       return true;
     }
