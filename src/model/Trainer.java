@@ -273,7 +273,9 @@ public class Trainer extends Items {
    */
   public boolean throwSafariBall(Pokemon wild) {
     // this is a simple random generator, looks weird but works better than Random
-    double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+    //double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+    Random ran = new Random();
+    double pivot = ran.nextDouble();
 
     //System.out.printf("pivot=%.3f, catch chance=%.3f\n", pivot, wild.getTakeBaitChance());
     // if successfully caught Pokemon..
@@ -295,7 +297,9 @@ public class Trainer extends Items {
    */
   public boolean throwBait(Pokemon wild) {
     // this is a simple random generator, looks weird but works better than Random
-    double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+  //double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+    Random ran = new Random();
+    double pivot = ran.nextDouble();
 
     //System.out.printf("pivot=%3f, bait chance=%3f\n", pivot, wild.getTakeBaitChance());
     // if selection below threshold of take bait
@@ -315,7 +319,9 @@ public class Trainer extends Items {
    */
   public boolean throwRock(Pokemon wild) {
     // this is a simple random generator, looks weird but works better than Random
-    double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+    //double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+    Random ran = new Random();
+    double pivot = ran.nextDouble();
 
     double threshold = 0;
     threshold += (wild.getCurHP() / wild.getMaxHP()) * 0.5;
