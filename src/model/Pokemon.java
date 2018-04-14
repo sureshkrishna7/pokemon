@@ -276,7 +276,9 @@ public class Pokemon extends Items {
   
   public boolean timeToRun() {
     // this is a simple random generator, looks weird but works better than Random
-    double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+    // double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+    Random ran = new Random();
+    double pivot = ran.nextDouble();
     
     //System.out.printf("pivot= %.2f, run chance= %.2f\n", pivot, this.stats.getRunChance());
     if(pivot > this.stats.getRunChance()) {
