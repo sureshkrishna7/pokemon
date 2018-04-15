@@ -13,7 +13,9 @@ public class Trainer extends Items {
   private String filepath; // TODO: need to set proper filepath for the user or Image of the player
   private String trainer;
   private ArrayList<Pokemon> listOfPokemon;
+  private ArrayList<Pokemon> beforeSafariPokeList;
   private Map<String, ArrayList<UsableItem>> inventory;
+  private Map<String, ArrayList<UsableItem>> itemsGainedInSafariZone;
   private Map<String, ArrayList<UsableItem>> safariInventory;
   private int money;
   private Point currentPos = new Point();
@@ -47,69 +49,40 @@ public class Trainer extends Items {
   }
 
   /*
-   * useSafariItem(String, Pokemon) -- uses the item on the wild Pokemon, done by
-   * switch statement with cases for the String that is passed in. A conditional
-   * is executed with a method inside of it that attempts the move and returns a
-   * boolean with the result (if the move succeeded or failed). This method
-   * assumes that String s is a valid key in the HashMap safariInventory and that
-   * the value for the key has at least one item in it. At the end of the block
-   * the item is removed from its respective location and a String is returned
-   * detailing the outcome of the item usage.
+   * initializeSafariInventory() -- this method adds to the safari inventory 
+   * 10 each rock and bait and 30 safari balls.
    */
-  public String useSafariItem(String s, Pokemon wild) {
-    String result = "Failed!";
-
-    switch (s) {
-    case "bait":
-      if (this.throwBait(wild)) {
-        result = this.getSafariInventory().get(s).get(0).use(wild);
-        // here the stats of the wild Pokemon need to be adjusted, and it needs to be determined for how long
-        // (probably a timer, but not sure how to implement quite yet...)
-      }
-      break;
-    case "rock":
-      if (this.throwRock(wild)) {
-        result = this.getSafariInventory().get(s).get(0).use(wild);
-      }
-      break;
-    case "pokeball":
-      if (this.throwSafariBall(wild)) {
-        result = this.getSafariInventory().get(s).get(0).use(wild);
-      }
-      break;
-    }
-    if(result != "Failed!") this.getSafariInventory().get(s).remove(0);
-    return result;
-  }
-
   private void initializeSafariInventory() {
     ArrayList<UsableItem> l1 = new ArrayList<UsableItem>();
     ArrayList<UsableItem> l2 = new ArrayList<UsableItem>();
     ArrayList<UsableItem> l3 = new ArrayList<UsableItem>();
-    l1.add(new Bait('U'));
-    l1.add(new Bait('U'));
-    l2.add(new Rock('U'));
-    l2.add(new Rock('U'));
-    l3.add(new PokeBall('U'));
-    l3.add(new PokeBall('U'));
-    l3.add(new PokeBall('U'));
+    for(int i = 1; i <= 10; i++) {
+      l1.add(new Bait('U'));
+      l2.add(new Rock('U'));
+      l3.add(new SafariBall('U'));
+    }
+    for(int i = 1; i <= 20; i++) {
+      l3.add(new SafariBall('U'));
+    }
     this.safariInventory.put("bait", l1);
     this.safariInventory.put("rock", l2);
-    this.safariInventory.put("pokeball", l3);
+    this.safariInventory.put("safariball", l3);
   }
 
   private void initializeInventory() {
     ArrayList<UsableItem> l1 = new ArrayList<UsableItem>();
     ArrayList<UsableItem> l2 = new ArrayList<UsableItem>();
     ArrayList<UsableItem> l3 = new ArrayList<UsableItem>();
-    l1.add(new Tonic('U'));
-    l1.add(new Tonic('U'));
-    l1.add(new Tonic('U'));
-    l2.add(new Ether('U'));
-    l2.add(new Ether('U'));
+    l1.add(new FullTonic('U'));
+    l1.add(new FullTonic('U'));
+    l1.add(new FullTonic('U'));
+    l2.add(new FullEther('U'));
+    l2.add(new FullEther('U'));
+    l2.add(new FullEther('U'));
+    l2.add(new FullEther('U'));
     l3.add(new Heal('U'));
-    this.inventory.put("tonic", l1);
-    this.inventory.put("ether", l2);
+    this.inventory.put("full tonic", l1);
+    this.inventory.put("full ether", l2);
     this.inventory.put("heal", l3);
   }
 
@@ -167,6 +140,10 @@ public class Trainer extends Items {
   public Map<String, ArrayList<UsableItem>> getSafariInventory() {
     return this.safariInventory;
   }
+  
+  public Map<String, ArrayList<UsableItem>> getItemsGainedInSafariZone() {
+    return this.itemsGainedInSafariZone;
+  }
 
   public void setBattlePokemon(Pokemon p) {
     this.currentPokemon = p;
@@ -175,21 +152,7 @@ public class Trainer extends Items {
   public Pokemon getCurPokemon() {
     return currentPokemon;
   }
-
-  /*
-   * // Add 1) public void addPokemon(String str) { capturedPokemon.add(new
-   * Pokemon(str)); }
-   * 
-   * // Add 2) public void addPokemon(String name, String rareOfPokemon, String
-   * typeOfPokemon) { Pokemon s = new Pokemon(name, rareOfPokemon, typeOfPokemon);
-   * capturedPokemon.add(s); }
-   * 
-   * // Add 3) public void addPokemon(String name, char rareOfPokemon, char
-   * typeOfPokemon) { Pokemon s = new Pokemon(name, rareOfPokemon, typeOfPokemon,
-   * null); capturedPokemon.add(s); }
-   * 
-   */
-  // Add 4)
+  
   public void addPokemon(Pokemon s) {
     listOfPokemon.add(s);
   }
@@ -237,6 +200,10 @@ public class Trainer extends Items {
   public ArrayList<Pokemon> getPokeList() {
     return listOfPokemon;
   }
+  
+  public ArrayList<Pokemon> getBeforeSafariPokeList(){
+    return beforeSafariPokeList;
+  }
 
   public void setPosition(int x, int y) {
 
@@ -265,73 +232,26 @@ public class Trainer extends Items {
   }// end allPokemonExhausted()
 
   /*
-   * throwSafariBall(Pokemon) -- Trainer throws a safari ball at the wild Pokemon
-   * in an attempt to catch it. currentBalls is decreased by 1 and the Pokemon is
-   * or is not caught, depending on the catchChance variable and a random pivot
-   * selector. This assumes the Trainer has at least one ball to throw, will be
-   * checked elsewhere. Returns true if the Pokemon is caught, else returns false.
+   * throwSafariBall(Pokemon) -- calls use on safariball from safari inventory.
+   * Assumes there is at least one bait to be used.
    */
-  public boolean throwSafariBall(Pokemon wild) {
-    // this is a simple random generator, looks weird but works better than Random
-    //double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
-    Random ran = new Random();
-    double pivot = ran.nextDouble();
-
-    //System.out.printf("pivot=%.3f, catch chance=%.3f\n", pivot, wild.getTakeBaitChance());
-    // if successfully caught Pokemon..
-    if (pivot > wild.getCatchChance()) {
-      this.listOfPokemon.add(wild);
-      return true;
-    }
-    this.safariInventory.get("pokeball").remove(0);
-    return false;
+  public String throwSafariBall(Pokemon wild) {
+    return this.getSafariInventory().get("safariball").get(0).use(this, wild);
   }
 
   /*
-   * throwBait(Pokemon) -- Trainer throws bait at Pokemon. Trainer loses bait
-   * item, Pokemon takes bait or doesn't, dependent on takeBaitChance field in
-   * Statistics (which is in turn set by level of Pokemon). If bait is taken,
-   * runChance is raised but catchChance is lowered. Bait effect will last a time
-   * as determined by a LocalDate variable. It assumes there is at least one bait
-   * to be used.
+   * throwBait(Pokemon) -- calls use on bait from safari inventory.
+   * Assumes there is at least one bait to be used.
    */
-  public boolean throwBait(Pokemon wild) {
-    // this is a simple random generator, looks weird but works better than Random
-  //double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
-    Random ran = new Random();
-    double pivot = ran.nextDouble();
-
-    //System.out.printf("pivot=%3f, bait chance=%3f\n", pivot, wild.getTakeBaitChance());
-    // if selection below threshold of take bait
-    if (pivot < wild.getTakeBaitChance()) {
-      // use bait
-      wild.setStatus("baited");
-      return true;
-    }
-    this.safariInventory.get("bait").remove(0);
-    return false;
+  public String throwBait(Pokemon wild) {
+    return this.getSafariInventory().get("bait").get(0).use(this, wild);
   }
 
   /*
-   * throwRock(Pokemon) -- Trainer throws rock at Pokemon. Might miss, dependent
-   * on Pokemon level. If hit a success, Pokemon catchChance is increased and
-   * runChance is lowered. It assumes there is at least one rock to be used.
+   * throwRock(Pokemon) -- calls use on rock from safari inventory.
+   * It assumes there is at least one rock to be used.
    */
-  public boolean throwRock(Pokemon wild) {
-    // this is a simple random generator, looks weird but works better than Random
-    //double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
-    Random ran = new Random();
-    double pivot = ran.nextDouble();
-
-    double threshold = 0;
-    threshold += (wild.getCurHP() / wild.getMaxHP()) * 0.5;
-    threshold += (wild.getLevel() / 20) * 0.5;
-
-    //System.out.printf("pivot=%.3f, rock chance=%.3f\n", pivot, threshold);
-    if (pivot > threshold) {
-      return true;
-    }
-    this.safariInventory.get("rock").remove(0);
-    return false;
+  public String throwRock(Pokemon wild) {
+    return this.getSafariInventory().get("rock").get(0).use(this, wild);
   }
 }

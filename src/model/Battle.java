@@ -254,8 +254,7 @@ public class Battle {
        * item is called on the Trainer's current Pokemon. Then the item is removed
        * from the ArrayList.
        */
-      itemUseResult = trainer.getInventory().get(s).get(0).use(trainer.getCurPokemon());
-      trainer.getInventory().get(s).remove(0);
+      itemUseResult = trainer.getInventory().get(s).get(0).use(trainer, trainer.getCurPokemon());
       System.out.println(itemUseResult);
     }else {
       useItem(trainer, in);

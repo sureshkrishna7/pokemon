@@ -37,8 +37,7 @@ public class SafariEncounterTest {
       
       String s = guy.safariInventoryByIndex(choice).getKey();
       System.out.println("Chose " + s);
-      itemUseResult = guy.useSafariItem(s, wild);
-      //System.out.println("item count: " + guy.safariInventoryByIndex(choice).getValue().size());
+      itemUseResult = guy.getSafariInventory().get(s).get(0).use(guy, wild);
       System.out.println(itemUseResult);
       if(itemUseResult == "Caught!!") {
         guy.printListOfPokemon();

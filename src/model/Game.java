@@ -109,7 +109,7 @@ public class Game {
     this.allPokemonList.put("Charmander", "RF");
     this.allPokemonList.put("Vulpix", "RF");
     this.allPokemonList.put("Sandslash", "CI");
-    this.allPokemonList.put("Sandslash", "MI");
+    this.allPokemonList.put("Glaceon", "MI");
     this.allPokemonList.put("Seadra", "CW");
     this.allPokemonList.put("Starmie", "MW");
     this.allPokemonList.put("Seaking", "RW");

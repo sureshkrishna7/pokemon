@@ -218,12 +218,20 @@ public class Pokemon extends Items {
     return stats.getRunChance();
   }
   
+  public void setRunChance(double rc) {
+    stats.setRunChance(rc);
+  }
+  
   public double getTakeBaitChance() {
     return stats.getTakeBaitChance();
   }
 
   public double getCatchChance() {
     return stats.getCatchChance();
+  }
+  
+  public void setCatchChance(double cc) {
+    stats.setCatchChance(cc);
   }
   
   public int randomMove() {
@@ -250,6 +258,11 @@ public class Pokemon extends Items {
   public void printData() {
     System.out.printf("\tname: %s\n\tlevel: %d\n\tstatus: %s\n\tHP: %d/%d\n\tMP: %d/%d\n", this.getName(), this.getLevel(), this.getStatus(), this.getCurHP(), this.getMaxHP(),
         this.getCurMP(), this.getMaxMP());
+  }
+  
+  public String getData() {
+    return "\tname: " + this.getName() + " level: " + this.getLevel() + " status: " + this.getStatus() + " HP: " + this.getCurHP() + " MP: "
+        + this.getCurMP() + "\n";
   }
 
   public boolean isExhausted() {

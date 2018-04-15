@@ -88,8 +88,7 @@ public class WildPokemonBattleTest {
            * item is called on the Trainer's current Pokemon. Then the item is removed
            * from the ArrayList.
            */
-          itemUseResult = guy.getInventory().get(s).get(0).use(guy.getCurPokemon());
-          guy.getInventory().get(s).remove(0);
+          itemUseResult = guy.getInventory().get(s).get(0).use(guy, guy.getCurPokemon());
           System.out.println(itemUseResult);
         } else {
           beforeHP = enemy.getCurHP();
