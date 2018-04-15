@@ -9,8 +9,7 @@ public class SafariEncounter {
   private static boolean invalid;
   private static String itemUseResult;
    
-  public static void safariEncounter(Trainer trainer, Pokemon wild) {
-    Scanner in = new Scanner(System.in);
+  public static void safariEncounter(Trainer trainer, Pokemon wild, Scanner in) {
     System.out.println("Encountered a " + wild.getName() + "!" + " (" + wild.getPokemonType() + " type)");
     
     while(true) {
@@ -30,7 +29,7 @@ public class SafariEncounter {
       
       String s = trainer.safariInventoryByIndex(choice).getKey();
       System.out.println("Chose " + s);
-      itemUseResult = trainer.useSafariItem(s, wild);
+      itemUseResult = trainer.getSafariInventory().get(s).get(0).use(trainer, wild);
       //System.out.println("item count: " + guy.safariInventoryByIndex(choice).getValue().size());
       System.out.println(itemUseResult);
       if(itemUseResult == "Caught!!") {

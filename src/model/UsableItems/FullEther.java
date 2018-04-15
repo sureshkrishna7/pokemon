@@ -2,6 +2,8 @@ package model.UsableItems;
 
 import model.Items;
 import model.Pokemon;
+import model.Trainer;
+import model.NPC.NPC;
 
 // needs a use method
 public class FullEther extends Items implements UsableItem {
@@ -15,18 +17,24 @@ public class FullEther extends Items implements UsableItem {
   }
 
   @Override
-  public String use(Pokemon p) {
+  public String use(Trainer trainer, Pokemon p) {
     int restored = 0;
     
     if(p.isExhausted()) return "Cannot use!";
-    
+    trainer.getInventory().get("full ether").remove(0);
     if (p.getCurMP() + 10 > p.getMaxMP()) {
       restored = p.getMaxMP() - p.getCurMP();
       p.setCurMP(p.getMaxMP());
     } else {
-      p.setCurMP(p.getCurHP() + 10);
+      p.setCurMP(p.getCurMP() + 10);
       restored = 10;
     }
     return restored + "MP restored!";
+  }
+
+  @Override
+  public String use(NPC npc, Pokemon p) {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

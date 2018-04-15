@@ -1,12 +1,18 @@
 package controller;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import model.Battle;
 import model.Door;
 import model.Game;
 import model.Pokemon;
+import model.SafariEncounter;
+import model.UsableItems.UsableItem;
 
 //Simply Create the User and insert User into PokeTownMap, the rest of the maps will be embedded within PokeTownMap
 
@@ -106,7 +112,8 @@ public class PokemonGame {
       else if (gameLogic == 'X') {
         System.out.println("Encountered a Safari Pokemon");
         Pokemon b = new Pokemon("Sandslash", 3, 'C', 'I', null);
-        // SafariEncounter(theGame.getTrainer(), b);
+        
+        SafariEncounter.safariEncounter(theGame.getTrainer(), b, sc);
       }
       // after exhausting 500 steps in Safari Zone, eject back to PokemonTown
       else if (theGame.getTrainer().getSafariSteps() >= 500) {
@@ -192,4 +199,39 @@ public class PokemonGame {
     return false;
   }// end checkBush()
 
+  private static void getSafariStatSheet() {
+    
+    StringBuilder sb = new StringBuilder();
+    Alert statSheet = new Alert(AlertType.INFORMATION);
+    statSheet.setHeaderText("End of Safari Zone Quest");
+    sb.append("Pokemon caught: \n");
+    for(Pokemon p : theGame.getTrainer().getPokeList()) {
+      if(!theGame.getTrainer().getBeforeSafariPokeList().contains(p)) {
+        sb.append(p.getData());
+      }
+    }
+    sb.append("\nSafari Inventory items used: \n");
+    sb.append("\t       bait: " + (10 - theGame.getTrainer().getSafariInventory().get("bait").size()) + "\n");
+    sb.append("\t       rock: " + (10 - theGame.getTrainer().getSafariInventory().get("rock").size()) + "\n");
+    sb.append("\tsafari ball: " + (30 - theGame.getTrainer().getSafariInventory().get("safariball").size()) + "\n");
+    
+    sb.append("\nItems gained: \n");
+    for (Map.Entry<String, ArrayList<UsableItem>> entry : theGame.getTrainer().getItemsGainedInSafariZone().entrySet()) {
+      sb.append("\t" + entry.getKey() + ", " + entry.getValue().size());
+      sb.append("\n");
+    }
+    sb.append("\nSteps taken: " + theGame.getTrainer().getSafariSteps() + "/500\n");
+    
+    statSheet.setContentText(sb.toString());
+    
+  }
+  
+  private static void getGameMenu() {
+    StringBuilder sb = new StringBuilder();
+    Alert gameMenu = new Alert(AlertType.INFORMATION);
+    gameMenu.setHeaderText("Game Menu");
+    sb.append("");
+    gameMenu.setContentText(sb.toString());
+  }
+  
 }

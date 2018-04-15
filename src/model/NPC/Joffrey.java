@@ -64,6 +64,18 @@ public class Joffrey extends NPC {
   @Override
   public String switchPokemon() {
     /*
+     * switch to non-knocked out Pokemon if curPokemon is exhausted
+     */
+    if(this.currentPokemon.isExhausted()) {
+      for (Pokemon p : this.listOfPokemon) {
+        if (!p.isExhausted()) {
+          this.currentPokemon = p;
+          return p.getName();
+        }
+      }
+    }
+    
+    /*
      * switch if curPokemon curHP less than 1/4 of it's max HP
      */
     if (this.currentPokemon.getCurHP() < (int)(this.currentPokemon.getMaxHP() * 0.25)) {
@@ -97,8 +109,8 @@ public class Joffrey extends NPC {
   @Override
   public String useItem() {
     if (this.currentPokemon.getCurHP() < (int) (this.currentPokemon.getMaxHP() * 0.20)) {
-      if (this.inventory.containsKey("tonic")) {
-        this.inventory.get("tonic").get(0).use(this.currentPokemon);
+      if (this.inventory.containsKey("tonic") && this.inventory.get("tonic").size() > 0) {
+        this.inventory.get("tonic").get(0).use(this, this.currentPokemon);
         return "tonic";
       }
     }

@@ -65,8 +65,8 @@ public class Statistics {
     int damageBoost;
 
     if (level > 15) {
-      // HP range: 2000 - 2599
-      base = rand.nextInt(500) + buffer + 2000;
+      // HP range: 1800 - 2300
+      base = rand.nextInt(400) + buffer + 1800;
       this.maxHP = base;
       // Damage boost: 50-349
       damageBoost = rand.nextInt(300) + 50;
@@ -76,10 +76,10 @@ public class Statistics {
       // MP: hard coded
       this.maxMP = 37;
       // accuracy: hard coded
-      this.accuracy = 0.95;
+      this.accuracy = 0.98;
     } else if (level > 10) {
-      // HP range: 1500 - 2099
-      base = rand.nextInt(500) + buffer + 1500;
+      // HP range: 1300 - 1799
+      base = rand.nextInt(400) + buffer + 1300;
       this.maxHP = base;
       // Damage boost: 50-299
       damageBoost = rand.nextInt(250) + 50;
@@ -89,10 +89,10 @@ public class Statistics {
       // MP: hard coded
       this.maxMP = 35;
       // accuracy: hard coded
-      this.accuracy = 0.85;
+      this.accuracy = 0.92;
     } else if (level > 5) {
-      // HP range: 1000 - 1599
-      base = rand.nextInt(500) + buffer + 1000;
+      // HP range: 800 - 1299
+      base = rand.nextInt(200) + buffer + 800;
       this.maxHP = base;
       // Damage boost: 50-249
       damageBoost = rand.nextInt(200) + 50;
@@ -102,10 +102,10 @@ public class Statistics {
       // MP: hard coded
       this.maxMP = 33;
       // accuracy: hard coded
-      this.accuracy = 0.80;
+      this.accuracy = 0.88;
     } else {
-      // HP range: 800 - 1399
-      base = rand.nextInt(500) + buffer + 800;
+      // HP range: 500 - 799
+      base = rand.nextInt(200) + buffer + 500;
       this.maxHP = base;
       // Damage boost: 50-224
       damageBoost = rand.nextInt(175) + 50;
@@ -115,7 +115,7 @@ public class Statistics {
       // MP: hard coded
       this.maxMP = 31;
       // accuracy: hard coded
-      this.accuracy = 0.75;
+      this.accuracy = 0.85;
     }
     this.curHP = maxHP;
     this.curMP = maxMP;
@@ -157,8 +157,16 @@ public class Statistics {
     return this.runChance;
   }
 
+  public void setRunChance(double rc) {
+    this.runChance = rc;
+  }
+  
   public double getCatchChance() {
     return this.catchChance;
+  }
+  
+  public void setCatchChance(double cc) {
+    this.catchChance = cc;
   }
 
   public double getTakeBaitChance() {
@@ -176,5 +184,4 @@ public class Statistics {
   public void setAccuracy(double d) {
     this.accuracy = d;
   }
-
 }

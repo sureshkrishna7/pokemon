@@ -2,6 +2,8 @@ package model.UsableItems;
 
 import model.Items;
 import model.Pokemon;
+import model.Trainer;
+import model.NPC.NPC;
 
 // needs a use method
 public class Elixir extends Items implements UsableItem {
@@ -15,8 +17,9 @@ public class Elixir extends Items implements UsableItem {
   }
 
   @Override
-  public String use(Pokemon p) {
+  public String use(Trainer trainer, Pokemon p) {
     if(p.isExhausted()) return "Cannot use!";
+    trainer.getInventory().get("elixir").remove(0);
     
     int hPrestored = p.getMaxHP() - p.getCurHP();
     int mPrestored = p.getMaxMP() - p.getCurMP();
@@ -25,5 +28,11 @@ public class Elixir extends Items implements UsableItem {
     p.setCurMP(p.getMaxMP());
     
     return hPrestored + "HP ," + mPrestored + "MP restored!";
+  }
+
+  @Override
+  public String use(NPC npc, Pokemon p) {
+    // TODO Auto-generated method stub
+    return null;
   }
 }
