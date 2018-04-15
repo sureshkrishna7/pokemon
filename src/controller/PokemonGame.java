@@ -3,7 +3,6 @@ package controller;
 import java.awt.Point;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
 import model.Battle;
 import model.Door;
 import model.Game;
@@ -25,7 +24,7 @@ public class PokemonGame {
     theGame = new Game();
     foundPokemon = false;
     wonBattle = false;
-
+    sc = new Scanner(System.in);
     char north = 'n';
     char south = 's';
     char west = 'w';
@@ -57,8 +56,8 @@ public class PokemonGame {
       else
         System.out.print("Move (n, e, s, w)? sz for Safari Zone!: ");
 
-      sc = new Scanner(System.in);
-      direction = sc.next().toLowerCase();
+      //sc = new Scanner(System.in);
+      direction = sc.nextLine().toLowerCase();
 
       if (direction.equals("" + north)) {
         gameLogic = theGame.playerMove(north);
@@ -119,7 +118,7 @@ public class PokemonGame {
         foundPokemon = checkBush();
         if (foundPokemon) {
           Pokemon wildPoke = getWildPoke();
-          wonBattle = Battle.battle(theGame.getTrainer(), wildPoke);
+          wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
         }
       }
     }

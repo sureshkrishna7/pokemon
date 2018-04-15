@@ -15,8 +15,7 @@ public class Battle {
   private static int afterHP;
   private static String itemUseResult;
 
-  public static boolean battle(Trainer trainer, NPC npc) {
-    Scanner in = new Scanner(System.in);
+  public static boolean battle(Trainer trainer, NPC npc, Scanner in) {
     
     while (true) {
       invalid = false;
@@ -57,9 +56,6 @@ public class Battle {
       trainer.getCurPokemon().printData();
 
     } // end while(true)
-    
-    
-    in.close();
 
     if (lost) {
       System.out.println("You lose...");
@@ -76,8 +72,7 @@ public class Battle {
   }
 
 
-  public static boolean battle(Trainer trainer, Pokemon wildPoke) {
-    Scanner in = new Scanner(System.in);
+  public static boolean battle(Trainer trainer, Pokemon wildPoke, Scanner in) {
     System.out.println("Encountered a " + wildPoke.getName() + "!" + " (" + wildPoke.getPokemonType() + " type)");
 
     while (true) {
@@ -118,8 +113,6 @@ public class Battle {
       trainer.getCurPokemon().printData();
 
     } // end while(true)
-
-    in.close();
 
     if (lost) {
       System.out.println("You lose...");
