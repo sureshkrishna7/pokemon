@@ -163,21 +163,21 @@ public class PokemonGame {
     Random ran = new Random();
     double pivot = ran.nextDouble();
     
-    // return level 15-20
+    // return level 16-20
     if(pivot > 0.90) {
-      return (int)(Math.random() * 5) + 15;
+      return ran.nextInt(5) + 16;
     }
-    // return level 10-14
+    // return level 11-15
     else if(pivot > 0.70) {
-      return (int)(Math.random() * 5) + 10;
+      return ran.nextInt(5) + 11;
     }
-    // return level 5-9
+    // return level 6-10
     else if(pivot > 0.40) {
-      return (int)(Math.random() * 5) + 5;
+      return ran.nextInt(5) + 6;
     }
-    // return level 1-4
+    // return level 1-5
     else {
-      return (int)(Math.random() * 5) + 1;
+      return ran.nextInt(5) + 1;
     }
   }// end getRandomLevel()
 

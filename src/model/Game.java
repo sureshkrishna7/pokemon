@@ -91,8 +91,8 @@ public class Game {
    * Also initializes and fills an ArrayList of all the names of the Pokemon.
    */
   private void initializePokeLists() {
-    allPokemonList = new HashMap<>();
-    pokemonNameList = new ArrayList<String>(); 
+    this.allPokemonList = new HashMap<>();
+    this.pokemonNameList = new ArrayList<String>(); 
     
     pokemonNameList.add("Charmeleon");
     pokemonNameList.add("Charmander");
