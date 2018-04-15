@@ -2,6 +2,8 @@ package tests;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Random;
+
 import org.junit.Test;
 
 import model.Pokemon;
@@ -10,6 +12,7 @@ public class PokemonAttackMethodTest {
 
   @Test
   public void battleTest_MattacksC() {
+   
     Pokemon a = new Pokemon("Charmeleon", 2, 'M', 'F', null);
     Pokemon b = new Pokemon("Sandslash", 3, 'C', 'I', null);
 

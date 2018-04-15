@@ -17,6 +17,7 @@ public class WildPokemonBattleTest {
   int beforeHP;
   int afterHP;
   String itemUseResult;
+  Scanner in = new Scanner(System.in);
   Pokemon p1 = new Pokemon("Cubone", 5, 'C', 'E', null);
   Pokemon p2 = new Pokemon("Seadra", 11, 'C', 'W', null);
   Pokemon p3 = new Pokemon("Vulpix", 19, 'R', 'F', null);
@@ -25,7 +26,7 @@ public class WildPokemonBattleTest {
   public void battleWithWildPoke() {
     Trainer guy = new Trainer("Andrew");
     Pokemon enemy = new Pokemon("Sandslash", 1, 'C', 'I', null);
-    Battle.battle(guy, enemy);
+    Battle.battle(guy, enemy, in);
   }
   
   @Test
@@ -36,7 +37,7 @@ public class WildPokemonBattleTest {
     guy.addPokemon(p3);
     Joffrey joff = new Joffrey("Joffrey", true);
     joff.getCurPokemon().setCurHP(100);
-    Battle.battle(guy, joff); 
+    Battle.battle(guy, joff, in); 
   }
   
   //@Test
