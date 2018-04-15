@@ -136,12 +136,12 @@ public class PokemonGame {
   private static Pokemon getWildPoke() {
     // this is a simple random generator, looks weird but works better than Random
     //double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
-    
+    Random ran = new Random();
     
     int level = getRandomLevel();
     
     // will return the index for use in Pokemon name ArrayList
-    int indexOfPoke = ThreadLocalRandom.current().nextInt(0, 10);
+    int indexOfPoke = ran.nextInt(10);
     // get other fields from list in Game object
     String name = theGame.getPokemonNameList().get(indexOfPoke);
     char rarity = theGame.getAllPokemonList().get(name).charAt(0);
