@@ -42,8 +42,8 @@ public class PokemonGame {
      * if(direction.equals(""+north)) { System.out.print("It's True\n"); }
      */
     // scanner the next direction and act accordingly
-    while (true) {
 
+    while (true) {
       int i = 0;
       int j = 0;
 
@@ -63,7 +63,10 @@ public class PokemonGame {
         System.out.print("Move (n, e, s, w)? sz for Safari Zone!: ");
 
       //sc = new Scanner(System.in);
-      direction = sc.nextLine().toLowerCase();
+      if (sc.hasNext()) {
+    	  direction = sc.nextLine().toLowerCase();
+      }
+      
 
       if (direction.equals("" + north)) {
         gameLogic = theGame.playerMove(north);
