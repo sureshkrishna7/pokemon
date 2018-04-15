@@ -94,27 +94,27 @@ public class Game {
     this.allPokemonList = new HashMap<>();
     this.pokemonNameList = new ArrayList<String>(); 
     
-    pokemonNameList.add("Charmeleon");
-    pokemonNameList.add("Charmander");
-    pokemonNameList.add("Vulpix");
-    pokemonNameList.add("Sandslash");
-    pokemonNameList.add("Glaceon");
-    pokemonNameList.add("Seadra");
-    pokemonNameList.add("Starmie");
-    pokemonNameList.add("Seaking");
-    pokemonNameList.add("Cubone");
-    pokemonNameList.add("Rhydon");
+    this.pokemonNameList.add("Charmeleon");
+    this.pokemonNameList.add("Charmander");
+    this.pokemonNameList.add("Vulpix");
+    this.pokemonNameList.add("Sandslash");
+    this.pokemonNameList.add("Glaceon");
+    this.pokemonNameList.add("Seadra");
+    this.pokemonNameList.add("Starmie");
+    this.pokemonNameList.add("Seaking");
+    this.pokemonNameList.add("Cubone");
+    this.pokemonNameList.add("Rhydon");
     
-    allPokemonList.put("Charmeleon", "MF");
-    allPokemonList.put("Charmander", "RF");
-    allPokemonList.put("Vulpix", "RF");
-    allPokemonList.put("Sandslash", "CI");
-    allPokemonList.put("Sandslash", "MI");
-    allPokemonList.put("Seadra", "CW");
-    allPokemonList.put("Starmie", "MW");
-    allPokemonList.put("Seaking", "RW");
-    allPokemonList.put("Cubone", "CE");
-    allPokemonList.put("Rhydon", "ME");
+    this.allPokemonList.put("Charmeleon", "MF");
+    this.allPokemonList.put("Charmander", "RF");
+    this.allPokemonList.put("Vulpix", "RF");
+    this.allPokemonList.put("Sandslash", "CI");
+    this.allPokemonList.put("Sandslash", "MI");
+    this.allPokemonList.put("Seadra", "CW");
+    this.allPokemonList.put("Starmie", "MW");
+    this.allPokemonList.put("Seaking", "RW");
+    this.allPokemonList.put("Cubone", "CE");
+    this.allPokemonList.put("Rhydon", "ME");
   }// end initializePokeLists()
 
 

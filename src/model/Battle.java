@@ -9,6 +9,7 @@ public class Battle {
 
   private static boolean invalid;
   private static boolean lost;
+  private static boolean ranAway;
   private static boolean changedMind;
   private static int choice;
   private static int beforeHP;
@@ -78,6 +79,7 @@ public class Battle {
     while (true) {
       invalid = false;
       changedMind = false;
+      ranAway = false;
 
       // lose condition: all Pokemon are exhausted
       if (trainer.allPokemonExhausted()) {
@@ -94,9 +96,13 @@ public class Battle {
         trainerMove(trainer, wildPoke, in);
         // changedMind is set in any of the three sub-menus, which are entered in trainerMove
         if (changedMind) continue;
-        
       }
 
+      if(ranAway) {
+        System.out.println("Running away");
+        lost = true;
+        break;
+      }
       // print enemy stats after move has been made
       wildPoke.printData();
 
@@ -219,7 +225,7 @@ public class Battle {
       }
       // chose to run away
       else {
-        lost = true;
+        ranAway = true;
       }
     } // end if curPokemon not disabled
 
@@ -237,17 +243,24 @@ public class Battle {
       changedMind = true;
       return;
     }
+    
+    
     String s = trainer.inventoryByIndex(choice).getKey();
-    System.out.println("Chose " + s + "!");
-    /*
-     * Here we get the item from the inventory via a String, the ArrayList of
-     * whatever item is chosen is returned. The use() method for that particular
-     * item is called on the Trainer's current Pokemon. Then the item is removed
-     * from the ArrayList.
-     */
-    itemUseResult = trainer.getInventory().get(s).get(0).use(trainer.getCurPokemon());
-    trainer.getInventory().get(s).remove(0);
-    System.out.println(itemUseResult);
+    if(trainer.getInventory().get(s).size() != 0) {
+      System.out.println("Chose " + s + "!");
+      /*
+       * Here we get the item from the inventory via a String, the ArrayList of
+       * whatever item is chosen is returned. The use() method for that particular
+       * item is called on the Trainer's current Pokemon. Then the item is removed
+       * from the ArrayList.
+       */
+      itemUseResult = trainer.getInventory().get(s).get(0).use(trainer.getCurPokemon());
+      trainer.getInventory().get(s).remove(0);
+      System.out.println(itemUseResult);
+    }else {
+      useItem(trainer, in);
+    }
+    
   }// end useItem()
 
   /*
