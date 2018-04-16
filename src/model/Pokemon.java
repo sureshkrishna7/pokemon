@@ -261,7 +261,7 @@ public class Pokemon extends Items {
   }
   
   public String getData() {
-    return "\tname: " + this.getName() + " level: " + this.getLevel() + " status: " + this.getStatus() + " HP: " + this.getCurHP() + " MP: "
+    return "\tname: " + this.getName() + "  level: " + this.getLevel() + "  status: " + this.getStatus() + "  HP: " + this.getCurHP() + "  MP: "
         + this.getCurMP() + "\n";
   }
 

@@ -92,7 +92,7 @@ public class Game {
    */
   private void initializePokeLists() {
     this.allPokemonList = new HashMap<>();
-    this.pokemonNameList = new ArrayList<String>(); 
+    this.pokemonNameList = new ArrayList<String>();
     
     this.pokemonNameList.add("Charmeleon");
     this.pokemonNameList.add("Charmander");

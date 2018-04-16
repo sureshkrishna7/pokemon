@@ -26,6 +26,7 @@ public class GameGUI extends Application {
 //    BorderPane pane = new BorderPane();
 	pane = new BorderPane();
     startAnimationButton = new Button("Start animation");
+    PokemonGame pokeGame = new PokemonGame();
     pane.setTop(startAnimationButton);
     localView = new CobvilleTown();
     pane.setCenter(localView);
