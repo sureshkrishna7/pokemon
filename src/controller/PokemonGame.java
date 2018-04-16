@@ -300,6 +300,7 @@ public class PokemonGame extends Application {
     }
     Alert gameMenu = new Alert(AlertType.INFORMATION, sb.toString(), save);
     gameMenu.setTitle("Game Menu");
+    gameMenu.setHeaderText(theGame.getTrainer().getName());
     Optional<ButtonType> result = gameMenu.showAndWait();
   }
 
