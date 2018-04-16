@@ -3,10 +3,17 @@ package controller;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
+
+import javafx.application.Application;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.stage.Stage;
 import model.Battle;
 import model.Door;
 import model.Game;
@@ -16,7 +23,7 @@ import model.UsableItems.UsableItem;
 
 //Simply Create the User and insert User into PokeTownMap, the rest of the maps will be embedded within PokeTownMap
 
-public class PokemonGame {
+public class PokemonGame extends Application {
 
   private static Scanner sc;
   private static Game theGame;
@@ -25,6 +32,23 @@ public class PokemonGame {
   private static boolean foundPokemon;
   private static boolean wonBattle;
   private static final double encounterChance = 0.6;
+
+  /*
+   * This is kinda wonky right now, just using it to test the Alert for the Safari
+   * Stats. As of now it's skeletal as SafariZone hasn't been coded. As it works
+   * now, it calls start with the launch(args) call in main and shows the alert,
+   * then returns to main for the system test.
+   * 
+   * I believe this Class should be transformed into the GUI, instead of having
+   * the GameGUI class, as we can't have a GUI class with a main that calls start
+   * and use another class that runs main.
+   */
+  @Override
+  public void start(Stage arg0) throws Exception {
+    // TODO Auto-generated method stub
+    getGameMenu();
+    getSafariStatSheet();
+  }
 
   public static void main(String[] args) {
     theGame = new Game();
@@ -42,6 +66,7 @@ public class PokemonGame {
      * if(direction.equals(""+north)) { System.out.print("It's True\n"); }
      */
     // scanner the next direction and act accordingly
+    launch(args);
 
     while (true) {
       int i = 0;
@@ -62,11 +87,10 @@ public class PokemonGame {
       else
         System.out.print("Move (n, e, s, w)? sz for Safari Zone!: ");
 
-      //sc = new Scanner(System.in);
+      // sc = new Scanner(System.in);
       if (sc.hasNext()) {
-    	  direction = sc.nextLine().toLowerCase();
+        direction = sc.nextLine().toLowerCase();
       }
-      
 
       if (direction.equals("" + north)) {
         gameLogic = theGame.playerMove(north);
@@ -115,15 +139,16 @@ public class PokemonGame {
       else if (gameLogic == 'X') {
         System.out.println("Encountered a Safari Pokemon");
         Pokemon b = new Pokemon("Sandslash", 3, 'C', 'I', null);
-        
+
         SafariEncounter.safariEncounter(theGame.getTrainer(), b, sc);
       }
       // after exhausting 500 steps in Safari Zone, eject back to PokemonTown
       else if (theGame.getTrainer().getSafariSteps() >= 500) {
         theGame.setTrainerLocation(playerStartLocation);
         theGame.setCurrCameraMap(theGame.getPokeTown());
-        
-      // bush, check will battle at random, start battle with randomly instantiated Pokemon
+
+        // bush, check will battle at random, start battle with randomly instantiated
+        // Pokemon
       } else if (gameLogic == 'B') {
         foundPokemon = checkBush();
         if (foundPokemon) {
@@ -135,7 +160,6 @@ public class PokemonGame {
     // sc.close();
   }
 
-
   /*
    * getWildPoke() -- after checkBush() returns true (it found a Pokemon), this
    * method determines what Pokemon is being encountered. The level is determined
@@ -144,19 +168,20 @@ public class PokemonGame {
    */
   private static Pokemon getWildPoke() {
     // this is a simple random generator, looks weird but works better than Random
-    //double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+    // double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
     Random ran = new Random();
-    
+
     int level = getRandomLevel();
-    
+
     // will return the index for use in Pokemon name ArrayList
     int indexOfPoke = ran.nextInt(10);
     // get other fields from list in Game object
     String name = theGame.getPokemonNameList().get(indexOfPoke);
     char rarity = theGame.getAllPokemonList().get(name).charAt(0);
     char type = theGame.getAllPokemonList().get(name).charAt(1);
-    
-    // need to create list in Game with all of the special moves, same order as name list for correlation.
+
+    // need to create list in Game with all of the special moves, same order as name
+    // list for correlation.
     return new Pokemon(name, level, rarity, type, null);
   }// end getWildPoke()
 
@@ -168,20 +193,20 @@ public class PokemonGame {
    */
   private static int getRandomLevel() {
     // this is a simple random generator, looks weird but works better than Random
-    //double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+    // double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
     Random ran = new Random();
     double pivot = ran.nextDouble();
-    
+
     // return level 16-20
-    if(pivot > 0.90) {
+    if (pivot > 0.90) {
       return ran.nextInt(5) + 16;
     }
     // return level 11-15
-    else if(pivot > 0.70) {
+    else if (pivot > 0.70) {
       return ran.nextInt(5) + 11;
     }
     // return level 6-10
-    else if(pivot > 0.40) {
+    else if (pivot > 0.40) {
       return ran.nextInt(5) + 6;
     }
     // return level 1-5
@@ -192,49 +217,90 @@ public class PokemonGame {
 
   private static boolean checkBush() {
     // this is a simple random generator, looks weird but works better than Random
-    //double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
+    // double pivot = ThreadLocalRandom.current().nextDouble(0.1, 1.0);
     Random ran = new Random();
     double pivot = ran.nextDouble();
-    
+
     if (pivot > encounterChance) {
       return true;
     }
     return false;
   }// end checkBush()
 
+  /*
+   * getSafariStatSheet() -- method that creates an Alert with
+   * AlertType.INFORMATION. Will show stats upon exiting Safari Zone. Will show:
+   * Pokemon caught, safari zone items used (rock, bait, safariball), items gained
+   * in Safari Zone, and number of steps taken.
+   * 
+   * Considering displaying NPCs encountered. And a count? ie <count
+   * encountered>/<total num NPCs>
+   */
   private static void getSafariStatSheet() {
-    
+
     StringBuilder sb = new StringBuilder();
     Alert statSheet = new Alert(AlertType.INFORMATION);
     statSheet.setHeaderText("End of Safari Zone Quest");
     sb.append("Pokemon caught: \n");
-    for(Pokemon p : theGame.getTrainer().getPokeList()) {
-      if(!theGame.getTrainer().getBeforeSafariPokeList().contains(p)) {
+    /*
+     * Trainer's beforeSafariPokeList will be set before entering Safari Zone. This
+     * loop prints Pokemon that have been added to Trainer's pokeList that aren't in
+     * Trainer's beforeSafariPokeList
+     */
+    for (Pokemon p : theGame.getTrainer().getPokeList()) {
+      if (!theGame.getTrainer().getBeforeSafariPokeList().contains(p)) {
         sb.append(p.getData());
       }
     }
     sb.append("\nSafari Inventory items used: \n");
-    sb.append("\t       bait: " + (10 - theGame.getTrainer().getSafariInventory().get("bait").size()) + "\n");
-    sb.append("\t       rock: " + (10 - theGame.getTrainer().getSafariInventory().get("rock").size()) + "\n");
+    sb.append("\tbait: " + (10 - theGame.getTrainer().getSafariInventory().get("bait").size()) + "\n");
+    sb.append("\trock: " + (10 - theGame.getTrainer().getSafariInventory().get("rock").size()) + "\n");
     sb.append("\tsafari ball: " + (30 - theGame.getTrainer().getSafariInventory().get("safariball").size()) + "\n");
-    
+
     sb.append("\nItems gained: \n");
-    for (Map.Entry<String, ArrayList<UsableItem>> entry : theGame.getTrainer().getItemsGainedInSafariZone().entrySet()) {
-      sb.append("\t" + entry.getKey() + ", " + entry.getValue().size());
-      sb.append("\n");
+    if (theGame.getTrainer().getItemsGainedInSafariZone().size() == 0) {
+      sb.append("\tNone\n");
+    } else {
+      for (Map.Entry<String, ArrayList<UsableItem>> entry : theGame.getTrainer().getItemsGainedInSafariZone()
+          .entrySet()) {
+        sb.append("\t" + entry.getKey() + ", " + entry.getValue().size());
+        sb.append("\n");
+      }
     }
-    sb.append("\nSteps taken: " + theGame.getTrainer().getSafariSteps() + "/500\n");
-    
+
+    sb.append("\nSteps taken: \n\t" + theGame.getTrainer().getSafariSteps() + "/500\n");
+
     statSheet.setContentText(sb.toString());
-    
+    Optional<ButtonType> result = statSheet.showAndWait();
+
   }
-  
+
+  /*
+   * getGameMenu() -- method that creates an Alert with AlertType.INFORMATION. Can
+   * be opened at any time during the game (any map). Will display: Trainer's list
+   * of Pokemon, Trainer's items in inventory.
+   * 
+   * Considering displaying NPCs encountered. And a count? ie <count
+   * encountered>/<total num NPCs>
+   * 
+   * Also will have save button, will need to be linked with persistence logic.
+   * 
+   */
   private static void getGameMenu() {
     StringBuilder sb = new StringBuilder();
-    Alert gameMenu = new Alert(AlertType.INFORMATION);
-    gameMenu.setHeaderText("Game Menu");
-    sb.append("");
-    gameMenu.setContentText(sb.toString());
+    ButtonType save = new ButtonType("Save Game?", ButtonBar.ButtonData.OK_DONE);
+
+    sb.append("Pokemon: \n");
+    for (Pokemon p : theGame.getTrainer().getPokeList()) {
+      sb.append(p.getData());
+    }
+    sb.append("\nItems: \n");
+    for (Map.Entry<String, ArrayList<UsableItem>> entry : theGame.getTrainer().getInventory().entrySet()) {
+      sb.append("\t" + entry.getKey() + " " + entry.getValue().size() + "\n");
+    }
+    Alert gameMenu = new Alert(AlertType.INFORMATION, sb.toString(), save);
+    gameMenu.setTitle("Game Menu");
+    Optional<ButtonType> result = gameMenu.showAndWait();
   }
-  
+
 }

@@ -35,9 +35,11 @@ public class Trainer extends Items {
     this.trainer = name;
     this.money = 5000;
     this.listOfPokemon = new ArrayList<Pokemon>();
+    this.beforeSafariPokeList = new ArrayList<Pokemon>();
     listOfPokemon.add(new Pokemon("Squirtle", 20, 'C', 'W', null));
     this.inventory = new HashMap<>();
     this.safariInventory = new HashMap<>();
+    this.itemsGainedInSafariZone = new HashMap<>();
     initializeInventory();
     initializeSafariInventory();
     setBattlePokemon(listOfPokemon.get(0));
