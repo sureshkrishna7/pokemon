@@ -1,5 +1,7 @@
 package controller;
 
+import java.awt.Point;
+
 /*
  * Only one turnin needed to D2L Assignment '6-April) Animation'
  * 
@@ -35,11 +37,12 @@ public class CobvilleTown extends Canvas {
   private Image spritesheet, dirt;
   private GraphicsContext g2D;
   private Timeline timeline;
+  private Point playerLocation;
 
-  public CobvilleTown() {
+  public CobvilleTown(Point point) {
     this.setWidth(800);
     this.setHeight(800);
-
+    playerLocation = point;
     // TODO 1: Create both images and draw both when the controller instructs
     spritesheet = new Image("file:src/images/spriteSheet.png", false);
     // spritsheet contains 6 sub images
@@ -83,11 +86,31 @@ public class CobvilleTown extends Canvas {
       dw the destination rectangle's width.
       dh the destination rectangle's height.
       */
-      sy = sx = dx = dy = 0;
-      sw = sh = dw = dh = 90;
+      //sy = sx = dx = dy = 0;
+      //sw = sh = dw = dh = 90;
+    	
+    	  sy = sx = 0;
+    	  sw = sh = 90;
+//    	  dx = playerLocation.x;
+//    	  dy = playerLocation.y;
+    	  
+    	  
+    	  //want to get to 9 , 19 (0 indexed)
+    	  // LEFT TO RIGHT 
+    	  dx = (playerLocation.y * 16);
+    	  // UP AND DOWN
+    	  dy = (playerLocation.x * 16);
+    	  dw = dh = 20;
+    	  
+    	  System.out.println("SX = " + sx);
+    	  System.out.println("SY = " + sy);
+    	  System.out.println("DX = " + dx);
+    	  System.out.println("DY = " + dy);
+    	  
       g2D.drawImage(dirt, 0, 0);
       g2D.drawImage(spritesheet, sx, sy, sw, sh, dx,  dy, dw, dh);
     }
+    
 
     @Override
     // This handle method gets called every so many milliseconds to
@@ -102,4 +125,14 @@ public class CobvilleTown extends Canvas {
       //if(tic > 21)timeline.stop();
     }
   }
+
+	public void setPlayerLocation(Point trainerLocation) {
+		playerLocation = trainerLocation;
+		
+	}
+	
+	public Point getPlayerLocation(Point trainerLocation) {
+		return playerLocation;
+		
+	}
 }

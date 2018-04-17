@@ -37,37 +37,24 @@ public class Game {
 	 initializePokeLists();
 	 
 	 try {
-		pokeTown.geniusMethod("src/PokemonTown.txt");
+		pokeTown.geniusMethod("src/SuperiorCity.txt");
 		
 		Scanner scanner = new Scanner(new File("src/PokemonNames.txt"));
 		 
 		for(int i = 0; i < 10; i++) {
-			//pokemons[i] = new Pokemon("");
 			String line = scanner.nextLine();
 			String[] pokemonInitializer = new String[3];
 			pokemonInitializer = line.split("\\s+");
 
-			//Pokemon currentPokemon = new Pokemon(pokemonInitializer[0], pokemonInitializer[1], pokemonInitializer[2]);	
-			//pokemons[i] = currentPokemon;
 		}
-
-		//Location of the pokemon is important
-		//board[i][j] = (currentPokemon);
-		//currentPokemon.setLocation(i, j);
-		
-		
-//		 try{
-
-//		 }
-//		 catch (NoSuchElementException e) {
-//			rp = new Scanner(new File("src/PokemonNames.txt"));
-//		 }
 		
 		// in Poketown bc player must be able to go to 'S' and be transferred to safariZone
 		// genuisMethod will read the txt file and convert it to a map, assigning the values 
 		// for items[][] board and char[][] board for safariZone.
-		safariZone = pokeTown.getSafariZoneMap();
-		safariZone.geniusMethod("src/SafariZone.txt");
+		
+		// ???????? NEED TO BE ABLE TO GO TO SAFARI ZONE
+		//safariZone = pokeTown.getSafariZoneMap();
+		//safariZone.geniusMethod("src/SafariZone.txt");
 		
 	 } catch (FileNotFoundException e) {
 		// TODO Auto-generated catch block
@@ -77,7 +64,8 @@ public class Game {
 	 ash = new Trainer(new String("Ash"));
 	 //ash.setLocation(27, 25);
 	 //ash.setLocation(5,12);
-	 ash.setLocation(5,20);
+	 //ash.setLocation(5,26);
+	ash.setLocation(9,19);
 
 
 	 this.cameraArray = new Items[camHeight][camWidth];

@@ -8,9 +8,14 @@ import java.util.Random;
 import java.util.Scanner;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.stage.Stage;
@@ -32,6 +37,9 @@ public class PokemonGame extends Application {
   private static boolean foundPokemon;
   private static boolean wonBattle;
   private static final double encounterChance = 0.6;
+  private Button startAnimationButton, endAnimationButton;
+  private CobvilleTown localView, town;
+  private BorderPane pane;
 
   /*
    * This is kinda wonky right now, just using it to test the Alert for the Safari
@@ -44,10 +52,35 @@ public class PokemonGame extends Application {
    * and use another class that runs main.
    */
   @Override
-  public void start(Stage arg0) throws Exception {
+  public void start(Stage stage) throws Exception {
     // TODO Auto-generated method stub
     getGameMenu();
     getSafariStatSheet();
+    
+    
+	pane = new BorderPane();
+    startAnimationButton = new Button("Start animation");
+    PokemonGame pokeGame = new PokemonGame();
+    pane.setTop(startAnimationButton);
+    //town =  new CobvilleTown(theGame.getTrainerLocation());
+    localView = new CobvilleTown(theGame.getTrainerLocation());
+    pane.setCenter(localView);
+    System.out.println(theGame.getTrainerLocation());
+    //localView.setPlayerLocation(theGame.getTrainerLocation());
+    BorderPane.setAlignment(startAnimationButton, Pos.BOTTOM_CENTER);
+    startAnimationButton.setOnAction(new StartTimerButtonListener());
+    Scene scene = new Scene(pane, 600, 300);
+    stage.setScene(scene);
+    stage.show();
+  }
+  
+  // Add a listener that will start the Timeline's animation 
+  public class StartTimerButtonListener implements EventHandler<ActionEvent> {
+    @Override
+    public void handle(ActionEvent event) {
+      localView.animate();
+      //pane.setCenter(endAnimationButton);
+    }
   }
 
   public static void main(String[] args) {
@@ -156,7 +189,11 @@ public class PokemonGame extends Application {
           wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
         }
       }
-    }
+      
+     
+    } // end while
+    
+
     // sc.close();
   }
 
@@ -303,5 +340,8 @@ public class PokemonGame extends Application {
     gameMenu.setHeaderText(theGame.getTrainer().getName());
     Optional<ButtonType> result = gameMenu.showAndWait();
   }
+  
+  
+
 
 }
