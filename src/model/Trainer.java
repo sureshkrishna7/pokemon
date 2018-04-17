@@ -11,7 +11,7 @@ import model.UsableItems.*;
 public class Trainer extends Items {
 
   private String filepath; // TODO: need to set proper filepath for the user or Image of the player
-  private String trainer;
+  private String name;
   private ArrayList<Pokemon> listOfPokemon;
   private ArrayList<Pokemon> beforeSafariPokeList;
   private Map<String, ArrayList<UsableItem>> inventory;
@@ -32,12 +32,14 @@ public class Trainer extends Items {
    */
   public Trainer(String name) {
     super('O');
-    this.trainer = name;
+    this.name = name;
     this.money = 5000;
     this.listOfPokemon = new ArrayList<Pokemon>();
+    this.beforeSafariPokeList = new ArrayList<Pokemon>();
     listOfPokemon.add(new Pokemon("Squirtle", 20, 'C', 'W', null));
     this.inventory = new HashMap<>();
     this.safariInventory = new HashMap<>();
+    this.itemsGainedInSafariZone = new HashMap<>();
     initializeInventory();
     initializeSafariInventory();
     setBattlePokemon(listOfPokemon.get(0));
@@ -147,6 +149,10 @@ public class Trainer extends Items {
 
   public void setBattlePokemon(Pokemon p) {
     this.currentPokemon = p;
+  }
+  
+  public String getName() {
+    return name;
   }
 
   public Pokemon getCurPokemon() {
