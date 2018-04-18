@@ -37,7 +37,7 @@ public class Game {
 	 initializePokeLists();
 	 
 	 try {
-		pokeTown.geniusMethod("src/SuperiorCity.txt");
+		pokeTown.geniusMethod("src/EnermyTown.txt");
 		
 		Scanner scanner = new Scanner(new File("src/PokemonNames.txt"));
 		 
@@ -62,10 +62,7 @@ public class Game {
 	 }
 
 	 ash = new Trainer(new String("Ash"));
-	 //ash.setLocation(27, 25);
-	 //ash.setLocation(5,12);
-	 //ash.setLocation(5,26);
-	ash.setLocation(9,19);
+	 ash.setLocation(12,10);
 
 
 	 this.cameraArray = new Items[camHeight][camWidth];
