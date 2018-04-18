@@ -14,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Button;
@@ -37,9 +38,10 @@ public class PokemonGame extends Application {
   private static boolean foundPokemon;
   private static boolean wonBattle;
   private static final double encounterChance = 0.6;
-  private Button startAnimationButton, endAnimationButton;
-  private CobvilleTown localView, town;
-  private BorderPane pane;
+  private static Button startAnimationButton, endAnimationButton;
+  private static CobvilleTown localView, town;
+  private static BorderPane pane;
+  private static char gameLogic;
 
   /*
    * This is kinda wonky right now, just using it to test the Alert for the Safari
@@ -64,12 +66,14 @@ public class PokemonGame extends Application {
     pane.setTop(startAnimationButton);
     //town =  new CobvilleTown(theGame.getTrainerLocation());
     localView = new CobvilleTown(theGame.getTrainerLocation());
+    localView.setOnKeyReleased(new AnimateStarter());
     pane.setCenter(localView);
     System.out.println(theGame.getTrainerLocation());
     //localView.setPlayerLocation(theGame.getTrainerLocation());
     BorderPane.setAlignment(startAnimationButton, Pos.BOTTOM_CENTER);
     startAnimationButton.setOnAction(new StartTimerButtonListener());
     Scene scene = new Scene(pane, 600, 300);
+    scene.setOnKeyReleased(new AnimateStarter());
     stage.setScene(scene);
     stage.show();
   }
@@ -79,7 +83,15 @@ public class PokemonGame extends Application {
     @Override
     public void handle(ActionEvent event) {
       localView.animate();
-      //pane.setCenter(endAnimationButton);
+    }
+  }
+  
+  // Add a listener that will start the Timeline's animation 
+  public class AnimateStarter implements EventHandler<KeyEvent> {
+    @Override
+    public void handle(KeyEvent event) {
+    	System.out.println("Animate Starter in PokemonGame.java line 95");
+    	localView.movePlayer(event.getCode());
     }
   }
 
@@ -93,7 +105,7 @@ public class PokemonGame extends Application {
     char west = 'w';
     char east = 'e';
     String direction = "n";
-    char gameLogic = 0;
+    gameLogic = 0;
     theGame.setCurrCameraMap(theGame.getPokeTown());
     /*
      * if(direction.equals(""+north)) { System.out.print("It's True\n"); }
@@ -127,19 +139,25 @@ public class PokemonGame extends Application {
 
       if (direction.equals("" + north)) {
         gameLogic = theGame.playerMove(north);
-      } // hunter moved south
+        localView.animate();
+      } 
       else if (direction.equals("" + south)) {
         gameLogic = theGame.playerMove(south);
-      } // hunter moved west
+        localView.animate();
+      } 
       else if (direction.equals("" + west)) {
         gameLogic = theGame.playerMove(west);
-      } // hunter moved east
+        localView.animate();
+      } 
       else if (direction.equals("" + east)) {
         gameLogic = theGame.playerMove(east);
-      } else if (direction.equals("sz") && !(theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap())) {
+        localView.animate();
+      } else if (direction.equals("sz") && 
+    		  !(theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap())) {
         theGame.setTrainerLocation(playerStartLocation);
         theGame.setCurrCameraMap(theGame.getPokeTown().getSafariZoneMap());
-      } else if (direction.equals("pt") && theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap()) {
+      } else if (direction.equals("pt") && 
+    		  theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap()) {
         theGame.setTrainerLocation(playerStartLocation);
         theGame.setCurrCameraMap(theGame.getPokeTown());
       }
@@ -195,6 +213,10 @@ public class PokemonGame extends Application {
     
 
     // sc.close();
+  }
+  
+  public static char getUserInputChar() {
+	  return gameLogic;
   }
 
   /*

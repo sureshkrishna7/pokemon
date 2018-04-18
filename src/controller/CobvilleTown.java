@@ -10,6 +10,8 @@ import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import sun.net.www.content.audio.x_aiff;
 
@@ -27,39 +29,25 @@ public class CobvilleTown extends Canvas {
   private GraphicsContext g2D;
   private Timeline timeline;
   private Point playerLocation;
+  private int tic = 0;
+  double sx, sy, sw, sh, dx, dy, dw, dh;
 
   public CobvilleTown(Point point) {
-    this.setWidth(800);
-    this.setHeight(800);
-    playerLocation = point;
+	  this.setWidth(800);
+	  this.setHeight(800);
+	  playerLocation = point;
     
-    // Create both images and draw both when the controller instructs
-    spritesheet = new Image("file:src/images/Game_Boy_Advance - Pokemon_FireRed_LeafGreen - RivalBlueGreenGary.png", false);
-    // spritsheet contains 6 sub images
-    background = new Image("file:src/images/EnermyTown.png", false);
-    g2D = this.getGraphicsContext2D();
-    
-    // Create a TimeLine that call AnimateStarter.handle every 100ms
-    // class AnimateStarter has two method stubs you have to complete.
-    timeline = new Timeline(new KeyFrame(Duration.millis(130), new AnimateStarter()));
-    timeline.setCycleCount(Animation.INDEFINITE);
-  }
-
-  // Call this from the Application to begin the spritesheet animation
-  public void animate() {
-    timeline.play();
-  }
-
-  
-  private class AnimateStarter implements EventHandler<ActionEvent> {
-    private int tic = 0;
-    double sx, sy, sw, sh, dx, dy, dw, dh;
-
-    public AnimateStarter() {
-      /*
+	  // Create both images and draw both when the controller instructs
+	  spritesheet = new Image("file:src/images/Game_Boy_Advance - Pokemon_FireRed_LeafGreen - RivalBlueGreenGary.png", false);
+	  // spritsheet contains 6 sub images
+	  background = new Image("file:src/images/EnermyTown.png", false);
+	  g2D = this.getGraphicsContext2D();
+	  setOnKeyReleased(new AnimateStarter());
+	  System.out.println("set on release");
+	  /*
       The images to draw are know as spritesheet (6 images) and dirt (the background)
       Use method drawImage with 9 arguments: 
-        drawImage(theImage, sx, sy, sw, sh, dx, dy, dw, dh)
+      drawImage(theImage, sx, sy, sw, sh, dx, dy, dw, dh)
       sx the source rectangle's X coordinate position.
       sy the source rectangle's Y coordinate position.
       sw the source rectangle's width.
@@ -68,8 +56,8 @@ public class CobvilleTown extends Canvas {
       dy the destination rectangle's Y coordinate position.
       dw the destination rectangle's width.
       dh the destination rectangle's height.
-      */;
-    	
+      */
+  	
 	  sy = 0;
 	  sx = 50;
 	  sw = 15;
@@ -82,22 +70,105 @@ public class CobvilleTown extends Canvas {
 	  dw = 15;
 	  dh = 25;
 	  
+	  g2D.drawImage(background, 0, 0);
+	  g2D.drawImage(spritesheet, sx, sy, sw, sh, dx,  dy, dw, dh);
+  }
+
+  // Call this from the Application to begin the spritesheet animation
+  public void animate() {
+
+  }
+
+  public void movePlayer(KeyCode code) {
+      
+      if (KeyCode.UP == code ) {
+    	  dy -= 16;
+    	  
+    	  // get picture that makes trainer look going east
+    	  sx = 110;
+    	  sy = 0;
+      }
+      else if(KeyCode.DOWN == code) {
+    	  dy += 16;
+    	  
+    	  // get picture that makes trainer look going east
+    	  sx = 50;
+    	  sy = 0;
+      }
+      else if(KeyCode.RIGHT == code) {
+    	  dx += 16;
+    	 
+    	  // get picture that makes trainer look going east
+    	  sx = 50;
+    	  sy = 30;
+      }
+      else if(KeyCode.LEFT == code) {
+    	  dx -= 16;
+    	  
+    	  // get picture that makes trainer look going west
+    	  sx = 110;
+    	  sy = 30;
+      }
+      else {
+    	  //System.out.println("Direction = "+ direction);
+    	  System.out.println("KeyCode   = "+ code);
+      }
+      
       g2D.drawImage(background, 0, 0);
       g2D.drawImage(spritesheet, sx, sy, sw, sh, dx,  dy, dw, dh);
-     
-    }
+  }
+  private class AnimateStarter implements EventHandler<KeyEvent> {
+
+
+    public AnimateStarter() {}
     
 
     @Override
     // This handle method gets called every so many milliseconds to
     // draw a varying subimage from a spritesheet over the desert dirt.
-    public void handle(ActionEvent event) {
+    public void handle(KeyEvent event) {
       tic++;
-      dx += 10;
-      sx = (sx < 400) ? sx += 90 : 0;
-      dx = (dx < 200) ? dx += 10 : 0;
+      
+//      char direction = PokemonGame.getUserInputChar();
+      String direction = event.getText().toLowerCase();
+      
+      if (KeyCode.UP == event.getCode()) {
+    	  dy -= 16;
+    	  
+    	  // get picture that makes trainer look going east
+    	  sx = 95;
+    	  sy = 0;
+      }
+      else if(KeyCode.DOWN == event.getCode()) {
+    	  dy += 16;
+    	  
+    	  // get picture that makes trainer look going east
+    	  sx = 50;
+    	  sy = 0;
+      }
+      else if((KeyCode.RIGHT == event.getCode())) {
+    	  dx += 16;
+    	 
+    	  // get picture that makes trainer look going east
+    	  sx = 50;
+    	  sy = 30;
+      }
+      else if(KeyCode.LEFT == event.getCode()) {
+    	  dx -= 16;
+    	  
+    	  // get picture that makes trainer look going west
+    	  sx = 110;
+    	  sy = 30;
+      }
+      else {
+    	  System.out.println("Direction = "+ direction);
+    	  System.out.println("KeyCode   = "+ event.getCode());
+      }
+      
       g2D.drawImage(background, 0, 0);
       g2D.drawImage(spritesheet, sx, sy, sw, sh, dx,  dy, dw, dh);
+      //sx = (sx < 239) ? sx += 30 : 0;  // source image width = 239
+      //dx = (dx < 200) ? dx += 10 : 0;
       //if(tic > 21)timeline.stop();
     }
   }
