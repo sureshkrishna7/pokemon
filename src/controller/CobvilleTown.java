@@ -68,7 +68,7 @@ public class CobvilleTown extends Canvas implements Observer {
 	  // LEFT TO RIGHT, y = col
 	  dx = ((playerLocation.y) * 16);
 	  // UP AND DOWN, x = row
-	  dy = ((playerLocation.x) * 16);
+	  dy = ((playerLocation.x) * 16) - 8;
 	  dw = 15;
 	  dh = 25;
 	  
@@ -86,34 +86,58 @@ public class CobvilleTown extends Canvas implements Observer {
 	
 	}
 
-  public void movePlayer(KeyCode code) {
+  public void movePlayer(KeyCode code, String drawPlayerOverOrUnder) {
       
       if (KeyCode.UP == code ) {
     	  dy -= 16;
-    	  // get picture that makes trainer look going east
-    	  sx = 110;
-    	  sy = 0;
+    	  if (drawPlayerOverOrUnder.equals("over")) {
+        	  // get picture that makes trainer look going east
+        	  sx = 110;
+        	  sy = 0;
+    	  }else {
+        	  sx = 0;
+        	  sy = 0;
+    	  }
+
       }
       else if(KeyCode.DOWN == code) {
     	  dy += 16;
-    	  
-    	  // get picture that makes trainer look going east
-    	  sx = 50;
-    	  sy = 0;
+    	  if (drawPlayerOverOrUnder.equals("over")) {
+        	  // get picture that makes trainer look going east
+        	  sx = 50;
+        	  sy = 0;
+    	  }
+    	  else {
+        	  sx = 0;
+        	  sy = 0;
+    	  }
+
       }
       else if(KeyCode.RIGHT == code) {
     	  dx += 16;
-    	 
-    	  // get picture that makes trainer look going east
-    	  sx = 50;
-    	  sy = 30;
+    	  if (drawPlayerOverOrUnder.equals("over")) {
+        	  // get picture that makes trainer look going east
+        	  sx = 50;
+        	  sy = 30; 
+    	  }
+    	  else {
+        	  sx = 0;
+        	  sy = 0;
+    	  }
+
       }
       else if(KeyCode.LEFT == code) {
     	  dx -= 16;
-    	  
-    	  // get picture that makes trainer look going west
-    	  sx = 110;
-    	  sy = 30;
+    	  if (drawPlayerOverOrUnder.equals("over")) {
+        	  // get picture that makes trainer look going west
+        	  sx = 110;
+        	  sy = 30;
+    	  }
+    	  else {
+        	  sx = 0;
+        	  sy = 0;
+    	  }
+
       }
       else {
     	  //System.out.println("Direction = "+ direction);

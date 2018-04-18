@@ -344,7 +344,7 @@ public class MainMap implements Observer {
 
       if (characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D'
           || characterBoard[x][y] == 'P' || characterBoard[x][y] == 'I' || characterBoard[x][y] == 'S'
-          || characterBoard[x][y] == 'X' || characterBoard[x][y] == '0'|| characterBoard[x][y] == ' ') {
+          || characterBoard[x][y] == 'X' || characterBoard[x][y] == '0' || characterBoard[x][y] == '4' || characterBoard[x][y] == ' ') {
         return true;
       }
     }
