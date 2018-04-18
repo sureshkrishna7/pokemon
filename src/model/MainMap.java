@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -17,7 +19,7 @@ import model.UsableItems.Tonic;
   This class will simply provide the DIMENSIONS and the Board 
   We can use "HouseMap extends Map" "SafariMap extends Map" ""PokeTown extends Map" etc.*/
 
-public class MainMap {
+public class MainMap implements Observer {
 
   private Items[][] board;
   private char[][] characterBoard;
@@ -48,7 +50,13 @@ public class MainMap {
     this.characterBoard = new char[row][col];
     this.listOfPokemon = new ArrayList<Pokemon>(5);
   }
-
+  
+  @Override
+  public void update(Observable o, Object arg) {
+   System.out.println("Must update MainMap view");
+   
+  }
+  
   public int getMapWidth() {
     return col;
   }
@@ -68,7 +76,7 @@ public class MainMap {
   /*
    * *********************************************************
    */
-  public void geniusMethod(String file) throws FileNotFoundException {
+  public void createMapGridFromTxtFile(String file) throws FileNotFoundException {
 
     System.out.println(file);
 
@@ -336,7 +344,7 @@ public class MainMap {
 
       if (characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D'
           || characterBoard[x][y] == 'P' || characterBoard[x][y] == 'I' || characterBoard[x][y] == 'S'
-          || characterBoard[x][y] == 'X' || characterBoard[x][y] == ' ') {
+          || characterBoard[x][y] == 'X' || characterBoard[x][y] == '0' || characterBoard[x][y] == '4' || characterBoard[x][y] == ' ') {
         return true;
       }
     }
@@ -347,5 +355,7 @@ public class MainMap {
 
     return isWalkable(pos.x, pos.y);
   }
+
+
 
 }

@@ -3,14 +3,22 @@ package controller;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Observer;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.stage.Stage;
@@ -32,6 +40,11 @@ public class PokemonGame extends Application {
   private static boolean foundPokemon;
   private static boolean wonBattle;
   private static final double encounterChance = 0.6;
+  private static Button startAnimationButton, endAnimationButton;
+  private static CobvilleTown localView, town;
+  private static BorderPane pane;
+  private static char gameLogic;
+  private static Observer currentView, imageView, textAreaView;
 
   /*
    * This is kinda wonky right now, just using it to test the Alert for the Safari
@@ -44,10 +57,69 @@ public class PokemonGame extends Application {
    * and use another class that runs main.
    */
   @Override
-  public void start(Stage arg0) throws Exception {
+  public void start(Stage stage) throws Exception {
     // TODO Auto-generated method stub
     getGameMenu();
     getSafariStatSheet();
+    
+    
+	pane = new BorderPane();
+    startAnimationButton = new Button("Start animation");
+    PokemonGame pokeGame = new PokemonGame();
+    pane.setTop(startAnimationButton);
+    //town =  new CobvilleTown(theGame.getTrainerLocation());
+    localView = new CobvilleTown(theGame.getTrainerLocation());
+    localView.setOnKeyReleased(new AnimateStarter());
+    pane.setCenter(localView);
+    System.out.println(theGame.getTrainerLocation());
+    //localView.setPlayerLocation(theGame.getTrainerLocation());
+    BorderPane.setAlignment(startAnimationButton, Pos.BOTTOM_CENTER);
+    startAnimationButton.setOnAction(new StartTimerButtonListener());
+    Scene scene = new Scene(pane, 600, 300);
+    scene.setOnKeyReleased(new AnimateStarter());
+    stage.setScene(scene);
+    stage.show();
+  }
+  
+  // Add a listener that will start the Timeline's animation 
+  public class StartTimerButtonListener implements EventHandler<ActionEvent> {
+    @Override
+    public void handle(ActionEvent event) {
+      localView.animate();
+    }
+  }
+  
+  // Add a listener that will start the Timeline's animation 
+  public class AnimateStarter implements EventHandler<KeyEvent> {
+    @Override
+    public void handle(KeyEvent event) {
+    	System.out.println("Animate Starter in PokemonGame.java line 95");
+    	
+    	char newLocationObject = '0';
+    	if (KeyCode.UP == event.getCode()) {
+    		newLocationObject = theGame.playerMove('n');
+    	}
+    	else if (KeyCode.DOWN == event.getCode()) {
+    		newLocationObject = theGame.playerMove('s');
+    	}
+    	else if (KeyCode.LEFT == event.getCode()) {
+    		newLocationObject = theGame.playerMove('w');
+    	}
+    	else if (KeyCode.RIGHT == event.getCode()) {
+    		newLocationObject = theGame.playerMove('e');
+    	}
+    	
+    	// z is a char returned by theGame.playerMove() that's not used in map 
+    	// to represent an obj, thus can be used to detect null 
+    	if ((!(newLocationObject == 'z')) && (!(newLocationObject == 'X'))) {
+    		localView.movePlayer(event.getCode(), "over");
+    	}
+    	
+    	else if ((!(newLocationObject == 'z')) && (newLocationObject == 'X')) {
+    		localView.movePlayer(event.getCode(), "under");
+    	}
+    	
+    }
   }
 
   public static void main(String[] args) {
@@ -60,7 +132,7 @@ public class PokemonGame extends Application {
     char west = 'w';
     char east = 'e';
     String direction = "n";
-    char gameLogic = 0;
+    gameLogic = 0;
     theGame.setCurrCameraMap(theGame.getPokeTown());
     /*
      * if(direction.equals(""+north)) { System.out.print("It's True\n"); }
@@ -94,19 +166,25 @@ public class PokemonGame extends Application {
 
       if (direction.equals("" + north)) {
         gameLogic = theGame.playerMove(north);
-      } // hunter moved south
+        localView.animate();
+      } 
       else if (direction.equals("" + south)) {
         gameLogic = theGame.playerMove(south);
-      } // hunter moved west
+        localView.animate();
+      } 
       else if (direction.equals("" + west)) {
         gameLogic = theGame.playerMove(west);
-      } // hunter moved east
+        localView.animate();
+      } 
       else if (direction.equals("" + east)) {
         gameLogic = theGame.playerMove(east);
-      } else if (direction.equals("sz") && !(theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap())) {
+        localView.animate();
+      } else if (direction.equals("sz") && 
+    		  !(theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap())) {
         theGame.setTrainerLocation(playerStartLocation);
         theGame.setCurrCameraMap(theGame.getPokeTown().getSafariZoneMap());
-      } else if (direction.equals("pt") && theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap()) {
+      } else if (direction.equals("pt") && 
+    		  theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap()) {
         theGame.setTrainerLocation(playerStartLocation);
         theGame.setCurrCameraMap(theGame.getPokeTown());
       }
@@ -156,8 +234,16 @@ public class PokemonGame extends Application {
           wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
         }
       }
-    }
+      
+     
+    } // end while
+    
+
     // sc.close();
+  }
+  
+  public static char getUserInputChar() {
+	  return gameLogic;
   }
 
   /*
@@ -303,5 +389,8 @@ public class PokemonGame extends Application {
     gameMenu.setHeaderText(theGame.getTrainer().getName());
     Optional<ButtonType> result = gameMenu.showAndWait();
   }
+  
+  
+
 
 }
