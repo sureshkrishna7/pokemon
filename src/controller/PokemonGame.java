@@ -3,6 +3,7 @@ package controller;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Observer;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
@@ -14,6 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
@@ -42,6 +44,7 @@ public class PokemonGame extends Application {
   private static CobvilleTown localView, town;
   private static BorderPane pane;
   private static char gameLogic;
+  private static Observer currentView, imageView, textAreaView;
 
   /*
    * This is kinda wonky right now, just using it to test the Alert for the Safari
@@ -91,7 +94,27 @@ public class PokemonGame extends Application {
     @Override
     public void handle(KeyEvent event) {
     	System.out.println("Animate Starter in PokemonGame.java line 95");
-    	localView.movePlayer(event.getCode());
+    	
+    	char newLocationObject = '0';
+    	if (KeyCode.UP == event.getCode()) {
+    		newLocationObject = theGame.playerMove('n');
+    	}
+    	else if (KeyCode.DOWN == event.getCode()) {
+    		newLocationObject = theGame.playerMove('s');
+    	}
+    	else if (KeyCode.LEFT == event.getCode()) {
+    		newLocationObject = theGame.playerMove('w');
+    	}
+    	else if (KeyCode.RIGHT == event.getCode()) {
+    		newLocationObject = theGame.playerMove('e');
+    	}
+    	
+    	// z is a char returned by theGame.playerMove() that's not used in map 
+    	// to represent an obj, thus can be used to detect null 
+    	if (!(newLocationObject == 'z')) {
+    		localView.movePlayer(event.getCode());
+    	}
+    	
     }
   }
 

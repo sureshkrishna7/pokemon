@@ -37,7 +37,7 @@ public class Game {
 	 initializePokeLists();
 	 
 	 try {
-		pokeTown.geniusMethod("src/EnermyTown.txt");
+		pokeTown.createMapGridFromTxtFile("src/EnermyTown.txt");
 		
 		Scanner scanner = new Scanner(new File("src/PokemonNames.txt"));
 		 
@@ -153,7 +153,7 @@ public class Game {
 		  return currCameraMap.getCharacterFromLocation(newPoint);
 		}
 	 }
-	 return '0';
+	 return 'z';
   }
   
   public Point getTrainerLocation() {

@@ -1,6 +1,8 @@
 package controller;
 
 import java.awt.Point;
+import java.util.Observable;
+import java.util.Observer;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -23,7 +25,7 @@ import sun.net.www.content.audio.x_aiff;
  * 
  * @author Rick Mercer
  */
-public class CobvilleTown extends Canvas {
+public class CobvilleTown extends Canvas implements Observer {
 
   private Image spritesheet, background;
   private GraphicsContext g2D;
@@ -73,17 +75,21 @@ public class CobvilleTown extends Canvas {
 	  g2D.drawImage(background, 0, 0);
 	  g2D.drawImage(spritesheet, sx, sy, sw, sh, dx,  dy, dw, dh);
   }
+  
+	@Override
+	public void update(Observable o, Object arg) {
+		System.out.println("Must update CobvilleTown view");
+	}
 
-  // Call this from the Application to begin the spritesheet animation
-  public void animate() {
-
-  }
+	  // Call this from the Application to begin the spritesheet animation
+	public void animate() {
+	
+	}
 
   public void movePlayer(KeyCode code) {
       
       if (KeyCode.UP == code ) {
     	  dy -= 16;
-    	  
     	  // get picture that makes trainer look going east
     	  sx = 110;
     	  sy = 0;
@@ -127,49 +133,6 @@ public class CobvilleTown extends Canvas {
     // This handle method gets called every so many milliseconds to
     // draw a varying subimage from a spritesheet over the desert dirt.
     public void handle(KeyEvent event) {
-      tic++;
-      
-//      char direction = PokemonGame.getUserInputChar();
-      String direction = event.getText().toLowerCase();
-      
-      if (KeyCode.UP == event.getCode()) {
-    	  dy -= 16;
-    	  
-    	  // get picture that makes trainer look going east
-    	  sx = 95;
-    	  sy = 0;
-      }
-      else if(KeyCode.DOWN == event.getCode()) {
-    	  dy += 16;
-    	  
-    	  // get picture that makes trainer look going east
-    	  sx = 50;
-    	  sy = 0;
-      }
-      else if((KeyCode.RIGHT == event.getCode())) {
-    	  dx += 16;
-    	 
-    	  // get picture that makes trainer look going east
-    	  sx = 50;
-    	  sy = 30;
-      }
-      else if(KeyCode.LEFT == event.getCode()) {
-    	  dx -= 16;
-    	  
-    	  // get picture that makes trainer look going west
-    	  sx = 110;
-    	  sy = 30;
-      }
-      else {
-    	  System.out.println("Direction = "+ direction);
-    	  System.out.println("KeyCode   = "+ event.getCode());
-      }
-      
-      g2D.drawImage(background, 0, 0);
-      g2D.drawImage(spritesheet, sx, sy, sw, sh, dx,  dy, dw, dh);
-      //sx = (sx < 239) ? sx += 30 : 0;  // source image width = 239
-      //dx = (dx < 200) ? dx += 10 : 0;
-      //if(tic > 21)timeline.stop();
     }
   }
 
@@ -182,4 +145,6 @@ public class CobvilleTown extends Canvas {
 		return playerLocation;
 		
 	}
+
+
 }

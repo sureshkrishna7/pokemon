@@ -12,7 +12,7 @@ public class Door extends Items {
 	 //setImage(filepath);
 	 this.insideMap = new MainMap();
 	 try {
-		insideMap.geniusMethod(file);
+		insideMap.createMapGridFromTxtFile(file);
 	 } catch (FileNotFoundException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -24,7 +24,7 @@ public class Door extends Items {
 	 //setImage(filepath);
 	 this.insideMap = new MainMap();
 	 try {
-		insideMap.geniusMethod(file);
+		insideMap.createMapGridFromTxtFile(file);
 	 } catch (FileNotFoundException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
