@@ -111,11 +111,11 @@ public class PokemonGame extends Application {
     	
     	// z is a char returned by theGame.playerMove() that's not used in map 
     	// to represent an obj, thus can be used to detect null 
-    	if ((!(newLocationObject == 'z')) && (!(newLocationObject == '4'))) {
+    	if ((!(newLocationObject == 'z')) && (!(newLocationObject == 'X'))) {
     		localView.movePlayer(event.getCode(), "over");
     	}
     	
-    	else if ((!(newLocationObject == 'z')) && (newLocationObject == '4')) {
+    	else if ((!(newLocationObject == 'z')) && (newLocationObject == 'X')) {
     		localView.movePlayer(event.getCode(), "under");
     	}
     	

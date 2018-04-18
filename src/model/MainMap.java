@@ -53,8 +53,8 @@ public class MainMap implements Observer {
   
   @Override
   public void update(Observable o, Object arg) {
-  	System.out.println("Must update MainMap view");
-  	
+   System.out.println("Must update MainMap view");
+   
   }
   
   public int getMapWidth() {
