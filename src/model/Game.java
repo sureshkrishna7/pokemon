@@ -4,6 +4,12 @@ import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+
+import model.MainMap.EnermyTown;
+import model.MainMap.FryslaSafariZone;
+import model.MainMap.LilyCoveCity;
+import model.MainMap.MainMap;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,62 +19,41 @@ public class Game {
   private boolean didGameEnd;
   private boolean playerWon;
 
-  private MainMap pokeTown;
-  private MainMap safariZone;
-  private MainMap currCameraMap;
+  private MainMap currentMap;
+
+  private MainMap enermyTown;
+  private MainMap lilyCoveCity;
+  private MainMap fryslaSafariZone;
   private Trainer ash;
 
-  private final int camWidth = 10;
-  private final int camHeight = 10;
-  private Items[][] cameraArray; 
+  private boolean areWeInSafariZone;
+  private int totalSafariZoneSteps; //would be 500
+  private int totalSafariZoneBalls;
+  private int currentSafariSteps;   //at start of a safari Zone, would be 0
+  
   private Map<String, String> allPokemonList;
   private ArrayList<String> pokemonNameList;
 
-  private char[][] camera;
-  
+
   public Game() {
 
-	 didGameEnd = false;
-	 playerWon = false;
+    didGameEnd = false;
+    playerWon = false;
 
-	 pokeTown = new MainMap();
-	 safariZone = new MainMap();
-	 currCameraMap = new MainMap();
-	 initializePokeLists();
-	 
-	 try {
-		pokeTown.createMapGridFromTxtFile("src/EnermyTown.txt");
-		
-		Scanner scanner = new Scanner(new File("src/PokemonNames.txt"));
-		 
-		for(int i = 0; i < 10; i++) {
-			String line = scanner.nextLine();
-			String[] pokemonInitializer = new String[3];
-			pokemonInitializer = line.split("\\s+");
+    enermyTown = new EnermyTown();
+    lilyCoveCity = new LilyCoveCity();
+    fryslaSafariZone = new FryslaSafariZone();
+    initializePokeLists();
+    
+    currentMap = enermyTown;
 
-		}
-		
-		// in Poketown bc player must be able to go to 'S' and be transferred to safariZone
-		// genuisMethod will read the txt file and convert it to a map, assigning the values 
-		// for items[][] board and char[][] board for safariZone.
-		
-		// ???????? NEED TO BE ABLE TO GO TO SAFARI ZONE
-		//safariZone = pokeTown.getSafariZoneMap();
-		//safariZone.geniusMethod("src/SafariZone.txt");
-		
-	 } catch (FileNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	 }
-
-	 ash = new Trainer(new String("Ash"));
-	 ash.setLocation(12,10);
-
-
-	 this.cameraArray = new Items[camHeight][camWidth];
-	 this.camera = new char[camHeight][camWidth];
+    ash = new Trainer(new String("Ash"));
+    int x = currentMap.getMapPlayerPosition().x;
+    int y = currentMap.getMapPlayerPosition().y;
+    ash.setLocation(x, y);
+    areWeInSafariZone = false;
   }
-  
+
   /*
    * initializePokeLists() -- initialize the Map object for the list of Pokemon as a HashMap,
    * adds all the Pokemon with their names as keys and their rareDegree and types as values, contained
@@ -78,7 +63,7 @@ public class Game {
   private void initializePokeLists() {
     this.allPokemonList = new HashMap<>();
     this.pokemonNameList = new ArrayList<String>();
-    
+
     this.pokemonNameList.add("Charmeleon");
     this.pokemonNameList.add("Charmander");
     this.pokemonNameList.add("Vulpix");
@@ -89,7 +74,7 @@ public class Game {
     this.pokemonNameList.add("Seaking");
     this.pokemonNameList.add("Cubone");
     this.pokemonNameList.add("Rhydon");
-    
+
     this.allPokemonList.put("Charmeleon", "MF");
     this.allPokemonList.put("Charmander", "RF");
     this.allPokemonList.put("Vulpix", "RF");
@@ -100,138 +85,119 @@ public class Game {
     this.allPokemonList.put("Seaking", "RW");
     this.allPokemonList.put("Cubone", "CE");
     this.allPokemonList.put("Rhydon", "ME");
-  }// end initializePokeLists()
-
-
+  }// end initializePokeLists() 
+  
   public void setCurrCameraMap(MainMap map) {
-	  currCameraMap = map;
+    currentMap = map;
   }
 
   public void setTrainerLocation(Point point) {
-	  ash.setLocation(point);
+    ash.setLocation(point);
   }
-  
+
   // direction could be n,s,e,w or N, S, E, W
   public char playerMove(char direction) {
 
-	 Point player = ash.getLocation();
-	 Point newPoint = new Point();
-	 
-	 if(direction == 'n' || direction == 'N') {
-		newPoint.x = player.x - 1;
-		newPoint.y = player.y;
+    Point player = ash.getLocation();
+    Point newPoint = new Point();
 
-		if(currCameraMap.isWalkable(newPoint)) {
-		  ash.setLocation(newPoint);
-		  return currCameraMap.getCharacterFromLocation(newPoint);
-		}
-	 }
-	 else if(direction == 's' || direction == 'S') {
-		newPoint.x = player.x + 1;
-		newPoint.y = player.y;
+    if(direction == 'n' || direction == 'N') {
+      newPoint.x = player.x - 1;
+      newPoint.y = player.y;
 
-		if(currCameraMap.isWalkable(newPoint)) {
-		  ash.setLocation(newPoint);
-		  return currCameraMap.getCharacterFromLocation(newPoint);
-		}
-	 }
-	 else if(direction == 'e' || direction == 'E') {
-		newPoint.x = player.x;
-		newPoint.y = player.y + 1;
+      if(currentMap.isWalkable(newPoint)) {
+        ash.setLocation(newPoint);
+        if(areWeInSafariZone) {
+          currentSafariSteps++;
+        }
+        return currentMap.getCharacterFromLocation(newPoint);
+      }
+    }
+    else if(direction == 's' || direction == 'S') {
+      newPoint.x = player.x + 1;
+      newPoint.y = player.y;
 
-		if(currCameraMap.isWalkable(newPoint)) {
-		  ash.setLocation(newPoint);
-		  return currCameraMap.getCharacterFromLocation(newPoint);
-		}
-	 }
-	 else if(direction == 'w' || direction == 'W') {
-		newPoint.x = player.x;
-		newPoint.y = player.y - 1;
+      if(currentMap.isWalkable(newPoint)) {
+        ash.setLocation(newPoint);
+        if(areWeInSafariZone) {
+          currentSafariSteps++;
+        }
+        return currentMap.getCharacterFromLocation(newPoint);
+      }
+    }
+    else if(direction == 'e' || direction == 'E') {
+      newPoint.x = player.x;
+      newPoint.y = player.y + 1;
 
-		if(currCameraMap.isWalkable(newPoint)) {
-		  ash.setLocation(newPoint);
-		  return currCameraMap.getCharacterFromLocation(newPoint);
-		}
-	 }
-	 return 'z';
+      if(currentMap.isWalkable(newPoint)) {
+        ash.setLocation(newPoint);
+        if(areWeInSafariZone) {
+          currentSafariSteps++;
+        }
+        return currentMap.getCharacterFromLocation(newPoint);
+      }
+    }
+    else if(direction == 'w' || direction == 'W') {
+      newPoint.x = player.x;
+      newPoint.y = player.y - 1;
+
+      if(currentMap.isWalkable(newPoint)) {
+        ash.setLocation(newPoint);
+        if(areWeInSafariZone) {
+          currentSafariSteps++;
+        }
+        return currentMap.getCharacterFromLocation(newPoint);
+      }
+    }
+    return 'Z';
   }
-  
+
   public Point getTrainerLocation() {
-	  return ash.getLocation();
+    return ash.getLocation();
+  }
+
+  public MainMap getFryslaSafariZone() {
+    return fryslaSafariZone;
   }
   
-  public void setSafariZone(MainMap newMap) {
-	  safariZone = newMap;
-  }
-  public MainMap getSafariZone() {
-	  return safariZone;
+  public MainMap getLilyCoveCity() {
+    return lilyCoveCity;
   }
   
-
-  public char[][] getCamera(){
-	 Point playerPos = ash.getLocation(); 
-	 
-	 
-	 int g = playerPos.x - 4;
-	 
-	 int h = playerPos.y - 4;
-	 
-	 int i = 0;
-	 int j = 0;
-	 
-	 int x;
-	 int y;
-	 
-	 //System.out.println("CurrentMapHeight = " +  currCameraMap.getMapHeight());
-	 //System.out.println("CurrentMapWidth  = " +  currCameraMap.getMapWidth());
-	 
-	 while(i < camHeight) {
-		
-		x = g  + i;
-		j = 0;
-		while(j < camWidth) {
-		  
-		  y = h  + j;
-		  
-		  if(x < 0 || x >= currCameraMap.getMapHeight() || y < 0 || y >= currCameraMap.getMapWidth()) {
-			 camera[i][j] = '1';
-		  }
-		  else if(i == (camHeight-1)/2 && j == (camWidth-1)/2){ 
-			 //Player Position is dynamic, he is NOT placed in a MAP TILE
-			 //His position is stored in Trainer, he MOVES but is NEVER STORED in the MAP
-			 camera[i][j] = 'O';
-		  }
-		  else {
-			 camera[i][j] = currCameraMap.getCharacterFromLocation(x,y);
-		  }
-		  j++;
-		}
-		i++;
-	 }
-	 
-	 return camera; 
+  public MainMap getEnermyTown() {
+    return enermyTown;
   }
 
-public MainMap getPokeTown() {
-	return pokeTown;
-}
+  public Trainer getTrainer() {
+    return ash;
+  }
 
-public Trainer getTrainer() {
-	return ash;
-}
+  public MainMap getCurrCameraMap() {
+    return currentMap;
+  }
 
-public MainMap getCurrCameraMap() {
-	// TODO Auto-generated method stub
-	return currCameraMap;
-}
+  public Map<String, String> getAllPokemonList() {
+    return allPokemonList;
+  }
 
+  public ArrayList<String> getPokemonNameList(){
+    return pokemonNameList;
+  }
 
-public Map<String, String> getAllPokemonList() {
-	return allPokemonList;
-}
-
-public ArrayList<String> getPokemonNameList(){
-  return pokemonNameList;
-}
+  public void weAreInSafariZone() {
+    areWeInSafariZone = true;
+    totalSafariZoneSteps = ash.getAllowedSafariSteps();
+    totalSafariZoneBalls = ash.getAllowedCurrentBalls();
+    currentSafariSteps = 0;
+  }
   
+  public void weAreOutSafariZone() {
+    areWeInSafariZone = false;
+    currentSafariSteps = 0;
+  }
+  
+  public boolean haveExhaustedSafariZone() {
+    return currentSafariSteps >= 500;
+  }
+
 }

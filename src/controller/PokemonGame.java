@@ -23,10 +23,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.stage.Stage;
 import model.Battle;
-import model.Door;
 import model.Game;
 import model.Pokemon;
 import model.SafariEncounter;
+import model.MainMap.Door;
+import model.MainMap.MainMap;
 import model.UsableItems.UsableItem;
 
 //Simply Create the User and insert User into PokeTownMap, the rest of the maps will be embedded within PokeTownMap
@@ -35,12 +36,13 @@ public class PokemonGame extends Application {
 
   private static Scanner sc;
   private static Game theGame;
-  private static Point playerStartLocation = new Point(11, 25);
+  private static Point playerStartLocation = new Point();
   private static Point playerOldLocation = new Point();
+  private static MainMap oldCurrentMap;
+
   private static boolean foundPokemon;
   private static boolean wonBattle;
   private static final double encounterChance = 0.6;
-  private static Button startAnimationButton, endAnimationButton;
   private static CobvilleTown localView, town;
   private static BorderPane pane;
   private static char gameLogic;
@@ -56,31 +58,48 @@ public class PokemonGame extends Application {
    * the GameGUI class, as we can't have a GUI class with a main that calls start
    * and use another class that runs main.
    */
+
+  public static void main(String[] args) {
+    launch(args);
+  }
+
+
+  private static void initializeGameForFirstTime() {
+    theGame = new Game();
+
+    playerStartLocation.x = theGame.getTrainerLocation().x;
+    playerStartLocation.y = theGame.getTrainerLocation().y;
+
+    playerOldLocation.x = theGame.getTrainerLocation().x;
+    playerOldLocation.y = theGame.getTrainerLocation().y;
+
+    oldCurrentMap = theGame.getCurrCameraMap();
+
+    foundPokemon = false;
+    wonBattle = false;
+  }
+
+
   @Override
   public void start(Stage stage) throws Exception {
-    // TODO Auto-generated method stub
+    
+    initializeGameForFirstTime();
     getGameMenu();
     getSafariStatSheet();
-    
-    
-	pane = new BorderPane();
-    startAnimationButton = new Button("Start animation");
-    PokemonGame pokeGame = new PokemonGame();
-    pane.setTop(startAnimationButton);
-    //town =  new CobvilleTown(theGame.getTrainerLocation());
-    localView = new CobvilleTown(theGame.getTrainerLocation());
-    localView.setOnKeyReleased(new AnimateStarter());
+
+
+    pane = new BorderPane();
+    localView = new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
+    //localView.setOnKeyReleased(new AnimateStarter());
     pane.setCenter(localView);
     System.out.println(theGame.getTrainerLocation());
     //localView.setPlayerLocation(theGame.getTrainerLocation());
-    BorderPane.setAlignment(startAnimationButton, Pos.BOTTOM_CENTER);
-    startAnimationButton.setOnAction(new StartTimerButtonListener());
     Scene scene = new Scene(pane, 600, 300);
     scene.setOnKeyReleased(new AnimateStarter());
     stage.setScene(scene);
     stage.show();
   }
-  
+
   // Add a listener that will start the Timeline's animation 
   public class StartTimerButtonListener implements EventHandler<ActionEvent> {
     @Override
@@ -88,142 +107,73 @@ public class PokemonGame extends Application {
       localView.animate();
     }
   }
-  
+
   // Add a listener that will start the Timeline's animation 
   public class AnimateStarter implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent event) {
-    	System.out.println("Animate Starter in PokemonGame.java line 95");
-    	
-    	char newLocationObject = '0';
-    	if (KeyCode.UP == event.getCode()) {
-    		newLocationObject = theGame.playerMove('n');
-    	}
-    	else if (KeyCode.DOWN == event.getCode()) {
-    		newLocationObject = theGame.playerMove('s');
-    	}
-    	else if (KeyCode.LEFT == event.getCode()) {
-    		newLocationObject = theGame.playerMove('w');
-    	}
-    	else if (KeyCode.RIGHT == event.getCode()) {
-    		newLocationObject = theGame.playerMove('e');
-    	}
-    	
-    	// z is a char returned by theGame.playerMove() that's not used in map 
-    	// to represent an obj, thus can be used to detect null 
-    	if ((!(newLocationObject == 'z')) && (!(newLocationObject == 'X'))) {
-    		localView.movePlayer(event.getCode(), "over");
-    	}
-    	
-    	else if ((!(newLocationObject == 'z')) && (newLocationObject == 'X')) {
-    		localView.movePlayer(event.getCode(), "under");
-    	}
-    	
-    }
-  }
+      System.out.println("Animate Starter in PokemonGame.java line 95");
 
-  public static void main(String[] args) {
-    theGame = new Game();
-    foundPokemon = false;
-    wonBattle = false;
-    sc = new Scanner(System.in);
-    char north = 'n';
-    char south = 's';
-    char west = 'w';
-    char east = 'e';
-    String direction = "n";
-    gameLogic = 0;
-    theGame.setCurrCameraMap(theGame.getPokeTown());
-    /*
-     * if(direction.equals(""+north)) { System.out.print("It's True\n"); }
-     */
-    // scanner the next direction and act accordingly
-    launch(args);
-
-    while (true) {
-      int i = 0;
-      int j = 0;
-
-      while (i < 10) {
-        j = 0;
-        while (j < 10) {
-          System.out.print(" " + theGame.getCamera()[i][j]);
-          j++;
-        }
-        System.out.println();
-        i++;
+      char newLocationObject = 'Z';
+      if (KeyCode.UP == event.getCode()) {
+        newLocationObject = theGame.playerMove('n');
+      }
+      else if (KeyCode.DOWN == event.getCode()) {
+        newLocationObject = theGame.playerMove('s');
+      }
+      else if (KeyCode.LEFT == event.getCode()) {
+        newLocationObject = theGame.playerMove('w');
+      }
+      else if (KeyCode.RIGHT == event.getCode()) {
+        newLocationObject = theGame.playerMove('e');
+      }
+      else if (KeyCode.S == event.getCode() && theGame.getCurrCameraMap() != theGame.getFryslaSafariZone()) {
+        playerOldLocation = theGame.getTrainerLocation();
+        oldCurrentMap = theGame.getCurrCameraMap();
+        theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
+        theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
+        theGame.weAreInSafariZone();
+      } else if (KeyCode.P == event.getCode() && theGame.getCurrCameraMap() == theGame.getFryslaSafariZone()) {
+        theGame.setTrainerLocation(playerOldLocation);
+        theGame.setCurrCameraMap(oldCurrentMap);
+        theGame.weAreOutSafariZone();
       }
 
-      if (theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap())
-        System.out.print("Move (n, e, s, w)? pt for PokemonTown!: ");
-      else
-        System.out.print("Move (n, e, s, w)? sz for Safari Zone!: ");
-
-      // sc = new Scanner(System.in);
-      if (sc.hasNext()) {
-        direction = sc.nextLine().toLowerCase();
-      }
-
-      if (direction.equals("" + north)) {
-        gameLogic = theGame.playerMove(north);
-        localView.animate();
-      } 
-      else if (direction.equals("" + south)) {
-        gameLogic = theGame.playerMove(south);
-        localView.animate();
-      } 
-      else if (direction.equals("" + west)) {
-        gameLogic = theGame.playerMove(west);
-        localView.animate();
-      } 
-      else if (direction.equals("" + east)) {
-        gameLogic = theGame.playerMove(east);
-        localView.animate();
-      } else if (direction.equals("sz") && 
-    		  !(theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap())) {
-        theGame.setTrainerLocation(playerStartLocation);
-        theGame.setCurrCameraMap(theGame.getPokeTown().getSafariZoneMap());
-      } else if (direction.equals("pt") && 
-    		  theGame.getCurrCameraMap() == theGame.getPokeTown().getSafariZoneMap()) {
-        theGame.setTrainerLocation(playerStartLocation);
-        theGame.setCurrCameraMap(theGame.getPokeTown());
-      }
-
-      if (gameLogic == 'D') {
-
+      if (newLocationObject == 'D') {
         System.out.print("Encountered a Door\n");
         playerOldLocation.x = theGame.getTrainerLocation().x;
         playerOldLocation.y = theGame.getTrainerLocation().y;
+        oldCurrentMap = theGame.getCurrCameraMap();
 
-        Door door = (Door) theGame.getPokeTown().getItemsBoard()[theGame.getTrainerLocation().x][theGame
-            .getTrainerLocation().y];
+        Door door = (Door) theGame.getCurrCameraMap().enteredDoor(theGame.getTrainerLocation().x, theGame.getTrainerLocation().y);
 
-        theGame.setCurrCameraMap(door.getInsideMap());
-        theGame.setTrainerLocation(door.getInsideMap().getPlayerLocation());
-
-        theGame.getCamera();
-      } else if (gameLogic == 'P') {
-        System.out.print("Encountered a Pokemon\n");
-      } else if (gameLogic == 'N') {
-        System.out.print("Encountered a NPC\n");
+        /* 
+         * ****We would be in safari Zone if the door is null****
+         * ****Because we magically hop to different places****
+         */
+        if(door == null) {
+          theGame.setTrainerLocation(theGame.getCurrCameraMap().getMapPlayerPosition());
+        }
+        else {
+          theGame.setCurrCameraMap(door);
+          theGame.setTrainerLocation(door.getMapPlayerPosition());
+        }
       } else if (gameLogic == ' ') {
         theGame.setTrainerLocation(playerOldLocation);
-        theGame.setCurrCameraMap(theGame.getPokeTown());
-      } else if (gameLogic == 'S') {
-        theGame.setTrainerLocation(playerStartLocation);
-        theGame.setCurrCameraMap(theGame.getPokeTown().getSafariZoneMap());
-      }
-      // X represents Safari Pokemon for now, until Safari Map is created
-      else if (gameLogic == 'X') {
-        System.out.println("Encountered a Safari Pokemon");
-        Pokemon b = new Pokemon("Sandslash", 3, 'C', 'I', null);
-
-        SafariEncounter.safariEncounter(theGame.getTrainer(), b, sc);
+        theGame.setCurrCameraMap(oldCurrentMap);
+      } 
+      else if (gameLogic == 'S') {
+        playerOldLocation = theGame.getTrainerLocation();
+        oldCurrentMap = theGame.getCurrCameraMap();
+        theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
+        theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
+        theGame.weAreInSafariZone();
       }
       // after exhausting 500 steps in Safari Zone, eject back to PokemonTown
-      else if (theGame.getTrainer().getSafariSteps() >= 500) {
-        theGame.setTrainerLocation(playerStartLocation);
-        theGame.setCurrCameraMap(theGame.getPokeTown());
+      else if (theGame.haveExhaustedSafariZone()) {
+        theGame.setTrainerLocation(playerOldLocation);
+        theGame.setCurrCameraMap(oldCurrentMap);
+        theGame.weAreOutSafariZone();
 
         // bush, check will battle at random, start battle with randomly instantiated
         // Pokemon
@@ -233,17 +183,28 @@ public class PokemonGame extends Application {
           Pokemon wildPoke = getWildPoke();
           wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
         }
+        else if (gameLogic == 'N') {
+          System.out.print("Encountered a NPC\n");
+        } 
       }
-      
-     
-    } // end while
-    
 
-    // sc.close();
+      // z is a char returned by theGame.playerMove() that's not used in map 
+      // to represent an obj, thus can be used to detect null 
+      if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {
+        localView.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+        localView.movePlayer(event.getCode(), "over");
+      }
+
+      else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
+        localView.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+        localView.movePlayer(event.getCode(), "under");
+      }
+
+    }
   }
-  
+
   public static char getUserInputChar() {
-	  return gameLogic;
+    return gameLogic;
   }
 
   /*
@@ -354,7 +315,7 @@ public class PokemonGame extends Application {
       }
     }
 
-    sb.append("\nSteps taken: \n\t" + theGame.getTrainer().getSafariSteps() + "/500\n");
+    sb.append("\nSteps Allowed: \n\t" + theGame.getTrainer().getAllowedSafariSteps() + "/500\n");
 
     statSheet.setContentText(sb.toString());
     Optional<ButtonType> result = statSheet.showAndWait();
@@ -389,8 +350,8 @@ public class PokemonGame extends Application {
     gameMenu.setHeaderText(theGame.getTrainer().getName());
     Optional<ButtonType> result = gameMenu.showAndWait();
   }
-  
-  
+
+
 
 
 }

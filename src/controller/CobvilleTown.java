@@ -27,22 +27,22 @@ import sun.net.www.content.audio.x_aiff;
  */
 public class CobvilleTown extends Canvas implements Observer {
 
-  private Image spritesheet, background;
+  private Image character, background;
   private GraphicsContext g2D;
   private Timeline timeline;
   private Point playerLocation;
   private int tic = 0;
   double sx, sy, sw, sh, dx, dy, dw, dh;
 
-  public CobvilleTown(Point point) {
+  public CobvilleTown(Point point, Image mapBackground) {
 	  this.setWidth(800);
 	  this.setHeight(800);
 	  playerLocation = point;
     
 	  // Create both images and draw both when the controller instructs
-	  spritesheet = new Image("file:src/images/Game_Boy_Advance - Pokemon_FireRed_LeafGreen - RivalBlueGreenGary.png", false);
+	  character = new Image("file:src/images/Game_Boy_Advance - Pokemon_FireRed_LeafGreen - RivalBlueGreenGary.png", false);
 	  // spritsheet contains 6 sub images
-	  background = new Image("file:src/images/EnermyTown.png", false);
+	  background = mapBackground;
 	  g2D = this.getGraphicsContext2D();
 	  setOnKeyReleased(new AnimateStarter());
 	  System.out.println("set on release");
@@ -73,7 +73,7 @@ public class CobvilleTown extends Canvas implements Observer {
 	  dh = 25;
 	  
 	  g2D.drawImage(background, 0, 0);
-	  g2D.drawImage(spritesheet, sx, sy, sw, sh, dx,  dy, dw, dh);
+	  g2D.drawImage(character, sx, sy, sw, sh, dx,  dy, dw, dh);
   }
   
 	@Override
@@ -86,6 +86,10 @@ public class CobvilleTown extends Canvas implements Observer {
 	
 	}
 
+	public void setBackGroundImage(Image changeOfMap) {
+	  background = changeOfMap;
+	}
+	
   public void movePlayer(KeyCode code, String drawPlayerOverOrUnder) {
       
       if (KeyCode.UP == code ) {
@@ -145,7 +149,7 @@ public class CobvilleTown extends Canvas implements Observer {
       }
       
       g2D.drawImage(background, 0, 0);
-      g2D.drawImage(spritesheet, sx, sy, sw, sh, dx,  dy, dw, dh);
+      g2D.drawImage(character, sx, sy, sw, sh, dx,  dy, dw, dh);
   }
   private class AnimateStarter implements EventHandler<KeyEvent> {
 
@@ -162,7 +166,6 @@ public class CobvilleTown extends Canvas implements Observer {
 
 	public void setPlayerLocation(Point trainerLocation) {
 		playerLocation = trainerLocation;
-		
 	}
 	
 	public Point getPlayerLocation(Point trainerLocation) {
