@@ -18,6 +18,7 @@ public class Revive extends Items implements UsableItem {
 
   @Override
   public String use(Trainer trainer, Pokemon p) {
+    trainer.getInventory().get("revive").remove(0);
     if (!p.isExhausted())
       return "No Effect...";
 
@@ -32,7 +33,13 @@ public class Revive extends Items implements UsableItem {
 
   @Override
   public String use(NPC npc, Pokemon p) {
-    // TODO Auto-generated method stub
-    return null;
+    npc.getInventory().get("revive").remove(0);
+
+    int hPrestored = p.getMaxHP();
+    int mPrestored = p.getMaxMP() - p.getCurMP();
+
+    p.setCurHP(p.getMaxHP());
+    p.setCurMP(p.getMaxMP());
+    return hPrestored + "HP ," + mPrestored + "MP restored!";
   }
 }

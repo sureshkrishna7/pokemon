@@ -34,7 +34,16 @@ public class MidEther extends Items implements UsableItem {
 
   @Override
   public String use(NPC npc, Pokemon p) {
-    // TODO Auto-generated method stub
-    return null;
+    int restored = 0;
+    
+    npc.getInventory().get("mid ether").remove(0);
+    if (p.getCurMP() + 8 > p.getMaxMP()) {
+      restored = p.getMaxMP() - p.getCurMP();
+      p.setCurMP(p.getMaxMP());
+    } else {
+      p.setCurMP(p.getCurMP() + 8);
+      restored = 8;
+    }
+    return restored + "MP restored!";
   }
 }
