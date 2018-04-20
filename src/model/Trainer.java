@@ -20,9 +20,8 @@ public class Trainer extends Items {
   private int money;
   private Point currentPos = new Point();
   private Pokemon currentPokemon; // current battle pokemon, switch dynamically while in battle
-  private int safariSteps; // 500 steps in safari mode
-  private int currentBalls; // 30 balls only in safari mode
-  private boolean safariMode;
+  private int allowedSafariSteps; // 500 steps in safari mode
+  private int allowedCurrentBalls; // 30 balls only in safari mode
   Random ran;
   double pivot;
 
@@ -45,9 +44,8 @@ public class Trainer extends Items {
     setBattlePokemon(listOfPokemon.get(0));
 
     // Set this to 500 when the trainer pays money to NPC or menu option
-    this.safariSteps = 0;
-    this.currentBalls = 0;
-    this.safariMode = false;
+    this.allowedSafariSteps = 500;
+    this.allowedCurrentBalls = 30;
   }
 
   /*
@@ -163,44 +161,12 @@ public class Trainer extends Items {
     listOfPokemon.add(s);
   }
 
-  /*
-   * ********** To go to Safari Zone **********
-   */
-  public boolean goToSafariZone() {
-    if (money >= 500) {
-      money = money - 500;
-      setSafariSteps();
-      setCurrentBalls();
-      safariMode = true;
-      return true;
-    }
-    getOutOfSafariZone();
-    return false;
+  public int getAllowedSafariSteps() {
+    return allowedSafariSteps;
   }
 
-  /*
-   * ********** To get out of Safari Zone **********
-   */
-  public void getOutOfSafariZone() {
-    safariSteps = 0;
-    currentBalls = 0;
-    safariMode = false;
-  }
-
-  private void setSafariSteps() {
-    this.safariSteps = 500;
-  }
-
-  private void setCurrentBalls() {
-    this.currentBalls = 30;
-  }
-
-  public int getSafariSteps() {
-    return this.safariSteps;
-  }
-
-  public int getCurrentBalls() {
-    return this.currentBalls;
+  public int getAllowedCurrentBalls() {
+    return allowedCurrentBalls;
   }
 
   public ArrayList<Pokemon> getPokeList() {
