@@ -45,7 +45,6 @@ public class PokemonGame extends Application {
   private static final double encounterChance = 0.6;
   private static CobvilleTown cobvilleTown, town;
   private static BorderPane pane;
-  private static char gameLogic;
   private static Observer currentView, imageView, textAreaView;
 
   /*
@@ -179,11 +178,11 @@ public class PokemonGame extends Application {
           theGame.setCurrCameraMap(door);
           theGame.setTrainerLocation(door.getMapPlayerPosition());
         }
-      } else if (gameLogic == ' ') {
+      } else if (newLocationObject == ' ') {
         theGame.setTrainerLocation(playerOldLocation);
         theGame.setCurrCameraMap(oldCurrentMap);
       } 
-      else if (gameLogic == 'S') {
+      else if (newLocationObject == 'S') {
         playerOldLocation = theGame.getTrainerLocation();
         oldCurrentMap = theGame.getCurrCameraMap();
         theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
@@ -198,13 +197,13 @@ public class PokemonGame extends Application {
 
         // bush, check will battle at random, start battle with randomly instantiated
         // Pokemon
-      } else if (gameLogic == 'B') {
+      } else if (newLocationObject == 'B') {
         foundPokemon = checkBush();
         if (foundPokemon) {
           Pokemon wildPoke = getWildPoke();
           wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
         }
-        else if (gameLogic == 'N') {
+        else if (newLocationObject == 'N') {
           System.out.print("Encountered a NPC\n");
         } 
       }
@@ -216,7 +215,7 @@ public class PokemonGame extends Application {
     	/*
     	 * We need to setBackGroundImage() only after entering/exiting doors
     	 */
-        //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+        cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
         cobvilleTown.movePlayer(event.getCode(), "over");
       }
       
@@ -224,16 +223,13 @@ public class PokemonGame extends Application {
        * Draw character under Z and X objects
        */
       else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
-        //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+        cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
         cobvilleTown.movePlayer(event.getCode(), "under");
       }
 
     }
   }
 
-  public static char getUserInputChar() {
-    return gameLogic;
-  }
 
   /*
    * getWildPoke() -- after checkBush() returns true (it found a Pokemon), this
