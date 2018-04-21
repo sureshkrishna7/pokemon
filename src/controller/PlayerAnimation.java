@@ -27,7 +27,7 @@ import sun.net.www.content.audio.x_aiff;
  * 
  * @author Rick Mercer
  */
-public class CobvilleTown extends Canvas {
+public class PlayerAnimation extends Canvas {
 
   private Image character, background;
   private GraphicsContext g2D;
@@ -38,7 +38,7 @@ public class CobvilleTown extends Canvas {
   private String drawPlayerOverOrUnder;
   private KeyCode keyCode;
 
-  public CobvilleTown(Point point, Image mapBackground) {
+  public PlayerAnimation(Point point, Image mapBackground) {
     this.setWidth(800);
     this.setHeight(800);
     playerLocation = point;

@@ -43,7 +43,7 @@ public class PokemonGame extends Application {
   private static boolean foundPokemon;
   private static boolean wonBattle;
   private static final double encounterChance = 0.6;
-  private static CobvilleTown cobvilleTown, town;
+  private static PlayerAnimation cobvilleTown, town;
   private static BorderPane pane;
   private static Observer currentView, imageView, textAreaView;
 
@@ -88,7 +88,7 @@ public class PokemonGame extends Application {
 
 
     pane = new BorderPane();
-    cobvilleTown = new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
+    cobvilleTown = new PlayerAnimation(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
     //localView.setOnKeyReleased(new AnimateStarter());
     pane.setCenter(cobvilleTown);
     System.out.println(theGame.getTrainerLocation());
