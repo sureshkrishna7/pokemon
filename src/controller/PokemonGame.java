@@ -88,7 +88,7 @@ public class PokemonGame extends Application {
 
 
     pane = new BorderPane();
-    cobvilleTown = new PlayerAnimation(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
+    cobvilleTown = new PlayerAnimation(theGame.getTrainerLocation(), theGame.getCurrCameraMap());
     //localView.setOnKeyReleased(new AnimateStarter());
     pane.setCenter(cobvilleTown);
     System.out.println(theGame.getTrainerLocation());
@@ -170,9 +170,11 @@ public class PokemonGame extends Application {
           theGame.setCurrCameraMap(door);
           theGame.setTrainerLocation(door.getMapPlayerPosition());
         }
+        cobvilleTown.drawPlayerAtDoorSpot(door.getMapPlayerPosition());
       } else if (newLocationObject == ' ') {
         theGame.setTrainerLocation(playerOldLocation);
         theGame.setCurrCameraMap(oldCurrentMap);
+        cobvilleTown.drawOutOfDoor();
       } 
       else if (newLocationObject == 'S') {
         playerOldLocation = theGame.getTrainerLocation();

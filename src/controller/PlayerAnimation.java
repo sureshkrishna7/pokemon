@@ -17,6 +17,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
+import model.MainMap.MainMap;
 import sun.net.www.content.audio.x_aiff;
 
 /**
@@ -35,12 +36,13 @@ public class PlayerAnimation extends Canvas {
   private Point playerLocation;
   private int tic = 0;
   double sx, sy, sw, sh, dx, dy, dw, dh;
+  double olddx, olddy;
   private String drawPlayerOverOrUnder;
   private KeyCode keyCode;
 
-  public PlayerAnimation(Point point, Image mapBackground) {
-    this.setWidth(800);
-    this.setHeight(800);
+  public PlayerAnimation(Point point, MainMap mainMap) {
+    this.setWidth(mainMap.getMapImage().getWidth());
+    this.setHeight(mainMap.getMapImage().getHeight());
     playerLocation = point;
 
     // defaults, will be changed when movePlayer() is called
@@ -50,7 +52,7 @@ public class PlayerAnimation extends Canvas {
     // Create both images and draw both when the controller instructs
     // spritsheet contains 6 sub images
     character = new Image("file:src/images/Game_Boy_Advance - Pokemon_FireRed_LeafGreen - RivalBlueGreenGary.png", false);
-    background = mapBackground;
+    background = mainMap.getMapImage();
     g2D = this.getGraphicsContext2D();
 
 
@@ -66,10 +68,22 @@ public class PlayerAnimation extends Canvas {
   }
 
   public void setBackGroundImage(Image changeOfMap) {
-    g2D.clearRect(0, 0, 800, 800);
     background = changeOfMap;
+    g2D.clearRect(0, 0, background.getWidth(), background.getHeight());
     g2D.drawImage(background, 0, 0);
-    g2D.drawImage(character, sx, sy, sw, sh, dx,  dy, dw, dh);
+    g2D.drawImage(character, sx, sy, sw, sh, dx, dy, dw, dh);
+  }
+
+  public void drawPlayerAtDoorSpot(Point pos) {
+    olddx = dx;
+    olddy = dy-32;
+    dx = pos.x*8 - 8;
+    dy = pos.y*36 - 8;
+  }
+
+  public void drawOutOfDoor() {
+    dx = olddx;
+    dy = olddy;
   }
 
   public void movePlayer(KeyCode code, String overOrUnder) {
