@@ -86,7 +86,7 @@ public class CobvilleTown extends Canvas {
 
 
     public AnimateStarter() {
-  	  /*
+  	  	/*
         The images to draw are know as spritesheet (6 images) and dirt (the background)
         Use method drawImage with 9 arguments: 
         drawImage(theImage, sx, sy, sw, sh, dx, dy, dw, dh)
