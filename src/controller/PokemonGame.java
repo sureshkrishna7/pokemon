@@ -109,36 +109,57 @@ public class PokemonGame extends Application {
   }
 
   // Add a listener that will start the Timeline's animation 
-  public class AnimateStarter implements EventHandler<KeyEvent> {
+  private class AnimateStarter implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent event) {
       System.out.println("Animate Starter in PokemonGame.java line 95");
 
+      /**
+       * NOTE: If user inputs moves too fast, the player will move 
+       * on the grid faster than the animation timeline can draw the image, 
+       * and will crash (runs into things on grid before image).
+       * So if animation is on, ignore button clicked
+       */
+      if (cobvilleTown.isTimelineAnimating()) {
+    	  return;
+      }
+      
+      
       char newLocationObject = 'Z';
       if (KeyCode.UP == event.getCode()) {
+    	  System.out.println("ENTERING north");
         newLocationObject = theGame.playerMove('n');
       }
       else if (KeyCode.DOWN == event.getCode()) {
+    	  System.out.println("ENTERING south");
         newLocationObject = theGame.playerMove('s');
       }
       else if (KeyCode.LEFT == event.getCode()) {
+    	  System.out.println("ENTERING west");
         newLocationObject = theGame.playerMove('w');
       }
       else if (KeyCode.RIGHT == event.getCode()) {
+    	  System.out.println("ENTERING right");
         newLocationObject = theGame.playerMove('e');
       }
       else if (KeyCode.S == event.getCode() && theGame.getCurrCameraMap() != theGame.getFryslaSafariZone()) {
-        playerOldLocation = theGame.getTrainerLocation();
-        oldCurrentMap = theGame.getCurrCameraMap();
-        theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
-        theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
-        theGame.weAreInSafariZone();
+    	  System.out.println("ENTERING KeyCode.S");
+    	  playerOldLocation = theGame.getTrainerLocation();
+    	  oldCurrentMap = theGame.getCurrCameraMap();
+    	  theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
+    	  theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
+          theGame.weAreInSafariZone();
       } else if (KeyCode.P == event.getCode() && theGame.getCurrCameraMap() == theGame.getFryslaSafariZone()) {
-        theGame.setTrainerLocation(playerOldLocation);
-        theGame.setCurrCameraMap(oldCurrentMap);
-        theGame.weAreOutSafariZone();
+    	  System.out.println("ENTERING KeyCode.P");
+    	  theGame.setTrainerLocation(playerOldLocation);
+    	  theGame.setCurrCameraMap(oldCurrentMap);
+    	  theGame.weAreOutSafariZone();
+      }else {
+    	  System.out.println("ENTERING ---> " + event.getCode());
       }
 
+      System.out.println("New location on grid: " + newLocationObject);
+      
       if (newLocationObject == 'D') {
         System.out.print("Encountered a Door\n");
         playerOldLocation.x = theGame.getTrainerLocation().x;

@@ -8,6 +8,7 @@ import java.util.Observer;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.animation.Animation;
+import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -55,7 +56,7 @@ public class CobvilleTown extends Canvas {
 	  
 	  // Create a TimeLine that call AnimateStarter.handle every 100ms
 	  // class AnimateStarter has two method stubs you have to complete.
-	  timeline = new Timeline(new KeyFrame(Duration.millis(130), new AnimateStarter()));
+	  timeline = new Timeline(new KeyFrame(Duration.millis(90), new AnimateStarter()));
 	  timeline.setCycleCount(Animation.INDEFINITE);
   }
 
@@ -74,6 +75,10 @@ public class CobvilleTown extends Canvas {
 	  drawPlayerOverOrUnder = overOrUnder;
 	  tic = 0;
 	  timeline.play();
+  }
+  
+  public boolean isTimelineAnimating() {
+	  return timeline.getStatus() == Status.RUNNING;
   }
   
   
