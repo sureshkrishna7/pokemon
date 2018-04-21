@@ -127,38 +127,30 @@ public class PokemonGame extends Application {
       
       char newLocationObject = 'Z';
       if (KeyCode.UP == event.getCode()) {
-    	  System.out.println("ENTERING north");
         newLocationObject = theGame.playerMove('n');
       }
       else if (KeyCode.DOWN == event.getCode()) {
-    	  System.out.println("ENTERING south");
         newLocationObject = theGame.playerMove('s');
       }
       else if (KeyCode.LEFT == event.getCode()) {
-    	  System.out.println("ENTERING west");
         newLocationObject = theGame.playerMove('w');
       }
       else if (KeyCode.RIGHT == event.getCode()) {
-    	  System.out.println("ENTERING right");
         newLocationObject = theGame.playerMove('e');
       }
       else if (KeyCode.S == event.getCode() && theGame.getCurrCameraMap() != theGame.getFryslaSafariZone()) {
-    	  System.out.println("ENTERING KeyCode.S");
     	  playerOldLocation = theGame.getTrainerLocation();
     	  oldCurrentMap = theGame.getCurrCameraMap();
     	  theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
     	  theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
           theGame.weAreInSafariZone();
       } else if (KeyCode.P == event.getCode() && theGame.getCurrCameraMap() == theGame.getFryslaSafariZone()) {
-    	  System.out.println("ENTERING KeyCode.P");
     	  theGame.setTrainerLocation(playerOldLocation);
     	  theGame.setCurrCameraMap(oldCurrentMap);
     	  theGame.weAreOutSafariZone();
-      }else {
-    	  System.out.println("ENTERING ---> " + event.getCode());
       }
 
-      System.out.println("New location on grid: " + newLocationObject);
+      
       
       if (newLocationObject == 'D') {
         System.out.print("Encountered a Door\n");
