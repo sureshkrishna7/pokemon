@@ -43,7 +43,7 @@ public class PokemonGame extends Application {
   private static boolean foundPokemon;
   private static boolean wonBattle;
   private static final double encounterChance = 0.6;
-  private static CobvilleTown localView, town;
+  private static CobvilleTown cobvilleTown, town;
   private static BorderPane pane;
   private static char gameLogic;
   private static Observer currentView, imageView, textAreaView;
@@ -89,9 +89,9 @@ public class PokemonGame extends Application {
 
 
     pane = new BorderPane();
-    localView = new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
+    cobvilleTown = new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
     //localView.setOnKeyReleased(new AnimateStarter());
-    pane.setCenter(localView);
+    pane.setCenter(cobvilleTown);
     System.out.println(theGame.getTrainerLocation());
     //localView.setPlayerLocation(theGame.getTrainerLocation());
     Scene scene = new Scene(pane, 600, 300);
@@ -104,7 +104,7 @@ public class PokemonGame extends Application {
   public class StartTimerButtonListener implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent event) {
-      localView.animate();
+      cobvilleTown.animate();
     }
   }
 
@@ -191,13 +191,20 @@ public class PokemonGame extends Application {
       // z is a char returned by theGame.playerMove() that's not used in map 
       // to represent an obj, thus can be used to detect null 
       if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {
-        localView.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
-        localView.movePlayer(event.getCode(), "over");
+    	  
+    	/*
+    	 * We need to setBackGroundImage() only after entering/exiting doors
+    	 */
+        //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+        cobvilleTown.movePlayer(event.getCode(), "over");
       }
-
+      
+      /*
+       * Draw character under Z and X objects
+       */
       else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
-        localView.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
-        localView.movePlayer(event.getCode(), "under");
+        //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+        cobvilleTown.movePlayer(event.getCode(), "under");
       }
 
     }
