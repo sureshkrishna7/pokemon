@@ -3,6 +3,8 @@ package model.Menus;
 import java.util.ArrayList;
 import java.util.Map;
 
+import controller.PokemonGame;
+import controller.StateMachine.IState;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -21,13 +23,16 @@ import model.Game;
 import model.Pokemon;
 import model.UsableItems.UsableItem;
 
-public class MainMenu {
+public class MainMenu implements IState {
   private static final Font FONT1 = Font.font("Serif",FontWeight.NORMAL, 18);
   private static final Font FONT2 = Font.font("Serif", FontWeight.BOLD, 26);
-  //private static final Font FONT = new Font("Courier", 18.0);
   private Scene scene;
+  private static Scene prevScene;
   private HBox menuBox;
   private int currentItem = 0;
+  private static MenuItem save;
+  private static MenuItem quit;
+  private static MenuItem exit;
   
   public MainMenu(Game theGame) {  
     scene = new Scene(getGameMenu(theGame));
@@ -81,14 +86,25 @@ public class MainMenu {
     Background background = new Background(fill);
     root.setBackground(background);
     System.out.println(text.getFont().toString());
-    MenuItem exit = new MenuItem("EXIT");
-    exit.setOnActivate(() -> System.exit(0));
-    menuBox = new HBox(10, new MenuItem("SAVE"), new MenuItem("QUIT"), exit);
+    
+    initMenuItems();
+    
+    menuBox = new HBox(10, save, exit, quit);
     menuBox.setPadding(new Insets(0, 0, 0, 80.0));
     root.getChildren().addAll(text, menuBox);
     root.setAlignment(text, Pos.TOP_CENTER);
     root.setAlignment(menuBox, Pos.BOTTOM_CENTER);
     return root;
+  }
+  
+  private static void initMenuItems() {
+    save = new MenuItem("Save");
+    exit = new MenuItem("Exit Menu");
+    //exit.setOnActivate();
+    
+    quit = new MenuItem("Quit");
+    quit.setOnActivate(() -> System.exit(0));
+    
   }
   
   private static class MenuItem extends HBox {
@@ -124,6 +140,27 @@ public class MainMenu {
 
   private MenuItem getMenuItem(int index) {
     return (MenuItem)menuBox.getChildren().get(index);
+  }
+
+  @Override
+  public void update(float elapsedTime) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public Scene render() {
+    return this.scene;
+  }
+
+  @Override
+  public void onEnter() {
+    prevScene = PokemonGame.scene;
+  }
+
+  @Override
+  public void onExit() {
+    PokemonGame.primaryStage.setScene(prevScene);
   }
   
   
