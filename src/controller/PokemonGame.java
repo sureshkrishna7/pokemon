@@ -17,8 +17,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Battle;
 import model.Game;
@@ -32,6 +30,7 @@ import model.UsableItems.UsableItem;
 
 public class PokemonGame extends Application {
 
+  public static Stage primaryStage;
   private static Scanner sc;
   private static Game theGame;
   private static Point playerStartLocation = new Point();
@@ -83,8 +82,11 @@ public class PokemonGame extends Application {
     //localView.setPlayerLocation(theGame.getTrainerLocation());
     Scene scene = new Scene(pane, 600, 300);
     scene.setOnKeyReleased(new AnimateStarter());
+    //stage.setScene(scene);
     stage.setScene(menu.getScene());
     stage.show();
+    
+    primaryStage = stage;
   }
 
   // Add a listener that will start the Timeline's animation 
@@ -327,44 +329,4 @@ public class PokemonGame extends Application {
     Optional<ButtonType> result = statSheet.showAndWait();
 
   }
-
-  /*
-   * getGameMenu() -- method that creates an Alert with AlertType.INFORMATION. Can
-   * be opened at any time during the game (any map). Will display: Trainer's list
-   * of Pokemon, Trainer's items in inventory.
-   * 
-   * Considering displaying NPCs encountered. And a count? ie <count
-   * encountered>/<total num NPCs>
-   * 
-   * Also will have save button, will need to be linked with persistence logic.
-   * 
-   */
-  
-  private Scene getGameMenu() {
-    menu = new MainMenu(theGame);
-    return menu.getScene();
-    /*StringBuilder sb = new StringBuilder();
-    ButtonType save = new ButtonType("Save Game?", ButtonBar.ButtonData.OK_DONE);
-
-    sb.append("Pokemon: \n");
-    for (Pokemon p : theGame.getTrainer().getPokeList()) {
-      sb.append(p.getData());
-    }
-    sb.append("\nItems: \n");
-    for (Map.Entry<String, ArrayList<UsableItem>> entry : theGame.getTrainer().getInventory().entrySet()) {
-      sb.append("\t" + entry.getKey() + " " + entry.getValue().size() + "\n");
-    }
-    Alert gameMenu = new Alert(AlertType.INFORMATION, sb.toString(), save);
-    gameMenu.setTitle("Game Menu");
-    gameMenu.setHeaderText(theGame.getTrainer().getName());
-    gameMenu.dialogPaneProperty().set(new DialogPane());
-    Optional<ButtonType> result = gameMenu.showAndWait();
-    //gameMenu.notify();
-     * 
-     */
-  }
-   
-
-
-
 }
