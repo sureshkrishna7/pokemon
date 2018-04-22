@@ -6,9 +6,11 @@ import org.junit.Test;
 import model.Battle;
 import model.Pokemon;
 import model.Trainer;
+import model.NPC.Anika;
 import model.NPC.Joffrey;
+import model.NPC.Tain;
 
-public class WildPokemonBattleTest {
+public class BattleTests {
   
   boolean invalid;
   boolean lost;
@@ -30,13 +32,32 @@ public class WildPokemonBattleTest {
   }
   
   @Test
-  public void battleWithNPC() {
+  public void battleWithTain() {
+    Trainer guy = new Trainer("Andrew");
+    guy.addPokemon(p1);
+    guy.addPokemon(p2);
+    guy.addPokemon(p3);
+    Tain tain = new Tain("Tain", true);
+    Battle.battle(guy, tain, in); 
+  }
+  
+  //@Test
+  public void battleWithAnika() {
+    Trainer guy = new Trainer("Andrew");
+    guy.addPokemon(p1);
+    guy.addPokemon(p2);
+    guy.addPokemon(p3);
+    Anika anika = new Anika("Anika", true);
+    Battle.battle(guy, anika, in); 
+  }
+  
+  //@Test
+  public void battleWithJoffrey() {
     Trainer guy = new Trainer("Andrew");
     guy.addPokemon(p1);
     guy.addPokemon(p2);
     guy.addPokemon(p3);
     Joffrey joff = new Joffrey("Joffrey", true);
-    joff.getCurPokemon().setCurHP(100);
     Battle.battle(guy, joff, in); 
   }
   

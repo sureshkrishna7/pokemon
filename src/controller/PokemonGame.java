@@ -90,10 +90,7 @@ public class PokemonGame extends Application {
 
     pane = new BorderPane();
     cobvilleTown = new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
-    //localView.setOnKeyReleased(new AnimateStarter());
     pane.setCenter(cobvilleTown);
-    System.out.println(theGame.getTrainerLocation());
-    //localView.setPlayerLocation(theGame.getTrainerLocation());
     Scene scene = new Scene(pane, cobvilleTown.getCameraViewWidth(), cobvilleTown.getCameraViewHeight());
     scene.setOnKeyReleased(new AnimateStarter());
     stage.setScene(scene);

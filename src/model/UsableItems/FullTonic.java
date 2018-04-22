@@ -34,8 +34,18 @@ public class FullTonic extends Items implements UsableItem {
 
   @Override
   public String use(NPC npc, Pokemon p) {
-    // TODO Auto-generated method stub
-    return null;
+    int restored = 0;
+    
+    npc.getInventory().get("full tonic").remove(0);
+    if(p.getCurHP() + 500 > p.getMaxHP()) {
+      restored = p.getMaxHP() - p.getCurHP();
+      p.setCurHP(p.getMaxHP());
+    }
+    else {
+      p.setCurHP(p.getCurHP() + 500);
+      restored = 500;
+    }
+    return restored + "HP restored!";
   }
 
 }
