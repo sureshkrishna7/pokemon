@@ -13,21 +13,17 @@ import controller.StateMachine.StateStack;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
 import javafx.stage.Stage;
 import model.Battle;
 import model.Game;
 import model.Pokemon;
-import model.SafariEncounter;
 import model.MainMap.Door;
 import model.MainMap.MainMap;
 import model.Menus.MainMenu;
@@ -37,6 +33,8 @@ import model.UsableItems.UsableItem;
 
 public class PokemonGame extends Application {
 
+  private final double cameraViewSize = 20 * 16;
+  
   public static Stage primaryStage;
   public static Scene scene;
   
@@ -79,14 +77,16 @@ public class PokemonGame extends Application {
   @Override
   public void start(Stage stage) throws Exception {
 
+    // initialization 
     initializeGameForFirstTime();
     initStateMachine();
     stateStack = new StateStack(theGame);
     
     stateStack.push("mainMenu");
     menu = new MainMenu(theGame);
-
-    // getSafariStatSheet();
+    menu.onEnter();
+    
+    System.out.println(menu.getScene());
 
     pane = new BorderPane();
     cobvilleTown = new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
@@ -95,11 +95,12 @@ public class PokemonGame extends Application {
     System.out.println(theGame.getTrainerLocation());
     // localView.setPlayerLocation(theGame.getTrainerLocation());
     scene = new Scene(pane, cobvilleTown.getCameraViewWidth(), cobvilleTown.getCameraViewHeight());
+    menu.onEnter();
+    System.out.println(scene);
     scene.setOnKeyReleased(new AnimateStarter());
     scene.setOnKeyPressed(new KeyHandler());
     
     stage.setScene(scene);
-    //stage.setScene(stateStack.pop().render());
     
     stage.show();
 
