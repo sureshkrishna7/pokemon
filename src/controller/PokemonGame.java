@@ -112,7 +112,7 @@ public class PokemonGame extends Application {
   private class AnimateStarter implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent event) {
-      System.out.println("Animate Starter in PokemonGame.java line 95");
+      System.out.println("Animate Starter in PokemonGame.java line 115");
 
       /**
        * NOTE: If user inputs moves too fast, the player will move 
@@ -148,9 +148,11 @@ public class PokemonGame extends Application {
     	  theGame.setTrainerLocation(playerOldLocation);
     	  theGame.setCurrCameraMap(oldCurrentMap);
     	  theGame.weAreOutSafariZone();
+      }else {
+    	  //System.out.println("---KeyCode ------  " +  event.getCode());
       }
 
-      
+      //System.out.println("Game logic = " + newLocationObject);
       
       if (newLocationObject == 'D') {
         System.out.print("Encountered a Door\n");
@@ -210,16 +212,16 @@ public class PokemonGame extends Application {
     	 */
         //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
     	  cobvilleTown.setPlayerLocation(theGame.getTrainerLocation());
-        cobvilleTown.movePlayer(event.getCode(), "over");
+    	  cobvilleTown.movePlayer(event.getCode(), "over");
       }
       
       /*
-       * Draw character under Z and X objects
+       * Draw character under X objects
        */
       else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
         //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
     	  cobvilleTown.setPlayerLocation(theGame.getTrainerLocation());
-        cobvilleTown.movePlayer(event.getCode(), "under");
+    	  cobvilleTown.movePlayer(event.getCode(), "under");
       }
 
     }
