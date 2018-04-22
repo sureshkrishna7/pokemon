@@ -10,12 +10,15 @@ import model.Game;
 import model.Menus.MainMenu;
 
 public class StateStack implements IState {
+  // hash map of states, keys as strings, IState objects as values
   private Map<String, IState> mStates;
+  // the stack we will use to keep track of states
   private List<IState> stack;
   private IState top;
   private Scene scene;
   
   public StateStack(Game theGame) {
+    // constructor initializes HashMap and Stack
     mStates = new HashMap<>();
     mStates.put("mainMenu", new MainMenu(theGame));
     stack = new Stack<>();

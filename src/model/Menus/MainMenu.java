@@ -100,7 +100,9 @@ public class MainMenu implements IState {
   private static void initMenuItems() {
     save = new MenuItem("Save");
     exit = new MenuItem("Exit Menu");
-    //exit.setOnActivate();
+    exit.setOnActivate(() -> {
+      PokemonGame.primaryStage.setScene(prevScene);
+    });
     
     quit = new MenuItem("Quit");
     quit.setOnActivate(() -> System.exit(0));
