@@ -30,6 +30,7 @@ import model.Pokemon;
 import model.SafariEncounter;
 import model.MainMap.Door;
 import model.MainMap.MainMap;
+import model.Menus.MainMenu;
 import model.UsableItems.UsableItem;
 
 //Simply Create the User and insert User into PokeTownMap, the rest of the maps will be embedded within PokeTownMap
@@ -89,16 +90,12 @@ public class PokemonGame extends Application {
     // getSafariStatSheet();
 
     pane = new BorderPane();
-    cobvilleTown = new PlayerAnimation(theGame.getTrainerLocation(), theGame.getCurrCameraMap());
+    cobvilleTown = new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
 
-    // localView = new CobvilleTown(theGame.getTrainerLocation(),
-    // theGame.getCurrCameraMap().getMapImage());
-
-    // localView.setOnKeyReleased(new AnimateStarter());
     pane.setCenter(cobvilleTown);
     System.out.println(theGame.getTrainerLocation());
     // localView.setPlayerLocation(theGame.getTrainerLocation());
-    scene = new Scene(pane, 600, 300);
+    scene = new Scene(pane, cobvilleTown.getCameraViewWidth(), cobvilleTown.getCameraViewHeight());
     scene.setOnKeyReleased(new AnimateStarter());
     scene.setOnKeyPressed(new KeyHandler());
     
@@ -179,10 +176,6 @@ public class PokemonGame extends Application {
 
       //System.out.println("Game logic = " + newLocationObject);
       
-        theGame.setTrainerLocation(playerOldLocation);
-        theGame.setCurrCameraMap(oldCurrentMap);
-        theGame.weAreOutSafariZone();
-      }
 
       if (newLocationObject == 'D') {
         System.out.print("Encountered a Door\n");
