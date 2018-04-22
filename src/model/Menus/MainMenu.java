@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import controller.PokemonGame;
+import controller.StateMachine.IState;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -22,10 +23,11 @@ import model.Game;
 import model.Pokemon;
 import model.UsableItems.UsableItem;
 
-public class MainMenu {
+public class MainMenu implements IState {
   private static final Font FONT1 = Font.font("Serif",FontWeight.NORMAL, 18);
   private static final Font FONT2 = Font.font("Serif", FontWeight.BOLD, 26);
   private Scene scene;
+  private static Scene prevScene;
   private HBox menuBox;
   private int currentItem = 0;
   private static MenuItem save;
@@ -98,7 +100,7 @@ public class MainMenu {
   private static void initMenuItems() {
     save = new MenuItem("Save");
     exit = new MenuItem("Exit Menu");
-    
+    //exit.setOnActivate();
     
     quit = new MenuItem("Quit");
     quit.setOnActivate(() -> System.exit(0));
@@ -138,6 +140,27 @@ public class MainMenu {
 
   private MenuItem getMenuItem(int index) {
     return (MenuItem)menuBox.getChildren().get(index);
+  }
+
+  @Override
+  public void update(float elapsedTime) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public Scene render() {
+    return this.scene;
+  }
+
+  @Override
+  public void onEnter() {
+    prevScene = PokemonGame.scene;
+  }
+
+  @Override
+  public void onExit() {
+    PokemonGame.primaryStage.setScene(prevScene);
   }
   
   
