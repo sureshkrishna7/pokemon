@@ -1,10 +1,11 @@
 package controller.StateMachine;
 
-public interface IState
-{
-    public void Update(float elapsedTime);
-    public void Render();
-    public void OnEnter();
-    public void OnExit();
+import javafx.scene.Scene;
+
+public interface IState {
+    public void update(float elapsedTime);
+    public Scene render();
+    public void onEnter();
+    public void onExit();
 }
  

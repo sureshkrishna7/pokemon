@@ -7,6 +7,9 @@ import java.util.Observer;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
+
+import controller.StateMachine.StateMachine;
+import controller.StateMachine.StateStack;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -31,6 +34,8 @@ import model.UsableItems.UsableItem;
 public class PokemonGame extends Application {
 
   public static Stage primaryStage;
+  public static Scene scene;
+  
   private static Scanner sc;
   private static Game theGame;
   private static Point playerStartLocation = new Point();
@@ -43,6 +48,8 @@ public class PokemonGame extends Application {
   private static BorderPane pane;
   private static Observer currentView, imageView, textAreaView;
   private MainMenu menu;
+  private StateStack stateStack;
+  private StateMachine stateMachine;
 
   public static void main(String[] args) {
     launch(args);
@@ -63,33 +70,62 @@ public class PokemonGame extends Application {
     wonBattle = false;
   }
 
-
   @Override
   public void start(Stage stage) throws Exception {
-    
+
     initializeGameForFirstTime();
+    initStateMachine();
+    stateStack = new StateStack(theGame);
+    
+    stateStack.push("mainMenu");
     menu = new MainMenu(theGame);
-    //getSafariStatSheet();
+
+    // getSafariStatSheet();
 
     pane = new BorderPane();
     cobvilleTown = new PlayerAnimation(theGame.getTrainerLocation(), theGame.getCurrCameraMap());
 
-    //localView = new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
+    // localView = new CobvilleTown(theGame.getTrainerLocation(),
+    // theGame.getCurrCameraMap().getMapImage());
 
-    //localView.setOnKeyReleased(new AnimateStarter());
+    // localView.setOnKeyReleased(new AnimateStarter());
     pane.setCenter(cobvilleTown);
     System.out.println(theGame.getTrainerLocation());
-    //localView.setPlayerLocation(theGame.getTrainerLocation());
-    Scene scene = new Scene(pane, 600, 300);
+    // localView.setPlayerLocation(theGame.getTrainerLocation());
+    scene = new Scene(pane, 600, 300);
     scene.setOnKeyReleased(new AnimateStarter());
-    //stage.setScene(scene);
-    stage.setScene(menu.getScene());
-    stage.show();
+    scene.setOnKeyPressed(new KeyHandler());
     
+    stage.setScene(scene);
+    //stage.setScene(stateStack.pop().render());
+    
+    stage.show();
+
     primaryStage = stage;
   }
+  
+  private void initStateMachine() {
+    stateMachine = new StateMachine();
+    
+    // adding to HashMap
+    stateMachine.add("mainMenu", new MainMenu(theGame));
+    
+    
+  }
 
-  // Add a listener that will start the Timeline's animation 
+  public class KeyHandler implements EventHandler<KeyEvent>{
+
+    @Override
+    public void handle(KeyEvent event) {
+      if(event.getCode() == KeyCode.M) {
+        // add to stack mainMenu, representing MainMenu object in Hashmap
+        stateStack.push("mainMenu");
+        PokemonGame.primaryStage.setScene(stateStack.pop().render());
+      }
+    }
+  }
+
+  // Add a listener that will start the Timeline's animation
   public class StartTimerButtonListener implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent event) {
@@ -97,66 +133,58 @@ public class PokemonGame extends Application {
     }
   }
 
-  // Add a listener that will start the Timeline's animation 
+  // Add a listener that will start the Timeline's animation
   private class AnimateStarter implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent event) {
       System.out.println("Animate Starter in PokemonGame.java line 95");
 
       /**
-       * NOTE: If user inputs moves too fast, the player will move 
-       * on the grid faster than the animation timeline can draw the image, 
-       * and will crash (runs into things on grid before image).
-       * So if animation is on, ignore button clicked
+       * NOTE: If user inputs moves too fast, the player will move on the grid faster
+       * than the animation timeline can draw the image, and will crash (runs into
+       * things on grid before image). So if animation is on, ignore button clicked
        */
       if (cobvilleTown.isTimelineAnimating()) {
-    	  return;
+        return;
       }
-      
-      
+
       char newLocationObject = 'Z';
       if (KeyCode.UP == event.getCode()) {
         newLocationObject = theGame.playerMove('n');
-      }
-      else if (KeyCode.DOWN == event.getCode()) {
+      } else if (KeyCode.DOWN == event.getCode()) {
         newLocationObject = theGame.playerMove('s');
-      }
-      else if (KeyCode.LEFT == event.getCode()) {
+      } else if (KeyCode.LEFT == event.getCode()) {
         newLocationObject = theGame.playerMove('w');
-      }
-      else if (KeyCode.RIGHT == event.getCode()) {
+      } else if (KeyCode.RIGHT == event.getCode()) {
         newLocationObject = theGame.playerMove('e');
-      }
-      else if (KeyCode.S == event.getCode() && theGame.getCurrCameraMap() != theGame.getFryslaSafariZone()) {
-    	  playerOldLocation = theGame.getTrainerLocation();
-    	  oldCurrentMap = theGame.getCurrCameraMap();
-    	  theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
-    	  theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
-          theGame.weAreInSafariZone();
+      } else if (KeyCode.S == event.getCode() && theGame.getCurrCameraMap() != theGame.getFryslaSafariZone()) {
+        playerOldLocation = theGame.getTrainerLocation();
+        oldCurrentMap = theGame.getCurrCameraMap();
+        theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
+        theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
+        theGame.weAreInSafariZone();
       } else if (KeyCode.P == event.getCode() && theGame.getCurrCameraMap() == theGame.getFryslaSafariZone()) {
-    	  theGame.setTrainerLocation(playerOldLocation);
-    	  theGame.setCurrCameraMap(oldCurrentMap);
-    	  theGame.weAreOutSafariZone();
+        theGame.setTrainerLocation(playerOldLocation);
+        theGame.setCurrCameraMap(oldCurrentMap);
+        theGame.weAreOutSafariZone();
       }
 
-      
-      
       if (newLocationObject == 'D') {
         System.out.print("Encountered a Door\n");
         playerOldLocation.x = theGame.getTrainerLocation().x;
         playerOldLocation.y = theGame.getTrainerLocation().y;
         oldCurrentMap = theGame.getCurrCameraMap();
 
-        Door door = (Door) theGame.getCurrCameraMap().enteredDoor(theGame.getTrainerLocation().x, theGame.getTrainerLocation().y);
+        Door door = (Door) theGame.getCurrCameraMap().enteredDoor(theGame.getTrainerLocation().x,
+            theGame.getTrainerLocation().y);
 
-        /* 
-         * ****We would be in safari Zone if the door is null****
-         * ****Because we magically hop to different places****
+        /*
+         * ****We would be in safari Zone if the door is null**** ****Because we
+         * magically hop to different places****
          */
-        if(door == null) {
+        if (door == null) {
           theGame.setTrainerLocation(theGame.getCurrCameraMap().getMapPlayerPosition());
-        }
-        else {
+        } else {
           theGame.setCurrCameraMap(door);
           theGame.setTrainerLocation(door.getMapPlayerPosition());
         }
@@ -165,8 +193,7 @@ public class PokemonGame extends Application {
         theGame.setTrainerLocation(playerOldLocation);
         theGame.setCurrCameraMap(oldCurrentMap);
         cobvilleTown.drawOutOfDoor();
-      } 
-      else if (newLocationObject == 'S') {
+      } else if (newLocationObject == 'S') {
         playerOldLocation = theGame.getTrainerLocation();
         oldCurrentMap = theGame.getCurrCameraMap();
         theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
@@ -186,23 +213,22 @@ public class PokemonGame extends Application {
         if (foundPokemon) {
           Pokemon wildPoke = getWildPoke();
           wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
-        }
-        else if (newLocationObject == 'N') {
+        } else if (newLocationObject == 'N') {
           System.out.print("Encountered a NPC\n");
-        } 
+        }
       }
 
-      // z is a char returned by theGame.playerMove() that's not used in map 
-      // to represent an obj, thus can be used to detect null 
+      // z is a char returned by theGame.playerMove() that's not used in map
+      // to represent an obj, thus can be used to detect null
       if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {
-    	  
-    	/*
-    	 * We need to setBackGroundImage() only after entering/exiting doors
-    	 */
+
+        /*
+         * We need to setBackGroundImage() only after entering/exiting doors
+         */
         cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
         cobvilleTown.movePlayer(event.getCode(), "over");
       }
-      
+
       /*
        * Draw character under Z and X objects
        */
@@ -213,7 +239,6 @@ public class PokemonGame extends Application {
 
     }
   }
-
 
   /*
    * getWildPoke() -- after checkBush() returns true (it found a Pokemon), this
