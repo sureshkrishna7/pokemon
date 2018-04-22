@@ -51,7 +51,6 @@ public class PokemonGame extends Application {
   private static final double encounterChance = 0.6;
   private static CobvilleTown cobvilleTown, town;
   private static BorderPane pane;
-  private static char gameLogic;
   private static Observer currentView, imageView, textAreaView;
   private MainMenu menu;
   private StateStack stateStack;
@@ -196,11 +195,11 @@ public class PokemonGame extends Application {
           theGame.setCurrCameraMap(door);
           theGame.setTrainerLocation(door.getMapPlayerPosition());
         }
-      } else if (gameLogic == ' ') {
+      } else if (newLocationObject == ' ') {
         theGame.setTrainerLocation(playerOldLocation);
         theGame.setCurrCameraMap(oldCurrentMap);
       } 
-      else if (gameLogic == 'S') {
+      else if (newLocationObject == 'S') {
         playerOldLocation = theGame.getTrainerLocation();
         oldCurrentMap = theGame.getCurrCameraMap();
         theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
@@ -215,13 +214,13 @@ public class PokemonGame extends Application {
 
         // bush, check will battle at random, start battle with randomly instantiated
         // Pokemon
-      } else if (gameLogic == 'B') {
+      } else if (newLocationObject == 'B') {
         foundPokemon = checkBush();
         if (foundPokemon) {
           Pokemon wildPoke = getWildPoke();
           wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
         }
-        else if (gameLogic == 'N') {
+        else if (newLocationObject == 'N') {
           System.out.print("Encountered a NPC\n");
         }
       }
@@ -248,10 +247,6 @@ public class PokemonGame extends Application {
       }
 
     }
-  }
-
-  public static char getUserInputChar() {
-    return gameLogic;
   }
 
   /*
