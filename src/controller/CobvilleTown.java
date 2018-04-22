@@ -275,6 +275,40 @@ public class CobvilleTown extends Canvas {
             g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromTopBoundary, dw, dh);
         	//closeToTopPictureBounderSteps--;
         }
+        else if(row > 20 && col <= 10 && keyCode == KeyCode.UP) {
+        	//System.out.println("Both out of bounds ");
+        	closeToBottomPictureBounderSteps--;
+        	playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
+        	playerPixelsFromBottomBoundary = (cameraViewSize / 2.0) + ((closeToBottomPictureBounderSteps * 16) / 3.0);
+        	//lastValidPlayerDX = dx;
+       	 	g2D.drawImage(background,   lastValidPlayerDX - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0),  cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+       	 	g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromBottomBoundary, dw, dh);
+        }
+        else if(row > 20 && col <= 10 && keyCode == KeyCode.DOWN) {
+        	//System.out.println("Both out of bounds ");
+        	closeToBottomPictureBounderSteps++;
+        	playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
+        	playerPixelsFromBottomBoundary = (cameraViewSize / 2.0) + ((closeToBottomPictureBounderSteps * 16) / 3.0);
+        	//lastValidPlayerDX = dx;
+       	 	g2D.drawImage(background,   lastValidPlayerDX - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0),  cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+       	 	g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromBottomBoundary, dw, dh);
+        }
+        else if(row > 20 && col <= 10 && keyCode == KeyCode.LEFT) {
+        	//System.out.println("Both out of bounds ");
+        	closeToLeftPictureBounderSteps++;
+        	playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
+        	playerPixelsFromBottomBoundary = (cameraViewSize / 2.0) + ((closeToBottomPictureBounderSteps * 16) / 3.0);
+        	//lastValidPlayerDX = dx;
+       	 	g2D.drawImage(background,   lastValidPlayerDX - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0),  cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+       	 	g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromBottomBoundary, dw, dh);
+        }
+        else if(row > 20 && col <= 10 && keyCode == KeyCode.RIGHT) {
+        	closeToLeftPictureBounderSteps--;
+        	playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
+        	playerPixelsFromBottomBoundary = (cameraViewSize / 2.0) + ((closeToBottomPictureBounderSteps * 16) / 3.0);
+       	 	g2D.drawImage(background,   lastValidPlayerDX - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0),  cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+       	 	g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromBottomBoundary, dw, dh);
+        }
         else if (row <= 10 && keyCode == KeyCode.UP) {
         	closeToTopPictureBounderSteps++;
         	playerPixelsFromTopBoundary = (cameraViewSize / 2.0) - ((closeToTopPictureBounderSteps * 16) / 3.0);
