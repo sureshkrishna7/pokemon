@@ -244,132 +244,80 @@ public class CobvilleTown extends Canvas {
         int col = playerLocation.y;
         if (row <= 10 && col <= 10 && keyCode == KeyCode.UP) {
         	closeToTopPictureBounderSteps++;
-        	playerPixelsFromTopBoundary  = (cameraViewSize / 2.0) - ((closeToTopPictureBounderSteps * 16) / 3.0);
-        	playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
-            g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-            g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromTopBoundary, dw, dh);
-        	//closeToLeftPictureBounderSteps++;
+        	animateImage("left, top", "last Valid DX and DY");
         }
         else if (row <= 10 && col <= 10 && keyCode == KeyCode.DOWN) {
         	closeToTopPictureBounderSteps--;
-        	playerPixelsFromTopBoundary  = (cameraViewSize / 2.0) - ((closeToTopPictureBounderSteps * 16) / 3.0);
-        	playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
-            g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-            g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromTopBoundary, dw, dh);
-        
-        	//closeToLeftPictureBounderSteps++;
+        	animateImage("left, top", "last Valid DX and DY");
         }
         else if (row <= 10 && col <= 10 && keyCode == KeyCode.RIGHT) {
         	closeToLeftPictureBounderSteps--;
-        	playerPixelsFromTopBoundary  = (cameraViewSize / 2.0) - ((closeToTopPictureBounderSteps * 16) / 3.0);
-        	playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
-            g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-            g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromTopBoundary, dw, dh);
-        	//closeToTopPictureBounderSteps--;
+        	animateImage("left, top", "last Valid DX and DY");
         }
         else if (row <= 10 && col <= 10 && keyCode == KeyCode.LEFT) {
         	closeToLeftPictureBounderSteps++;
-        	playerPixelsFromTopBoundary  = (cameraViewSize / 2.0) - ((closeToTopPictureBounderSteps * 16) / 3.0);
-        	playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
-            g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-            g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromTopBoundary, dw, dh);
-        	//closeToTopPictureBounderSteps--;
+        	animateImage("left, top", "last Valid DX and DY");
         }
         else if(row > 20 && col <= 10 && keyCode == KeyCode.UP) {
-        	//System.out.println("Both out of bounds ");
         	closeToBottomPictureBounderSteps--;
-        	playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
-        	playerPixelsFromBottomBoundary = (cameraViewSize / 2.0) + ((closeToBottomPictureBounderSteps * 16) / 3.0);
-        	//lastValidPlayerDX = dx;
-       	 	g2D.drawImage(background,   lastValidPlayerDX - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0),  cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-       	 	g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromBottomBoundary, dw, dh);
+        	animateImage("left, bottom", "last Valid DX and DY");
         }
         else if(row > 20 && col <= 10 && keyCode == KeyCode.DOWN) {
-        	//System.out.println("Both out of bounds ");
         	closeToBottomPictureBounderSteps++;
-        	playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
-        	playerPixelsFromBottomBoundary = (cameraViewSize / 2.0) + ((closeToBottomPictureBounderSteps * 16) / 3.0);
-        	//lastValidPlayerDX = dx;
-       	 	g2D.drawImage(background,   lastValidPlayerDX - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0),  cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-       	 	g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromBottomBoundary, dw, dh);
+        	animateImage("left, bottom", "last Valid DX and DY");
         }
         else if(row > 20 && col <= 10 && keyCode == KeyCode.LEFT) {
-        	//System.out.println("Both out of bounds ");
         	closeToLeftPictureBounderSteps++;
-        	playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
-        	playerPixelsFromBottomBoundary = (cameraViewSize / 2.0) + ((closeToBottomPictureBounderSteps * 16) / 3.0);
-        	//lastValidPlayerDX = dx;
-       	 	g2D.drawImage(background,   lastValidPlayerDX - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0),  cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-       	 	g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromBottomBoundary, dw, dh);
+        	animateImage("left, bottom", "last Valid DX and DY");
         }
         else if(row > 20 && col <= 10 && keyCode == KeyCode.RIGHT) {
         	closeToLeftPictureBounderSteps--;
-        	playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
-        	playerPixelsFromBottomBoundary = (cameraViewSize / 2.0) + ((closeToBottomPictureBounderSteps * 16) / 3.0);
-       	 	g2D.drawImage(background,   lastValidPlayerDX - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0),  cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-       	 	g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromBottomBoundary, dw, dh);
+        	animateImage("left, bottom", "last Valid DX and DY");
         }
         else if (row <= 10 && keyCode == KeyCode.UP) {
         	closeToTopPictureBounderSteps++;
-        	playerPixelsFromTopBoundary = (cameraViewSize / 2.0) - ((closeToTopPictureBounderSteps * 16) / 3.0);
-            g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-            g2D.drawImage(character, sx, sy, sw, sh, (cameraViewSize / 2.0), playerPixelsFromTopBoundary, dw, dh);
+        	animateImage("cam/2, top", "last Valid DX and DY");
         }
         else if(row <= 10 && keyCode == KeyCode.DOWN){
         	closeToTopPictureBounderSteps--;
-       	 	playerPixelsFromTopBoundary = (cameraViewSize / 2.0) - ((closeToTopPictureBounderSteps * 16) / 3.0);
-       	 	g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-       	 	g2D.drawImage(character, sx, sy, sw, sh, (cameraViewSize / 2.0), playerPixelsFromTopBoundary, dw, dh);
+        	animateImage("cam/2, top", "last Valid DX and DY");
         }
+        
         else if(row <= 10 && keyCode == KeyCode.LEFT) {
         	lastValidPlayerDX = dx;
-       	 	g2D.drawImage(background, dx - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-       	 	g2D.drawImage(character, sx, sy, sw, sh, (cameraViewSize / 2.0), playerPixelsFromTopBoundary, dw, dh);
+        	animateImage("cam/2, top", "dx and last Valid DY");
         }
         else if(row <= 10 && keyCode == KeyCode.RIGHT) {
         	lastValidPlayerDX = dx;
-       	 	g2D.drawImage(background, dx - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-       	 	g2D.drawImage(character, sx, sy, sw, sh, (cameraViewSize / 2.0), playerPixelsFromTopBoundary, dw, dh);
+        	animateImage("cam/2, top", "dx and last Valid DY");
         }
         else if(col <= 10 && keyCode == KeyCode.LEFT) {
-        	closeToLeftPictureBounderSteps++;
-        	playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
         	lastValidPlayerDY = dy;
-       	 	g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  dy - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-       	 	g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, cameraViewSize / 2.0, dw, dh);
+        	closeToLeftPictureBounderSteps++;
+        	animateImage("left, cam/2", "last Valid DX and dy");
         }
         else if(col <= 10 && keyCode == KeyCode.RIGHT) {
-        	closeToLeftPictureBounderSteps--;
-        	playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
         	lastValidPlayerDY = dy;
-       	 	g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  dy - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-       	 	g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, cameraViewSize / 2.0, dw, dh);
+        	closeToLeftPictureBounderSteps--;
+        	animateImage("left, cam/2", "last Valid DX and dy");
         }
         else if(col <= 10 && keyCode == KeyCode.UP) {
-        	playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
         	lastValidPlayerDY = dy;
-       	 	g2D.drawImage(background,  lastValidPlayerDX - (cameraViewSize / 2.0), dy - (cameraViewSize / 2.0),cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-       	 	g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, cameraViewSize / 2.0, dw, dh);
+        	animateImage("left, cam/2", "last Valid DX and dy");
         }
         else if(col <= 10 && keyCode == KeyCode.DOWN) {
-        	playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
         	lastValidPlayerDY = dy;
-       	 	g2D.drawImage(background,  lastValidPlayerDX - (cameraViewSize / 2.0),dy - (cameraViewSize / 2.0),  cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-       	 	g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, cameraViewSize / 2.0, dw, dh);
+        	animateImage("left, cam/2", "last Valid DX and dy");
         }
         else if(row > 20 && keyCode == KeyCode.DOWN) {
-        	closeToBottomPictureBounderSteps++;
-        	playerPixelsFromBottomBoundary = (cameraViewSize / 2.0) + ((closeToBottomPictureBounderSteps * 16) / 3.0);
         	lastValidPlayerDX = dx;
-       	 	g2D.drawImage(background,  dx - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0),  cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-       	 	g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, playerPixelsFromBottomBoundary, dw, dh);
+        	closeToBottomPictureBounderSteps++;
+        	animateImage("cam/2, bottom", "dx and last Valid DY");
         }
         else if(row > 20 && keyCode == KeyCode.UP) {
-        	closeToBottomPictureBounderSteps--;
-        	playerPixelsFromBottomBoundary = (cameraViewSize / 2.0) + ((closeToBottomPictureBounderSteps * 16) / 3.0);
         	lastValidPlayerDX = dx;
-       	 	g2D.drawImage(background,  dx - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0),  cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-       	 	g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, playerPixelsFromBottomBoundary, dw, dh);
+        	closeToBottomPictureBounderSteps--;
+        	animateImage("cam/2, bottom", "dx and last Valid DY");
         }
        
         /**
@@ -377,10 +325,8 @@ public class CobvilleTown extends Canvas {
          * so we only have to worry about the case where close to south boundary
          */
         else if(row > 20 && (keyCode == KeyCode.LEFT ||  keyCode == KeyCode.RIGHT)) {
-        	playerPixelsFromBottomBoundary = (cameraViewSize / 2.0) + ((closeToBottomPictureBounderSteps * 16) / 3.0);
         	lastValidPlayerDX = dx;
-       	 	g2D.drawImage(background,   dx - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0),  cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-       	 	g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, playerPixelsFromBottomBoundary, dw, dh);
+        	animateImage("cam/2, bottom", "dx and last Valid DY");
         }
         else {
         	closeToTopPictureBounderSteps = 0;
@@ -414,6 +360,58 @@ public class CobvilleTown extends Canvas {
 	}
 	public double getCameraViewWidth() {
 		return cameraViewSize;
+	}
+
+	public void animateImage(String playerDrawStrategy, String dXOrDyDrawStrategy) {
+		
+		playerPixelsFromTopBoundary  = (cameraViewSize / 2.0) - ((closeToTopPictureBounderSteps * 16) / 3.0);
+		playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
+		playerPixelsFromBottomBoundary = (cameraViewSize / 2.0) + ((closeToBottomPictureBounderSteps * 16) / 3.0);
+		
+		if (dXOrDyDrawStrategy.equals("last Valid DX and DY")) {
+			if (playerDrawStrategy.equals("cam/2, top")) {
+				g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+				g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, playerPixelsFromTopBoundary, dw, dh);
+			}
+			else if (playerDrawStrategy.equals("cam/2, bottom")) {
+				g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+				g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, playerPixelsFromBottomBoundary, dw, dh);
+			}
+			else if (playerDrawStrategy.equals("cam/2, cam/2")) {
+				g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+				g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, cameraViewSize / 2.0, dw, dh);
+			}
+			else if (playerDrawStrategy.equals("left, cam/2")) {
+				g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+				g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, cameraViewSize / 2.0, dw, dh);
+			}
+			else if (playerDrawStrategy.equals("left, top")) {
+				g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+				g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromTopBoundary, dw, dh);
+			}
+			else if (playerDrawStrategy.equals("left, bottom")) {
+				g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+				g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromBottomBoundary, dw, dh);
+			}
+		}
+		else if (dXOrDyDrawStrategy.equals("last Valid DX and dy")) {
+			if (playerDrawStrategy.equals("left, cam/2")) {
+				g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  dy - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+				g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, cameraViewSize / 2.0, dw, dh);
+			}
+		}
+		else if (dXOrDyDrawStrategy.equals("dx and last Valid DY")) {
+			if (playerDrawStrategy.equals("cam/2, top")) {
+				g2D.drawImage(background, dx - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+				g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, playerPixelsFromTopBoundary, dw, dh);
+			}
+			if (playerDrawStrategy.equals("cam/2, bottom")) {
+				g2D.drawImage(background, dx - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+				g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, playerPixelsFromBottomBoundary, dw, dh);
+			}
+		}
+
+
 	}
 	
 
