@@ -164,6 +164,11 @@ public class MainMenu implements IState {
   public void onExit() {
     PokemonGame.primaryStage.setScene(prevScene);
   }
+
+  @Override
+  public String getName() {
+    return "mainMenu";
+  }
   
   
 }

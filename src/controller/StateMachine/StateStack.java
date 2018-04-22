@@ -26,6 +26,10 @@ public class StateStack implements IState {
     stack = new Stack<>();
   }
   
+  public IState getState(String id) {
+    return mStates.get(id);
+  }
+  
   public List<IState> getStack(){
     return this.stack;
   }
@@ -37,6 +41,10 @@ public class StateStack implements IState {
   
   public IState pop() {
     return stack.remove(stack.size() - 1);
+  }
+  
+  public String peek() {
+    return stack.get(stack.size() - 1).getName();
   }
   
   @Override
@@ -63,4 +71,8 @@ public class StateStack implements IState {
     
   }
 
+  @Override
+  public String getName() {
+    return null;
+  }
 }

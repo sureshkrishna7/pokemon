@@ -8,8 +8,8 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
 
-import controller.StateMachine.StateMachine;
 import controller.StateMachine.StateStack;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -53,7 +53,6 @@ public class PokemonGame extends Application {
   private static Observer currentView, imageView, textAreaView;
   private MainMenu menu;
   private StateStack stateStack;
-  private StateMachine stateMachine;
 
   public static void main(String[] args) {
     launch(args);
@@ -78,86 +77,51 @@ public class PokemonGame extends Application {
   @Override
   public void start(Stage stage) throws Exception {
 
-    running = true;
     // initialization 
     initializeGameForFirstTime();
-    initStateMachine();
     stateStack = new StateStack(theGame);
     stateStack.push("cobTown");
     
-    //menu = new MainMenu(theGame);
-    /*
-    pane = new BorderPane();
-    cobvilleTown = new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
-    pane.setCenter(cobvilleTown);
-    System.out.println(theGame.getTrainerLocation());
-    scene = new Scene(pane, cobvilleTown.getCameraViewWidth(), cobvilleTown.getCameraViewHeight());
-    menu.onEnter();
-    */
     primaryStage = stage;
-    run();
     
-    //scene.setOnKeyReleased(new AnimateStarter());
-    //scene.setOnKeyPressed(new KeyHandler());
+    new AnimationTimer()
+    {
+        public void handle(long currentNanoTime)
+        {
+            render();
+        }
+    }.start();
     
-    // game loop here?
-    //stage.setScene(scene);
-    
-    //stage.show();
+    stage.show();
 
-    //primaryStage = stage;
   }
   
-  public void run() {
-    long lastTime = System.nanoTime();
-    final double amntTicks = 60.0;
-    double ns = 1000000000 / amntTicks;
-    double delta = 0;
-    int updates = 0;
-    int frames = 0;
-    long timer = System.currentTimeMillis();
-    while(running) {
-      long now = System.nanoTime();
-      delta += (now - lastTime) / ns;
-      lastTime = now;
-      if(delta >= 1) {
-        tick();
-        updates++;
-        delta--;
-      }
-      render();
-      frames++;
-      if(System.currentTimeMillis() - timer > 1000) {
-        timer += 1000;
-        System.out.println(updates + "Ticks ,Fps " + frames);
-        updates = 0;
-        frames = 0;
-      }
-    }
-  }
-
-
   private void tick() {
     // TODO Auto-generated method stub
     
   }
 
-
   private void render() {
+    
+    // if there is a state in the stateStack
     if(stateStack.getStack().size() > 0) {
-      primaryStage.setScene(stateStack.pop().render());
-      primaryStage.show();
+      System.out.println(stateStack.peek());
+      
+      // if that state is cobTown
+      if(stateStack.peek() == "cobTown") {
+        cobvilleTown = (CobvilleTown) stateStack.getState("cobTown");
+        scene = stateStack.pop().render();
+        scene.setOnKeyReleased(new AnimateStarter());
+        scene.setOnKeyPressed(new KeyHandler());
+      }
+      // if that state is mainMenu
+      else if (stateStack.peek() == "mainMenu") {
+        menu = (MainMenu) stateStack.getState("mainMenu");
+        menu.onEnter();
+        scene = stateStack.pop().render();
+      }
+      primaryStage.setScene(scene); 
     }
-    
-  }
-
-
-  private void initStateMachine() {
-    stateMachine = new StateMachine();
-    
-    // adding to HashMap
-    stateMachine.add("mainMenu", new MainMenu(theGame));
-    
     
   }
 
@@ -168,7 +132,7 @@ public class PokemonGame extends Application {
       if(event.getCode() == KeyCode.M) {
         // add to stack mainMenu, representing MainMenu object in Hashmap
         stateStack.push("mainMenu");
-        PokemonGame.primaryStage.setScene(stateStack.pop().render());
+        //PokemonGame.primaryStage.setScene(stateStack.pop().render());
       }
     }
   }
@@ -182,7 +146,7 @@ public class PokemonGame extends Application {
   }
 
   // Add a listener that will start the Timeline's animation
-  public class MainAnimateStarter implements EventHandler<KeyEvent> {
+  public class AnimateStarter implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent event) {
       System.out.println("Animate Starter in PokemonGame.java line 115");

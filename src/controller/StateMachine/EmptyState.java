@@ -27,4 +27,9 @@ public class EmptyState implements IState{
     
   }
 
+  @Override
+  public String getName() {
+    return "empty";
+  }
+
 }
