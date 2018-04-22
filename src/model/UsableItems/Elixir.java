@@ -32,7 +32,14 @@ public class Elixir extends Items implements UsableItem {
 
   @Override
   public String use(NPC npc, Pokemon p) {
-    // TODO Auto-generated method stub
-    return null;
+    npc.getInventory().get("elixir").remove(0);
+    
+    int hPrestored = p.getMaxHP() - p.getCurHP();
+    int mPrestored = p.getMaxMP() - p.getCurMP();
+    
+    p.setCurHP(p.getMaxHP());
+    p.setCurMP(p.getMaxMP());
+    
+    return hPrestored + "HP ," + mPrestored + "MP restored!";
   }
 }

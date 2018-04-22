@@ -183,7 +183,7 @@ public class Game {
   public ArrayList<String> getPokemonNameList(){
     return pokemonNameList;
   }
-
+  
   public void weAreInSafariZone() {
     areWeInSafariZone = true;
     totalSafariZoneSteps = ash.getAllowedSafariSteps();

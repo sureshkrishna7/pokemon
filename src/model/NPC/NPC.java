@@ -3,8 +3,6 @@ package model.NPC;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
-
-import model.Attack;
 import model.Items;
 import model.Pokemon;
 import model.Trainer;

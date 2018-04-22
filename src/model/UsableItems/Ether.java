@@ -34,7 +34,16 @@ public class Ether extends Items implements UsableItem {
 
   @Override
   public String use(NPC npc, Pokemon p) {
-    // TODO Auto-generated method stub
-    return null;
+    int restored = 0;
+    
+    npc.getInventory().get("ether").remove(0);
+    if (p.getCurMP() + 4 > p.getMaxMP()) {
+      restored = p.getMaxMP() - p.getCurMP();
+      p.setCurMP(p.getMaxMP());
+    } else {
+      p.setCurMP(p.getCurMP() + 4);
+      restored = 4;
+    }
+    return restored + "MP restored!";
   }
 }

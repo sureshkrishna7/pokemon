@@ -7,27 +7,25 @@ import java.util.Observer;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Battle;
 import model.Game;
 import model.Pokemon;
-import model.SafariEncounter;
 import model.MainMap.Door;
 import model.MainMap.MainMap;
+import model.Menus.MainMenu;
 import model.UsableItems.UsableItem;
 
 //Simply Create the User and insert User into PokeTownMap, the rest of the maps will be embedded within PokeTownMap
@@ -39,29 +37,17 @@ public class PokemonGame extends Application {
   private static Point playerStartLocation = new Point();
   private static Point playerOldLocation = new Point();
   private static MainMap oldCurrentMap;
-
   private static boolean foundPokemon;
   private static boolean wonBattle;
   private static final double encounterChance = 0.6;
   private static PlayerAnimation cobvilleTown, town;
   private static BorderPane pane;
   private static Observer currentView, imageView, textAreaView;
-
-  /*
-   * This is kinda wonky right now, just using it to test the Alert for the Safari
-   * Stats. As of now it's skeletal as SafariZone hasn't been coded. As it works
-   * now, it calls start with the launch(args) call in main and shows the alert,
-   * then returns to main for the system test.
-   * 
-   * I believe this Class should be transformed into the GUI, instead of having
-   * the GameGUI class, as we can't have a GUI class with a main that calls start
-   * and use another class that runs main.
-   */
+  private MainMenu menu;
 
   public static void main(String[] args) {
     launch(args);
   }
-
 
   private static void initializeGameForFirstTime() {
     theGame = new Game();
@@ -83,19 +69,21 @@ public class PokemonGame extends Application {
   public void start(Stage stage) throws Exception {
     
     initializeGameForFirstTime();
-    getGameMenu();
-    getSafariStatSheet();
-
+    menu = new MainMenu(theGame);
+    //getSafariStatSheet();
 
     pane = new BorderPane();
     cobvilleTown = new PlayerAnimation(theGame.getTrainerLocation(), theGame.getCurrCameraMap());
+
+    //localView = new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
+
     //localView.setOnKeyReleased(new AnimateStarter());
     pane.setCenter(cobvilleTown);
     System.out.println(theGame.getTrainerLocation());
     //localView.setPlayerLocation(theGame.getTrainerLocation());
     Scene scene = new Scene(pane, 600, 300);
     scene.setOnKeyReleased(new AnimateStarter());
-    stage.setScene(scene);
+    stage.setScene(menu.getScene());
     stage.show();
   }
 
@@ -351,8 +339,11 @@ public class PokemonGame extends Application {
    * Also will have save button, will need to be linked with persistence logic.
    * 
    */
-  private static void getGameMenu() {
-    StringBuilder sb = new StringBuilder();
+  
+  private Scene getGameMenu() {
+    menu = new MainMenu(theGame);
+    return menu.getScene();
+    /*StringBuilder sb = new StringBuilder();
     ButtonType save = new ButtonType("Save Game?", ButtonBar.ButtonData.OK_DONE);
 
     sb.append("Pokemon: \n");
@@ -366,9 +357,13 @@ public class PokemonGame extends Application {
     Alert gameMenu = new Alert(AlertType.INFORMATION, sb.toString(), save);
     gameMenu.setTitle("Game Menu");
     gameMenu.setHeaderText(theGame.getTrainer().getName());
+    gameMenu.dialogPaneProperty().set(new DialogPane());
     Optional<ButtonType> result = gameMenu.showAndWait();
+    //gameMenu.notify();
+     * 
+     */
   }
-
+   
 
 
 

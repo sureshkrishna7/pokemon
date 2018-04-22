@@ -30,7 +30,9 @@ public class Heal extends Items implements UsableItem {
 
   @Override
   public String use(NPC npc, Pokemon p) {
-    // TODO Auto-generated method stub
-    return null;
+    npc.getInventory().get("heal").remove(0);
+    
+    p.setStatus("normal");
+    return "Status restored.";
   }
 }
