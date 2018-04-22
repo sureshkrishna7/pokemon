@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import controller.CobvilleTown;
 import javafx.scene.Scene;
 import model.Game;
 import model.Menus.MainMenu;
@@ -20,8 +21,13 @@ public class StateStack implements IState {
   public StateStack(Game theGame) {
     // constructor initializes HashMap and Stack
     mStates = new HashMap<>();
+    mStates.put("cobTown", new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage()));
     mStates.put("mainMenu", new MainMenu(theGame));
     stack = new Stack<>();
+  }
+  
+  public List<IState> getStack(){
+    return this.stack;
   }
   
   public void push(String name) {

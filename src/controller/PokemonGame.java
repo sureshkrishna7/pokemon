@@ -44,6 +44,7 @@ public class PokemonGame extends Application {
   private static Point playerOldLocation = new Point();
   private static MainMap oldCurrentMap;
 
+  private static boolean running;
   private static boolean foundPokemon;
   private static boolean wonBattle;
   private static final double encounterChance = 0.6;
@@ -77,36 +78,80 @@ public class PokemonGame extends Application {
   @Override
   public void start(Stage stage) throws Exception {
 
+    running = true;
     // initialization 
     initializeGameForFirstTime();
     initStateMachine();
     stateStack = new StateStack(theGame);
+    stateStack.push("cobTown");
     
-    stateStack.push("mainMenu");
-    menu = new MainMenu(theGame);
-    menu.onEnter();
-    
-    System.out.println(menu.getScene());
-
+    //menu = new MainMenu(theGame);
+    /*
     pane = new BorderPane();
     cobvilleTown = new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
-
     pane.setCenter(cobvilleTown);
     System.out.println(theGame.getTrainerLocation());
-    // localView.setPlayerLocation(theGame.getTrainerLocation());
     scene = new Scene(pane, cobvilleTown.getCameraViewWidth(), cobvilleTown.getCameraViewHeight());
     menu.onEnter();
-    System.out.println(scene);
-    scene.setOnKeyReleased(new AnimateStarter());
-    scene.setOnKeyPressed(new KeyHandler());
-    
-    stage.setScene(scene);
-    
-    stage.show();
-
+    */
     primaryStage = stage;
+    run();
+    
+    //scene.setOnKeyReleased(new AnimateStarter());
+    //scene.setOnKeyPressed(new KeyHandler());
+    
+    // game loop here?
+    //stage.setScene(scene);
+    
+    //stage.show();
+
+    //primaryStage = stage;
   }
   
+  public void run() {
+    long lastTime = System.nanoTime();
+    final double amntTicks = 60.0;
+    double ns = 1000000000 / amntTicks;
+    double delta = 0;
+    int updates = 0;
+    int frames = 0;
+    long timer = System.currentTimeMillis();
+    while(running) {
+      long now = System.nanoTime();
+      delta += (now - lastTime) / ns;
+      lastTime = now;
+      if(delta >= 1) {
+        tick();
+        updates++;
+        delta--;
+      }
+      render();
+      frames++;
+      if(System.currentTimeMillis() - timer > 1000) {
+        timer += 1000;
+        System.out.println(updates + "Ticks ,Fps " + frames);
+        updates = 0;
+        frames = 0;
+      }
+    }
+  }
+
+
+  private void tick() {
+    // TODO Auto-generated method stub
+    
+  }
+
+
+  private void render() {
+    if(stateStack.getStack().size() > 0) {
+      primaryStage.setScene(stateStack.pop().render());
+      primaryStage.show();
+    }
+    
+  }
+
+
   private void initStateMachine() {
     stateMachine = new StateMachine();
     
@@ -137,7 +182,7 @@ public class PokemonGame extends Application {
   }
 
   // Add a listener that will start the Timeline's animation
-  private class AnimateStarter implements EventHandler<KeyEvent> {
+  public class MainAnimateStarter implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent event) {
       System.out.println("Animate Starter in PokemonGame.java line 115");

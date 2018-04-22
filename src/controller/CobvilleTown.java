@@ -4,15 +4,17 @@ import java.awt.Point;
 import java.util.Observable;
 import java.util.Observer;
 
-
+import controller.StateMachine.IState;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.animation.Animation;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -27,7 +29,7 @@ import sun.net.www.content.audio.x_aiff;
  * 
  * @author Rick Mercer
  */
-public class CobvilleTown extends Canvas {
+public class CobvilleTown extends Canvas implements IState {
 
   private Image character, background;
   private GraphicsContext g2D;
@@ -381,6 +383,34 @@ public class CobvilleTown extends Canvas {
 	public double getCameraViewWidth() {
 		return cameraViewSize;
 	}
+
+  @Override
+  public void update(float elapsedTime) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public Scene render() {
+    BorderPane bp = new BorderPane();
+    bp.setCenter(this);
+    Scene scene = new Scene(bp,this.getCameraViewWidth(), this.getCameraViewHeight());
+    //scene.setOnKeyReleased(new MainAnimateStarter());
+    //scene.setOnKeyPressed(new KeyHandler());
+    return scene;
+  }
+
+  @Override
+  public void onEnter() {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void onExit() {
+    // TODO Auto-generated method stub
+    
+  }
 	
 
 
