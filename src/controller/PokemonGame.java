@@ -94,7 +94,7 @@ public class PokemonGame extends Application {
     pane.setCenter(cobvilleTown);
     System.out.println(theGame.getTrainerLocation());
     //localView.setPlayerLocation(theGame.getTrainerLocation());
-    Scene scene = new Scene(pane, 600, 300);
+    Scene scene = new Scene(pane, cobvilleTown.getCameraViewWidth(), cobvilleTown.getCameraViewHeight());
     scene.setOnKeyReleased(new AnimateStarter());
     stage.setScene(scene);
     stage.show();
@@ -209,6 +209,7 @@ public class PokemonGame extends Application {
     	 * We need to setBackGroundImage() only after entering/exiting doors
     	 */
         //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+    	  cobvilleTown.setPlayerLocation(theGame.getTrainerLocation());
         cobvilleTown.movePlayer(event.getCode(), "over");
       }
       
@@ -217,6 +218,7 @@ public class PokemonGame extends Application {
        */
       else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
         //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+    	  cobvilleTown.setPlayerLocation(theGame.getTrainerLocation());
         cobvilleTown.movePlayer(event.getCode(), "under");
       }
 

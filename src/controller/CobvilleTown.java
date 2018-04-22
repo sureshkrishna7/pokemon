@@ -33,15 +33,24 @@ public class CobvilleTown extends Canvas {
   private GraphicsContext g2D;
   private Timeline timeline;
   private Point playerLocation;
+  private double lastValidPlayerDX;
+  private double lastValidPlayerDY;
+  private  double playerPixelsFromBoundary;
+  private int closeToPictureBounderSteps;
   private int tic = 0;
   double sx, sy, sw, sh, dx, dy, dw, dh;
   private String drawPlayerOverOrUnder;
   private KeyCode keyCode;
+  private final double cameraViewSize = 20 * 16;
 
   public CobvilleTown(Point point, Image mapBackground) {
 	  this.setWidth(800);
 	  this.setHeight(800);
 	  playerLocation = point;
+	  closeToPictureBounderSteps = 0;
+	  
+	  // will only set when close to border 
+	  playerPixelsFromBoundary = 0;
 	  
 	  // defaults, will be changed when movePlayer() is called
 	  keyCode = KeyCode.UP;
@@ -56,7 +65,7 @@ public class CobvilleTown extends Canvas {
 	  
 	  // Create a TimeLine that call AnimateStarter.handle every 100ms
 	  // class AnimateStarter has two method stubs you have to complete.
-	  timeline = new Timeline(new KeyFrame(Duration.millis(90), new AnimateStarter()));
+	  timeline = new Timeline(new KeyFrame(Duration.millis(130), new AnimateStarter()));
 	  timeline.setCycleCount(Animation.INDEFINITE);
   }
 
@@ -100,6 +109,8 @@ public class CobvilleTown extends Canvas {
         dh the destination rectangle's height.
         */
     	
+      lastValidPlayerDX = ((playerLocation.y) * 16);
+      lastValidPlayerDY = ((playerLocation.y) * 16) - 8;
   	  sy = 5;
   	  sx = 50;
   	  sw = 17;
@@ -110,8 +121,9 @@ public class CobvilleTown extends Canvas {
   	  dw = 17;
   	  dh = 21;
   	  
-  	  g2D.drawImage(background, 0, 0);
-  	  g2D.drawImage(character, sx, sy, sw, sh, dx,  dy, dw, dh);
+  	  
+      g2D.drawImage(background, dx - (cameraViewSize / 2),  dy - (cameraViewSize / 2), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+      g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0,  cameraViewSize / 2.0, dw, dh);
     }
     
 
@@ -216,8 +228,41 @@ public class CobvilleTown extends Canvas {
       	  System.out.println("KeyCode   = "+ keyCode);
         }
         
-        g2D.drawImage(background, 0, 0);
-        g2D.drawImage(character, sx, sy, sw, sh, dx,  dy, dw, dh);
+        System.out.println("Player at  = "+ playerLocation);
+        g2D.clearRect(0, 0, 800, 800);
+        
+        int row = playerLocation.x;
+        int col = playerLocation.y;
+        if (row <= 10 && keyCode == KeyCode.UP) {
+        	playerPixelsFromBoundary = (cameraViewSize / 2.0) - ((closeToPictureBounderSteps * 16) / 2);
+            g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2),  lastValidPlayerDY - (cameraViewSize / 2), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+            g2D.drawImage(character, sx, sy, sw, sh, (cameraViewSize / 2.0), playerPixelsFromBoundary + 16, dw, dh);
+        	closeToPictureBounderSteps++;
+        }
+        else if(row <= 10 && keyCode == KeyCode.DOWN){
+        	closeToPictureBounderSteps--;
+       	 	playerPixelsFromBoundary = (cameraViewSize / 2.0) - ((closeToPictureBounderSteps * 16) / 2);
+       	 	g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2),  lastValidPlayerDY - (cameraViewSize / 2), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+       	 	g2D.drawImage(character, sx, sy, sw, sh, (cameraViewSize / 2.0), playerPixelsFromBoundary + 16, dw, dh);
+        }
+        else if(row <= 10 && keyCode == KeyCode.LEFT) {
+        	lastValidPlayerDX = dx;
+       	 	g2D.drawImage(background, dx - (cameraViewSize / 2),  lastValidPlayerDY - (cameraViewSize / 2), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+       	 	g2D.drawImage(character, sx, sy, sw, sh, (cameraViewSize / 2.0), playerPixelsFromBoundary + 16, dw, dh);
+        }
+        else if(row <= 10 && keyCode == KeyCode.RIGHT) {
+        	lastValidPlayerDX = dx;
+       	 	g2D.drawImage(background, dx - (cameraViewSize / 2),  lastValidPlayerDY - (cameraViewSize / 2), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+       	 	g2D.drawImage(character, sx, sy, sw, sh, (cameraViewSize / 2.0), playerPixelsFromBoundary + 16, dw, dh);
+        }
+        else {
+        	closeToPictureBounderSteps = 0;
+            lastValidPlayerDX = dx;
+            lastValidPlayerDY = dy;
+            g2D.drawImage(background, dx - (cameraViewSize / 2),  dy - (cameraViewSize / 2), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+            g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0,  cameraViewSize / 2.0, dw, dh);	
+        }
+
         
         // stop timeline from drawing after final sprite 
         if (tic == 3) {
@@ -234,6 +279,14 @@ public class CobvilleTown extends Canvas {
 		return playerLocation;
 		
 	}
+	
+	public double getCameraViewHeight() {
+		return cameraViewSize;
+	}
+	public double getCameraViewWidth() {
+		return cameraViewSize;
+	}
+	
 
 
 }
