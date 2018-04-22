@@ -13,20 +13,23 @@ import controller.StateMachine.StateStack;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.stage.Stage;
 import model.Battle;
 import model.Game;
 import model.Pokemon;
+import model.SafariEncounter;
 import model.MainMap.Door;
 import model.MainMap.MainMap;
-import model.Menus.MainMenu;
 import model.UsableItems.UsableItem;
 
 //Simply Create the User and insert User into PokeTownMap, the rest of the maps will be embedded within PokeTownMap
@@ -41,11 +44,13 @@ public class PokemonGame extends Application {
   private static Point playerStartLocation = new Point();
   private static Point playerOldLocation = new Point();
   private static MainMap oldCurrentMap;
+
   private static boolean foundPokemon;
   private static boolean wonBattle;
   private static final double encounterChance = 0.6;
-  private static PlayerAnimation cobvilleTown, town;
+  private static CobvilleTown cobvilleTown, town;
   private static BorderPane pane;
+  private static char gameLogic;
   private static Observer currentView, imageView, textAreaView;
   private MainMenu menu;
   private StateStack stateStack;
@@ -54,6 +59,7 @@ public class PokemonGame extends Application {
   public static void main(String[] args) {
     launch(args);
   }
+
 
   private static void initializeGameForFirstTime() {
     theGame = new Game();
@@ -137,7 +143,7 @@ public class PokemonGame extends Application {
   private class AnimateStarter implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent event) {
-      System.out.println("Animate Starter in PokemonGame.java line 95");
+      System.out.println("Animate Starter in PokemonGame.java line 115");
 
       /**
        * NOTE: If user inputs moves too fast, the player will move on the grid faster
@@ -164,6 +170,15 @@ public class PokemonGame extends Application {
         theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
         theGame.weAreInSafariZone();
       } else if (KeyCode.P == event.getCode() && theGame.getCurrCameraMap() == theGame.getFryslaSafariZone()) {
+    	  theGame.setTrainerLocation(playerOldLocation);
+    	  theGame.setCurrCameraMap(oldCurrentMap);
+    	  theGame.weAreOutSafariZone();
+      }else {
+    	  //System.out.println("---KeyCode ------  " +  event.getCode());
+      }
+
+      //System.out.println("Game logic = " + newLocationObject);
+      
         theGame.setTrainerLocation(playerOldLocation);
         theGame.setCurrCameraMap(oldCurrentMap);
         theGame.weAreOutSafariZone();
@@ -188,12 +203,11 @@ public class PokemonGame extends Application {
           theGame.setCurrCameraMap(door);
           theGame.setTrainerLocation(door.getMapPlayerPosition());
         }
-        cobvilleTown.drawPlayerAtDoorSpot(door.getMapPlayerPosition());
-      } else if (newLocationObject == ' ') {
+      } else if (gameLogic == ' ') {
         theGame.setTrainerLocation(playerOldLocation);
         theGame.setCurrCameraMap(oldCurrentMap);
-        cobvilleTown.drawOutOfDoor();
-      } else if (newLocationObject == 'S') {
+      } 
+      else if (gameLogic == 'S') {
         playerOldLocation = theGame.getTrainerLocation();
         oldCurrentMap = theGame.getCurrCameraMap();
         theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
@@ -208,12 +222,13 @@ public class PokemonGame extends Application {
 
         // bush, check will battle at random, start battle with randomly instantiated
         // Pokemon
-      } else if (newLocationObject == 'B') {
+      } else if (gameLogic == 'B') {
         foundPokemon = checkBush();
         if (foundPokemon) {
           Pokemon wildPoke = getWildPoke();
           wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
-        } else if (newLocationObject == 'N') {
+        }
+        else if (gameLogic == 'N') {
           System.out.print("Encountered a NPC\n");
         }
       }
@@ -221,23 +236,29 @@ public class PokemonGame extends Application {
       // z is a char returned by theGame.playerMove() that's not used in map
       // to represent an obj, thus can be used to detect null
       if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {
-
-        /*
-         * We need to setBackGroundImage() only after entering/exiting doors
-         */
-        cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
-        cobvilleTown.movePlayer(event.getCode(), "over");
+    	  
+    	/*
+    	 * We need to setBackGroundImage() only after entering/exiting doors
+    	 */
+        //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+    	  cobvilleTown.setPlayerLocation(theGame.getTrainerLocation());
+    	  cobvilleTown.movePlayer(event.getCode(), "over");
       }
 
       /*
-       * Draw character under Z and X objects
+       * Draw character under X objects
        */
       else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
-        cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
-        cobvilleTown.movePlayer(event.getCode(), "under");
+        //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+    	  cobvilleTown.setPlayerLocation(theGame.getTrainerLocation());
+    	  cobvilleTown.movePlayer(event.getCode(), "under");
       }
 
     }
+  }
+
+  public static char getUserInputChar() {
+    return gameLogic;
   }
 
   /*

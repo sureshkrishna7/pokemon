@@ -180,7 +180,8 @@ public class EnermyTown implements MainMap{
 
     // Checking if its a valid existing point
     if ((x >= 0 && x < row) && (y >= 0 && y < col)) {
-
+    	
+    	//System.out.println("Attemp to walk on: " + characterBoard[x][y]);
       if (characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D'
           || characterBoard[x][y] == 'S' || characterBoard[x][y] == '0' || characterBoard[x][y] == 'X' || characterBoard[x][y] == ' ') {
         return true;
