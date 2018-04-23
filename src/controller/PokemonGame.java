@@ -13,6 +13,10 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+
+import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
+
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
@@ -20,6 +24,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.Battle;
@@ -108,6 +113,7 @@ public class PokemonGame extends Application {
 
     primaryStage = stage;
     start = new StartScreen(primaryStage, g2D, this);
+
 
     new AnimationTimer()
     {
