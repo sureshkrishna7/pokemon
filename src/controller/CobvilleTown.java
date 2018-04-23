@@ -41,6 +41,8 @@ public class CobvilleTown extends Canvas {
   private int closeToTopPictureBounderSteps;
   private int closeToLeftPictureBounderSteps;
   private int closeToBottomPictureBounderSteps;
+  private boolean afterTopLeftCornerCondition = false;
+  private boolean afterBottomLeftCornerCondition = false;
   
   private int tic = 0;
   double sx, sy, sw, sh, dx, dy, dw, dh;
@@ -242,6 +244,11 @@ public class CobvilleTown extends Canvas {
         
         int row = playerLocation.x;
         int col = playerLocation.y;
+        
+        /*
+         * Conditions when player is close to top-left boundaries of screen
+         * rows <= 10 and col <= 10
+         */
         if (row <= 10 && col <= 10 && keyCode == KeyCode.UP) {
         	closeToTopPictureBounderSteps++;
         	animateImage("left, top", "last Valid DX and DY");
@@ -252,14 +259,21 @@ public class CobvilleTown extends Canvas {
         }
         else if (row <= 10 && col <= 10 && keyCode == KeyCode.RIGHT) {
         	closeToLeftPictureBounderSteps--;
+        	afterTopLeftCornerCondition = true;
         	animateImage("left, top", "last Valid DX and DY");
         }
         else if (row <= 10 && col <= 10 && keyCode == KeyCode.LEFT) {
         	closeToLeftPictureBounderSteps++;
         	animateImage("left, top", "last Valid DX and DY");
         }
+        
+        /*
+         * Conditions when player is close to bottom-left boundaries of screen
+         * rows > 20 and col <= 10
+         */
         else if(row > 20 && col <= 10 && keyCode == KeyCode.UP) {
         	closeToBottomPictureBounderSteps--;
+        	afterBottomLeftCornerCondition = true;
         	animateImage("left, bottom", "last Valid DX and DY");
         }
         else if(row > 20 && col <= 10 && keyCode == KeyCode.DOWN) {
@@ -274,6 +288,10 @@ public class CobvilleTown extends Canvas {
         	closeToLeftPictureBounderSteps--;
         	animateImage("left, bottom", "last Valid DX and DY");
         }
+        
+        /*
+         * Conditions when player is close to top of screen, rows <= 10
+         */
         else if (row <= 10 && keyCode == KeyCode.UP) {
         	closeToTopPictureBounderSteps++;
         	animateImage("cam/2, top", "last Valid DX and DY");
@@ -288,9 +306,26 @@ public class CobvilleTown extends Canvas {
         	animateImage("cam/2, top", "dx and last Valid DY");
         }
         else if(row <= 10 && keyCode == KeyCode.RIGHT) {
+        	/*
+        	 * NOTE: if the player was previously in the top left corner of screen, 
+        	 * then the closeToLeftPictureBounderSteps was being calculated before, 
+        	 * and then the player entered the area only close to the top of screen
+        	 * boundary and didnt adjust the variable one last time.
+        	 * Since timer calls 3 tics, each subtracts one, it would have needed
+        	 * to subtract three the last adjustment.  
+        	 */
+        	if (afterTopLeftCornerCondition) {
+        		closeToLeftPictureBounderSteps -= 3;
+        		afterTopLeftCornerCondition = false;
+        	}
+        	
         	lastValidPlayerDX = dx;
         	animateImage("cam/2, top", "dx and last Valid DY");
         }
+        
+        /*
+         * Conditions when player is close to left of screen, cols <= 10
+         */
         else if(col <= 10 && keyCode == KeyCode.LEFT) {
         	lastValidPlayerDY = dy;
         	closeToLeftPictureBounderSteps++;
@@ -303,12 +338,28 @@ public class CobvilleTown extends Canvas {
         }
         else if(col <= 10 && keyCode == KeyCode.UP) {
         	lastValidPlayerDY = dy;
+        	/*
+        	 * NOTE: same as special note above but after a player was 
+        	 * in bottom-left corner of screen and entered an area where
+        	 * only the left boundary was being counted, then the last 
+        	 * call to this handle didnt adjust bottom variable
+        	 * one last time, 3 tics (3 calls each subtracts by one), 
+        	 * hence, subtract by three. 
+        	 */
+        	if (afterBottomLeftCornerCondition) {
+        		closeToBottomPictureBounderSteps -= 3;
+        		afterBottomLeftCornerCondition = false;
+        	}
         	animateImage("left, cam/2", "last Valid DX and dy");
         }
         else if(col <= 10 && keyCode == KeyCode.DOWN) {
         	lastValidPlayerDY = dy;
         	animateImage("left, cam/2", "last Valid DX and dy");
         }
+        
+        /*
+         * Conditions when player is close to bottom of screen, rows > 20
+         */
         else if(row > 20 && keyCode == KeyCode.DOWN) {
         	lastValidPlayerDX = dx;
         	closeToBottomPictureBounderSteps++;
@@ -320,7 +371,7 @@ public class CobvilleTown extends Canvas {
         	animateImage("cam/2, bottom", "dx and last Valid DY");
         }
        
-        /**
+        /*
          * Map layout doesnt let a user get close enough to boundary on south east / south west
          * so we only have to worry about the case where close to south boundary
          */
@@ -328,6 +379,10 @@ public class CobvilleTown extends Canvas {
         	lastValidPlayerDX = dx;
         	animateImage("cam/2, bottom", "dx and last Valid DY");
         }
+        
+        /**
+         * Normal condition when player not close to boundaries
+         */
         else {
         	closeToTopPictureBounderSteps = 0;
         	closeToLeftPictureBounderSteps = 0;
