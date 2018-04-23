@@ -1,33 +1,36 @@
 package controller;
 
 import java.awt.Point;
-import java.util.Observable;
-import java.util.Observer;
 
-
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import controller.StateMachine.IState;
 import javafx.animation.Animation;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
+
 import model.Game;
 import sun.net.www.content.audio.x_aiff;
 
 /**
  * This view contains an animation of a pokemon trainer through a town named Cobville.
  * It can be added to any Pane elsewhere and started with the instance method
+
  * 
- *   public void animate()
+ * public void animate()
  * 
  */
+
 public class CobvilleTown extends GameBackground {
+
 
   private double lastValidPlayerDX;
   private double lastValidPlayerDY;
@@ -37,6 +40,7 @@ public class CobvilleTown extends GameBackground {
   private int closeToTopPictureBounderSteps;
   private int closeToLeftPictureBounderSteps;
   private int closeToBottomPictureBounderSteps;
+
   private boolean afterTopLeftCornerCondition = false;
   private boolean afterBottomLeftCornerCondition = false;
   private boolean afterBottomLeftCornerCondition2 = false;
@@ -67,12 +71,12 @@ public class CobvilleTown extends GameBackground {
 	  // class AnimateStarter has two method stubs you have to complete.
 	  timeline = new Timeline(new KeyFrame(Duration.millis(90), new AnimateStarter()));
 	  timeline.setCycleCount(Animation.INDEFINITE);
+
   }
 
-	  // Call this from the Application to begin the spritesheet animation
-	public void animate() {
-		
-	}
+  // Call this from the Application to begin the spritesheet animation
+  public void animate() {
+
 
 	public void setBackGroundImage(Image changeOfMap) {
 	  g2D.clearRect(0, 0, 800, 800);
@@ -84,7 +88,10 @@ public class CobvilleTown extends GameBackground {
   private class AnimateStarter implements EventHandler<ActionEvent> {
 
 
+  private class AnimateStarter implements EventHandler<ActionEvent> {
+
     public AnimateStarter() {
+
   	  	/*
         The images to draw are know as spritesheet (6 images) and dirt (the background)
         Use method drawImage with 9 arguments: 
@@ -100,27 +107,28 @@ public class CobvilleTown extends GameBackground {
         */
     	
       lastValidPlayerDX = ((playerLocation.x) * 16);
+
       lastValidPlayerDY = ((playerLocation.y) * 16) - 8;
-  	  sy = 5;
-  	  sx = 50;
-  	  sw = 17;
-  	  sh = 21;
-  	  
-  	  dx = ((playerLocation.y) * 16);	  // LEFT TO RIGHT, y = col
-  	  dy = ((playerLocation.x) * 16) - 8; // UP AND DOWN, x = row
-  	  dw = 17;
-  	  dh = 21;
-  	  
-  	  
-      g2D.drawImage(background, dx - (cameraViewSize / 2),  dy - (cameraViewSize / 2), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-      g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0,  cameraViewSize / 2.0, dw, dh);
+      sy = 5;
+      sx = 50;
+      sw = 17;
+      sh = 21;
+
+      dx = ((playerLocation.y) * 16); // LEFT TO RIGHT, y = col
+      dy = ((playerLocation.x) * 16) - 8; // UP AND DOWN, x = row
+      dw = 17;
+      dh = 21;
+
+      g2D.drawImage(background, dx - (cameraViewSize / 2), dy - (cameraViewSize / 2), cameraViewSize, cameraViewSize, 0,
+          0, cameraViewSize, cameraViewSize);
+      g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, cameraViewSize / 2.0, dw, dh);
     }
-    
 
     @Override
     // This handle method gets called every so many milliseconds to
     // draw a varying subimage from a spritesheet over the desert dirt.
     public void handle(ActionEvent event) {
+
     	System.out.println("Cobvile animating");
         tic++;
        
@@ -145,7 +153,25 @@ public class CobvilleTown extends GameBackground {
           	  sy = 0;
       	  }
 
+      if (KeyCode.UP == keyCode) {
+        dy -= (16 / 3.0);
+        if (drawPlayerOverOrUnder.equals("over")) {
+          // get picture that makes trainer look going north
+          if (tic == 1) {
+            sx = 128;
+            sy = 5;
+          } else if (tic == 2) {
+            sx = 147;
+            sy = 5;
+          } else if (tic == 3) {
+            sx = 109;
+            sy = 5;
+          }
+        } else {
+          sx = 0;
+          sy = 0;
         }
+
         else if(KeyCode.DOWN == keyCode) {
         	//if (!(Game.getCharAtIndex(playerLocation.x, playerLocation.x) == 'E')) {
         		dy += (16 / 3.0);
@@ -171,51 +197,43 @@ public class CobvilleTown extends GameBackground {
           	  sy = 0;
       	  }
 
+      } else if (KeyCode.DOWN == keyCode) {
+        dy += (16 / 3.0);
+        if (drawPlayerOverOrUnder.equals("over")) {
+          // get picture that makes trainer look going south
+          if (tic == 1) {
+            sx = 69;
+            sy = 5;
+          } else if (tic == 2) {
+            sx = 89;
+            sy = 5;
+          } else if (tic == 3) {
+            sx = 50;
+            sy = 5;
+          }
+        } else {
+          sx = 0;
+          sy = 0;
         }
-        else if(KeyCode.RIGHT == keyCode) {
-      	  dx += (16 / 3.0);
-      	  if (drawPlayerOverOrUnder.equals("over")) {
-          	  // get picture that makes trainer look going east
-      		  if (tic == 1) {
-              	  sx = 68;
-              	  sy = 29; 
-      		  }
-      		  else if (tic == 2) {
-              	  sx = 89;
-              	  sy = 29; 
-      		  }
-      		  else if (tic == 3){
-              	  sx = 50;
-              	  sy = 29; 
-      		  }
-      	  }
-      	  else {
-          	  sx = 0;
-          	  sy = 0;
-      	  }
 
+      } else if (KeyCode.RIGHT == keyCode) {
+        dx += (16 / 3.0);
+        if (drawPlayerOverOrUnder.equals("over")) {
+          // get picture that makes trainer look going east
+          if (tic == 1) {
+            sx = 68;
+            sy = 29;
+          } else if (tic == 2) {
+            sx = 89;
+            sy = 29;
+          } else if (tic == 3) {
+            sx = 50;
+            sy = 29;
+          }
+        } else {
+          sx = 0;
+          sy = 0;
         }
-        else if(KeyCode.LEFT == keyCode) {
-      	  dx -= (16 / 3.0);
-      	  if (drawPlayerOverOrUnder.equals("over")) {
-          	  // get picture that makes trainer look going west
-      		  if (tic == 1) {
-              	  sx = 127;
-              	  sy = 29;
-      		  }
-      		  else if (tic == 2) {
-              	  sx = 144;
-              	  sy = 29;
-      		  }
-      		  else if (tic == 3){
-              	  sx = 107;
-              	  sy = 29;
-      		  }
-      	  }
-      	  else {
-          	  sx = 0;
-          	  sy = 0;
-      	  }
 
         }
         else {
@@ -470,5 +488,40 @@ public class CobvilleTown extends GameBackground {
 	}
 	
 
+  }
+
+  public double getCameraViewHeight() {
+    return cameraViewSize;
+  }
+
+  public double getCameraViewWidth() {
+    return cameraViewSize;
+  }
+
+  @Override
+  public void update(float elapsedTime) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public Scene render() {
+    BorderPane bp = new BorderPane();
+    bp.setCenter(this);
+    Scene scene = new Scene(bp, this.getCameraViewWidth(), this.getCameraViewHeight());
+    return scene;
+  }
+
+  @Override
+  public void onEnter() {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void onExit() {
+    // TODO Auto-generated method stub
+
+  }
 
 }

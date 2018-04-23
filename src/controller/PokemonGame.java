@@ -8,59 +8,60 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
 
+import controller.StateMachine.StateStack;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
+
 import javafx.scene.layout.BorderPane;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
 import javafx.stage.Stage;
 import model.Battle;
 import model.Game;
 import model.Pokemon;
-import model.SafariEncounter;
 import model.MainMap.Door;
 import model.MainMap.MainMap;
+import model.Menus.MainMenu;
 import model.UsableItems.UsableItem;
 
 //Simply Create the User and insert User into PokeTownMap, the rest of the maps will be embedded within PokeTownMap
 
 public class PokemonGame extends Application {
 
+  private final double cameraViewSize = 20 * 16;
+  
+  public static Stage primaryStage;
+  public static Scene scene;
+  
   private static Scanner sc;
   private static Game theGame;
   private static Point playerStartLocation = new Point();
   private static Point playerOldLocation = new Point();
   private static MainMap oldCurrentMap;
 
+  private static boolean running;
   private static boolean foundPokemon;
   private static boolean wonBattle;
   private static final double encounterChance = 0.6;
   private static CobvilleTown cobvilleTown, town;
   private static BorderPane pane;
-  private static char gameLogic;
   private static Observer currentView, imageView, textAreaView;
-
-  /*
-   * This is kinda wonky right now, just using it to test the Alert for the Safari
-   * Stats. As of now it's skeletal as SafariZone hasn't been coded. As it works
-   * now, it calls start with the launch(args) call in main and shows the alert,
-   * then returns to main for the system test.
-   * 
-   * I believe this Class should be transformed into the GUI, instead of having
-   * the GameGUI class, as we can't have a GUI class with a main that calls start
-   * and use another class that runs main.
-   */
+  private MainMenu menu;
+  private StateStack stateStack;
 
   public static void main(String[] args) {
     launch(args);
@@ -82,10 +83,8 @@ public class PokemonGame extends Application {
     wonBattle = false;
   }
 
-
   @Override
-  public void start(Stage stage) throws Exception {
-    
+  public void start(Stage stage) throws Exception {   
     
     initializeGameForFirstTime();
     getGameMenu();
@@ -93,14 +92,69 @@ public class PokemonGame extends Application {
 
     pane = new BorderPane();
     cobvilleTown = new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
+
     pane.setCenter(cobvilleTown);
-    Scene scene = new Scene(pane, cobvilleTown.getCameraViewWidth(), cobvilleTown.getCameraViewHeight());
+    System.out.println(theGame.getTrainerLocation());
+    // localView.setPlayerLocation(theGame.getTrainerLocation());
+    scene = new Scene(pane, cobvilleTown.getCameraViewWidth(), cobvilleTown.getCameraViewHeight());
     scene.setOnKeyReleased(new AnimateStarter());
-    stage.setScene(scene);
+    scene.setOnKeyPressed(new KeyHandler());
+    primaryStage = stage;
+
+    new AnimationTimer()
+    {
+        public void handle(long currentNanoTime)
+        {
+            render();
+        }
+    }.start();
+    
     stage.show();
+
+  }
+  
+  private void tick() {
+    // TODO Auto-generated method stub
+    
   }
 
-  // Add a listener that will start the Timeline's animation 
+  private void render() {
+    
+    // if there is a state in the stateStack
+    if(stateStack.getStack().size() > 0) {
+      System.out.println(stateStack.peek());
+      
+      // if that state is cobTown
+      if(stateStack.peek() == "cobTown") {
+        cobvilleTown = (CobvilleTown) stateStack.getState("cobTown");
+        scene = stateStack.pop().render();
+        scene.setOnKeyReleased(new AnimateStarter());
+        scene.setOnKeyPressed(new KeyHandler());
+      }
+      // if that state is mainMenu
+      else if (stateStack.peek() == "mainMenu") {
+        menu = (MainMenu) stateStack.getState("mainMenu");
+        menu.onEnter();
+        scene = stateStack.pop().render();
+      }
+      primaryStage.setScene(scene); 
+    }
+    
+  }
+
+  public class KeyHandler implements EventHandler<KeyEvent>{
+
+    @Override
+    public void handle(KeyEvent event) {
+      if(event.getCode() == KeyCode.M) {
+        // add to stack mainMenu, representing MainMenu object in Hashmap
+        stateStack.push("mainMenu");
+        //PokemonGame.primaryStage.setScene(stateStack.pop().render());
+      }
+    }
+  }
+
+  // Add a listener that will start the Timeline's animation
   public class StartTimerButtonListener implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent event) {
@@ -108,46 +162,44 @@ public class PokemonGame extends Application {
     }
   }
 
-  // Add a listener that will start the Timeline's animation 
-  private class AnimateStarter implements EventHandler<KeyEvent> {
+  // Add a listener that will start the Timeline's animation
+  public class AnimateStarter implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent event) {
       System.out.println("Animate Starter in PokemonGame.java line 115");
 
       /**
-       * NOTE: If user inputs moves too fast, the player will move 
-       * on the grid faster than the animation timeline can draw the image, 
-       * and will crash (runs into things on grid before image).
-       * So if animation is on, ignore button clicked
+       * NOTE: If user inputs moves too fast, the player will move on the grid faster
+       * than the animation timeline can draw the image, and will crash (runs into
+       * things on grid before image). So if animation is on, ignore button clicked
        */
+
       if (((GameBackground) pane.getCenter()).isTimelineAnimating()) {
     	  return;
       }
 
-      
-      
+      if (cobvilleTown.isTimelineAnimating()) {
+        return;
+      }
+
       char newLocationObject = 'Z';
       if (KeyCode.UP == event.getCode()) {
           newLocationObject = theGame.playerMove('n');
         }
       else if (KeyCode.UP == event.getCode()) {
         newLocationObject = theGame.playerMove('n');
-      }
-      else if (KeyCode.DOWN == event.getCode()) {
+      } else if (KeyCode.DOWN == event.getCode()) {
         newLocationObject = theGame.playerMove('s');
-      }
-      else if (KeyCode.LEFT == event.getCode()) {
+      } else if (KeyCode.LEFT == event.getCode()) {
         newLocationObject = theGame.playerMove('w');
-      }
-      else if (KeyCode.RIGHT == event.getCode()) {
+      } else if (KeyCode.RIGHT == event.getCode()) {
         newLocationObject = theGame.playerMove('e');
-      }
-      else if (KeyCode.S == event.getCode() && theGame.getCurrCameraMap() != theGame.getFryslaSafariZone()) {
-    	  playerOldLocation = theGame.getTrainerLocation();
-    	  oldCurrentMap = theGame.getCurrCameraMap();
-    	  theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
-    	  theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
-          theGame.weAreInSafariZone();
+      } else if (KeyCode.S == event.getCode() && theGame.getCurrCameraMap() != theGame.getFryslaSafariZone()) {
+        playerOldLocation = theGame.getTrainerLocation();
+        oldCurrentMap = theGame.getCurrCameraMap();
+        theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
+        theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
+        theGame.weAreInSafariZone();
       } else if (KeyCode.P == event.getCode() && theGame.getCurrCameraMap() == theGame.getFryslaSafariZone()) {
     	  theGame.setTrainerLocation(playerOldLocation);
     	  theGame.setCurrCameraMap(oldCurrentMap);
@@ -159,20 +211,28 @@ public class PokemonGame extends Application {
       System.out.println("Game logic = " + newLocationObject);
       
       
+
       if (newLocationObject == 'D') {
         System.out.print("Encountered a Door\n");
 
         playerOldLocation.x = theGame.getTrainerLocation().x;
         playerOldLocation.y = theGame.getTrainerLocation().y;
         oldCurrentMap = theGame.getCurrCameraMap();
+
         Door door = (Door) theGame.getCurrCameraMap().enteredDoor(theGame.getTrainerLocation().x, theGame.getTrainerLocation().y);
 
-        /* 
-         * ****We would be in safari Zone if the door is null****
-         * ****Because we magically hop to different places****
+
+        Door door = (Door) theGame.getCurrCameraMap().enteredDoor(theGame.getTrainerLocation().x,
+            theGame.getTrainerLocation().y);
+
+
+        /*
+         * ****We would be in safari Zone if the door is null**** ****Because we
+         * magically hop to different places****
          */
-        if(door == null) {
+        if (door == null) {
           theGame.setTrainerLocation(theGame.getCurrCameraMap().getMapPlayerPosition());
+
         }
         else {
           theGame.setTrainerLocation(door.getMapPlayerPos());
@@ -194,7 +254,7 @@ public class PokemonGame extends Application {
     	  cobvilleTown.setDy(cobvilleTown.getDy() - 32);
     	  pane.setCenter(cobvilleTown);
       } 
-      else if (gameLogic == 'S') {
+      else if (newLocationObject == 'S') {
         playerOldLocation = theGame.getTrainerLocation();
         oldCurrentMap = theGame.getCurrCameraMap();
         theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
@@ -209,15 +269,15 @@ public class PokemonGame extends Application {
 
         // bush, check will battle at random, start battle with randomly instantiated
         // Pokemon
-      } else if (gameLogic == 'B') {
+      } else if (newLocationObject == 'B') {
         foundPokemon = checkBush();
         if (foundPokemon) {
           Pokemon wildPoke = getWildPoke();
           wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
         }
-        else if (gameLogic == 'N') {
+        else if (newLocationObject == 'N') {
           System.out.print("Encountered a NPC\n");
-        } 
+        }
       }
       
 //      else {
@@ -253,10 +313,6 @@ public class PokemonGame extends Application {
 			gameBackground.movePlayer(event.getCode(), "under");
 		}
 	}
-  }
-
-  public static char getUserInputChar() {
-    return gameLogic;
   }
 
   /*
@@ -373,37 +429,4 @@ public class PokemonGame extends Application {
     Optional<ButtonType> result = statSheet.showAndWait();
 
   }
-
-  /*
-   * getGameMenu() -- method that creates an Alert with AlertType.INFORMATION. Can
-   * be opened at any time during the game (any map). Will display: Trainer's list
-   * of Pokemon, Trainer's items in inventory.
-   * 
-   * Considering displaying NPCs encountered. And a count? ie <count
-   * encountered>/<total num NPCs>
-   * 
-   * Also will have save button, will need to be linked with persistence logic.
-   * 
-   */
-  private static void getGameMenu() {
-    StringBuilder sb = new StringBuilder();
-    ButtonType save = new ButtonType("Save Game?", ButtonBar.ButtonData.OK_DONE);
-
-    sb.append("Pokemon: \n");
-    for (Pokemon p : theGame.getTrainer().getPokeList()) {
-      sb.append(p.getData());
-    }
-    sb.append("\nItems: \n");
-    for (Map.Entry<String, ArrayList<UsableItem>> entry : theGame.getTrainer().getInventory().entrySet()) {
-      sb.append("\t" + entry.getKey() + " " + entry.getValue().size() + "\n");
-    }
-    Alert gameMenu = new Alert(AlertType.INFORMATION, sb.toString(), save);
-    gameMenu.setTitle("Game Menu");
-    gameMenu.setHeaderText(theGame.getTrainer().getName());
-    Optional<ButtonType> result = gameMenu.showAndWait();
-  }
-
-
-
-
 }
