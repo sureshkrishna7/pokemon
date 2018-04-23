@@ -20,12 +20,11 @@ import javafx.util.Duration;
 import sun.net.www.content.audio.x_aiff;
 
 /**
- * This view contains an animation of a running girl thought the desert.
+ * This view contains an animation of a pokemon trainer through a town named Cobville.
  * It can be added to any Pane elsewhere and started with the instance method
  * 
  *   public void animate()
  * 
- * @author Rick Mercer
  */
 public class CobvilleTown extends Canvas {
 
