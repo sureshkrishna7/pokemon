@@ -19,11 +19,15 @@ import javafx.geometry.Rectangle2D;
 
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.ImageView;
 
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -312,8 +316,6 @@ public class PokemonGame extends Application {
           /** Once the battle is done set the state back to Game*/
           state = STATE.GAME;
 
-
-
         }
         else if (newLocationObject == 'N') {
           System.out.print("Encountered a NPC\n");
@@ -341,6 +343,28 @@ public class PokemonGame extends Application {
         }
       }
     }
+    
+    public void drawWithCanvas(Door door, KeyEvent event, char newLocationObject) {
+    	
+    }
+
+	public void drawGameBackground(GameBackground gameBackground, KeyEvent event, char newLocationObject) {
+		// z is a char returned by theGame.playerMove() that's not used in map 
+		// to represent an obj, thus can be used to detect null 
+		if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {  
+			// We need to setBackGroundImage() only after entering/exiting doors
+		    //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+			gameBackground.setPlayerLocation(theGame.getTrainerLocation());
+			gameBackground.movePlayer(event.getCode(), "over");
+		 }
+		  
+		// Draw character under X objects
+		else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
+		    //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+			gameBackground.setPlayerLocation(theGame.getTrainerLocation());
+			gameBackground.movePlayer(event.getCode(), "under");
+		}
+	}
   }
 
   /*
