@@ -17,6 +17,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
+import model.Game;
 import sun.net.www.content.audio.x_aiff;
 
 /**
@@ -26,34 +27,26 @@ import sun.net.www.content.audio.x_aiff;
  *   public void animate()
  * 
  */
-public class CobvilleTown extends Canvas {
+public class CobvilleTown extends GameBackground {
 
-  private Image character, background;
-  private GraphicsContext g2D;
-  private Timeline timeline;
-  private Point playerLocation;
   private double lastValidPlayerDX;
   private double lastValidPlayerDY;
-  private  double playerPixelsFromTopBoundary;
-  private  double playerPixelsFromLeftBoundary;
-  private  double playerPixelsFromBottomBoundary;
+  private double playerPixelsFromTopBoundary;
+  private double playerPixelsFromLeftBoundary;
+  private double playerPixelsFromBottomBoundary;
   private int closeToTopPictureBounderSteps;
   private int closeToLeftPictureBounderSteps;
   private int closeToBottomPictureBounderSteps;
   private boolean afterTopLeftCornerCondition = false;
   private boolean afterBottomLeftCornerCondition = false;
   private boolean afterBottomLeftCornerCondition2 = false;
-  
-  private int tic = 0;
-  double sx, sy, sw, sh, dx, dy, dw, dh;
-  private String drawPlayerOverOrUnder;
-  private KeyCode keyCode;
-  private final double cameraViewSize = 20 * 16;
+
 
   public CobvilleTown(Point point, Image mapBackground) {
+	  super(point, mapBackground);
 	  this.setWidth(800);
 	  this.setHeight(800);
-	  playerLocation = point;
+	  
 	  closeToTopPictureBounderSteps = 0;
 	  closeToLeftPictureBounderSteps = 0;
 	  closeToBottomPictureBounderSteps = 0;
@@ -62,10 +55,6 @@ public class CobvilleTown extends Canvas {
 	  playerPixelsFromTopBoundary = 0;
 	  playerPixelsFromLeftBoundary = 0;
 	  playerPixelsFromBottomBoundary = 0;
-	  
-	  // defaults, will be changed when movePlayer() is called
-	  keyCode = KeyCode.UP;
-	  drawPlayerOverOrUnder = "over";
     
 	  // Create both images and draw both when the controller instructs
 	  // spritsheet contains 6 sub images
@@ -90,16 +79,16 @@ public class CobvilleTown extends Canvas {
 	  background = changeOfMap;
 	}
 	
-  public void movePlayer(KeyCode code, String overOrUnder) {
-	  keyCode = code;
-	  drawPlayerOverOrUnder = overOrUnder;
-	  tic = 0;
-	  timeline.play();
-  }
+	public double getDy() {
+		return dy;
+	}
+	  public void setDy(double newDy) {
+		  dy = newDy;
+//		  System.out.println("SETTING DX and DY mart");
+//	  	  dx = ((playerLocation.y) * 16);	  // LEFT TO RIGHT, y = col
+//	  	  dy = ((playerLocation.x) * 16) - 8; 
+	  }
   
-  public boolean isTimelineAnimating() {
-	  return timeline.getStatus() == Status.RUNNING;
-  }
   
   
   private class AnimateStarter implements EventHandler<ActionEvent> {
@@ -120,7 +109,7 @@ public class CobvilleTown extends Canvas {
         dh the destination rectangle's height.
         */
     	
-      lastValidPlayerDX = ((playerLocation.y) * 16);
+      lastValidPlayerDX = ((playerLocation.x) * 16);
       lastValidPlayerDY = ((playerLocation.y) * 16) - 8;
   	  sy = 5;
   	  sx = 50;
@@ -142,6 +131,7 @@ public class CobvilleTown extends Canvas {
     // This handle method gets called every so many milliseconds to
     // draw a varying subimage from a spritesheet over the desert dirt.
     public void handle(ActionEvent event) {
+    	System.out.println("Cobvile animating");
         tic++;
        
         if (KeyCode.UP == keyCode ) {
@@ -167,7 +157,10 @@ public class CobvilleTown extends Canvas {
 
         }
         else if(KeyCode.DOWN == keyCode) {
-      	  dy += (16 / 3.0);
+        	//if (!(Game.getCharAtIndex(playerLocation.x, playerLocation.x) == 'E')) {
+        		dy += (16 / 3.0);
+        	//}
+      	  
       	  if (drawPlayerOverOrUnder.equals("over")) {
           	  // get picture that makes trainer look going south
       		  if (tic == 1) {
@@ -408,7 +401,8 @@ public class CobvilleTown extends Canvas {
             g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0,  cameraViewSize / 2.0, dw, dh);	
         }
 
-        
+        System.out.println("DX --> " + dx);
+        System.out.println("DY --> " + dy);
         // stop timeline from drawing after final sprite 
         if (tic == 3) {
         	timeline.stop();
@@ -424,6 +418,7 @@ public class CobvilleTown extends Canvas {
 		return playerLocation;
 		
 	}
+	
 	
 	public double getCameraViewHeight() {
 		return cameraViewSize;

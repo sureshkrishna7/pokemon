@@ -1,14 +1,16 @@
 package model.MainMap;
 
+
 import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import javafx.scene.image.Image;
 
-public class EnermyTown implements MainMap{
+public class House6_TEXT implements MainMap{
 
   private char[][] characterBoard;
   private Point MainMapPlayerPos;
@@ -18,26 +20,17 @@ public class EnermyTown implements MainMap{
   private int row;
   private Image mainMap;
 
-  public EnermyTown() {
+  public House6_TEXT() {
     initializeBoard();
     try {
-      createMapGridFromTxtFile("src/EnermyTown.txt");
+      createMapGridFromTxtFile("src/house_6.txt");
     } catch (FileNotFoundException e) {
-      System.out.println("EnermyTown's text file isn't found");
+      System.out.println("house_6 text file isn't found");
     }
-    mainMap = new Image("file:src/images/EnermyTown.png", false);
-    createDoorObjects();
-    setMapPlayerPosition(12,22);
+    mainMap = new Image("file:src/images/house_6GRID.png", false);
+    setMapPlayerPosition(9,19);
   }
 
-  private void createDoorObjects() { 
-    listOfDoors.add(new Door(11,10,"house_6.png","house_6.txt"));
-    listOfDoors.add(new Door(11,23,"Mart.png","Mart.txt")); 
-    listOfDoors.add(new Door(12,34,"Mart.png","Mart.txt"));
-    //listOfDoors.add(new Door(12,34,"house_1.png","house_1.txt")); 
-    listOfDoors.add(new Door(19,10,"house_1.png","house_1.txt"));
-    listOfDoors.add(new Door(19,21,"Mart.png","Mart.txt")); 
-  }
 
   /*
    * ********************************IMPORTANT****************************************
@@ -125,7 +118,9 @@ public class EnermyTown implements MainMap{
       i = 0;
       while (i < read.length()) {
         characterBoard[j][i] = read.charAt(i);
-
+//        if (characterBoard[j][i] == 'E') {
+//        	MainMapPlayerPos = new Point(j,i);
+//        }
         i++;
       }
       j++;
@@ -159,6 +154,7 @@ public class EnermyTown implements MainMap{
    * 5) X is a place where there exists a "GHOST IMAGE" of the Trainer
    * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    * 
+   * E - Exit 							  / To exit houses, caves, etc.
    * T - Tree                             / Animate them, Hush Sound, Wind Blow, Leaves fall
    * W - Water                            / Moves, Splash
    * G + PlainGround or Grass             / Dirt Animation, Diamond Pokemon Game
@@ -181,13 +177,26 @@ public class EnermyTown implements MainMap{
 
     // Checking if its a valid existing point
     if ((x >= 0 && x < row) && (y >= 0 && y < col)) {
-    	
-//    	System.out.println("Attemp to walk on: " + characterBoard[x][y]);
+    	System.out.println("Condition! :)");
+    	System.out.println("X = " + x);
+    	System.out.println("Y = " + y);
+    	System.out.println(Arrays.toString(characterBoard[x])); //[y]);
+    	System.out.println("Tried to walk MartCity on: " + characterBoard[x][y]);
+    	//System.out.println("Attemp to walk on: " + characterBoard[x][y]);
       if (characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D'
-          || characterBoard[x][y] == 'S' || characterBoard[x][y] == '0' || characterBoard[x][y] == 'X' || characterBoard[x][y] == ' ') {
+          || characterBoard[x][y] == 'S' || characterBoard[x][y] == '0' || characterBoard[x][y] == 'X' 
+          || characterBoard[x][y] == 'E'  || characterBoard[x][y] == ' ') {
         return true;
       }
-    }
+      
+    }else {
+    	//if ()
+    	//if (characterBoard[x - 1][y] != 0)
+    	System.out.println("No condition!! -->");
+    	System.out.println("X = " + x);
+    	System.out.println("Y = " + y);
+    	System.out.println("Row = " + row);
+    	System.out.println("Col = " + col);    }
     return false;
   }
 
@@ -207,3 +216,4 @@ public class EnermyTown implements MainMap{
   }
 
 }
+
