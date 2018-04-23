@@ -74,15 +74,10 @@ public class CobvilleTown extends GameBackground {
 
   }
 
-  // Call this from the Application to begin the spritesheet animation
-  public void animate() {
-
-
-	public void setBackGroundImage(Image changeOfMap) {
-	  g2D.clearRect(0, 0, 800, 800);
-	  background = changeOfMap;
-	}
-  
+  public void setBackGroundImage(Image changeOfMap) {
+    g2D.clearRect(0, 0, 800, 800);
+    background = changeOfMap;
+  }
   
   
   private class AnimateStarter implements EventHandler<ActionEvent> {

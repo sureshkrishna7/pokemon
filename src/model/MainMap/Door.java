@@ -55,7 +55,7 @@ public class Door implements MainMap{
     try {
       createMapFromTxtFile("src/"+txt);
     } catch (FileNotFoundException e) {
-      System.out.println("File: "+txt+" is not found.");
+      System.out.println("file: "+txt+" is not found.");
     }
   }
   
@@ -66,9 +66,9 @@ public class Door implements MainMap{
     this.listOfDoorPositions.add(new Point(secx,secy));
     insideMapImage = new Image("file:src/images/"+img, false);
     try {
-      createMapFromTxtFile(txt);
+      createMapFromTxtFile("src/"+txt);
     } catch (FileNotFoundException e) {
-      System.out.println("File: "+txt+" is not found.");
+      System.out.println("file: "+txt+" is not found.");
     }
   }
 
