@@ -18,11 +18,15 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.ImageView;
 
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -80,15 +84,11 @@ public class PokemonGame extends Application {
   }
 
   @Override
-  public void start(Stage stage) throws Exception {
-
-    // initialization 
-    initializeGameForFirstTime();
-    stateStack = new StateStack(theGame);
-    stateStack.push("cobTown");
+  public void start(Stage stage) throws Exception {   
     
-    stateStack.push("mainMenu");
-    menu = new MainMenu(theGame);
+    initializeGameForFirstTime();
+    getGameMenu();
+    getSafariStatSheet();
 
     pane = new BorderPane();
     cobvilleTown = new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
@@ -173,12 +173,20 @@ public class PokemonGame extends Application {
        * than the animation timeline can draw the image, and will crash (runs into
        * things on grid before image). So if animation is on, ignore button clicked
        */
+
+      if (((GameBackground) pane.getCenter()).isTimelineAnimating()) {
+    	  return;
+      }
+
       if (cobvilleTown.isTimelineAnimating()) {
         return;
       }
 
       char newLocationObject = 'Z';
       if (KeyCode.UP == event.getCode()) {
+          newLocationObject = theGame.playerMove('n');
+        }
+      else if (KeyCode.UP == event.getCode()) {
         newLocationObject = theGame.playerMove('n');
       } else if (KeyCode.DOWN == event.getCode()) {
         newLocationObject = theGame.playerMove('s');
@@ -200,17 +208,23 @@ public class PokemonGame extends Application {
     	  //System.out.println("---KeyCode ------  " +  event.getCode());
       }
 
-      //System.out.println("Game logic = " + newLocationObject);
+      System.out.println("Game logic = " + newLocationObject);
+      
       
 
       if (newLocationObject == 'D') {
         System.out.print("Encountered a Door\n");
+
         playerOldLocation.x = theGame.getTrainerLocation().x;
         playerOldLocation.y = theGame.getTrainerLocation().y;
         oldCurrentMap = theGame.getCurrCameraMap();
 
+        Door door = (Door) theGame.getCurrCameraMap().enteredDoor(theGame.getTrainerLocation().x, theGame.getTrainerLocation().y);
+
+
         Door door = (Door) theGame.getCurrCameraMap().enteredDoor(theGame.getTrainerLocation().x,
             theGame.getTrainerLocation().y);
+
 
         /*
          * ****We would be in safari Zone if the door is null**** ****Because we
@@ -218,13 +232,27 @@ public class PokemonGame extends Application {
          */
         if (door == null) {
           theGame.setTrainerLocation(theGame.getCurrCameraMap().getMapPlayerPosition());
-        } else {
-          theGame.setCurrCameraMap(door);
-          theGame.setTrainerLocation(door.getMapPlayerPosition());
+
         }
-      } else if (newLocationObject == ' ') {
-        theGame.setTrainerLocation(playerOldLocation);
-        theGame.setCurrCameraMap(oldCurrentMap);
+        else {
+          theGame.setTrainerLocation(door.getMapPlayerPos());
+          theGame.setCurrCameraMap(door.getInsideMapObject());
+          pane.setCenter(door.getGameBackground());
+          System.out.println(door.getGameBackground());
+          drawGameBackground((GameBackground)pane.getCenter(), event, newLocationObject);
+          return;
+        }
+      } else if (newLocationObject == 'E') {
+    	  GameBackground backgroundToRemove = ((GameBackground)pane.getCenter());
+    	  backgroundToRemove.setDy(backgroundToRemove.getDy() + 32);
+    	  theGame.setTrainerLocation(playerOldLocation);
+    	  theGame.setCurrCameraMap(oldCurrentMap);
+        
+    	  // -32 (16) to adjust animation after exiting house 
+    	  // (16) to make sure that when he takes a step out the door, 
+    	  // he is put in the correct pos relative to grid
+    	  cobvilleTown.setDy(cobvilleTown.getDy() - 32);
+    	  pane.setCenter(cobvilleTown);
       } 
       else if (newLocationObject == 'S') {
         playerOldLocation = theGame.getTrainerLocation();
@@ -251,29 +279,40 @@ public class PokemonGame extends Application {
           System.out.print("Encountered a NPC\n");
         }
       }
-
-      // z is a char returned by theGame.playerMove() that's not used in map
-      // to represent an obj, thus can be used to detect null
-      if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {
-    	  
-    	/*
-    	 * We need to setBackGroundImage() only after entering/exiting doors
-    	 */
-        //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
-    	  cobvilleTown.setPlayerLocation(theGame.getTrainerLocation());
-    	  cobvilleTown.movePlayer(event.getCode(), "over");
-      }
-
-      /*
-       * Draw character under X objects
-       */
-      else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
-        //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
-    	  cobvilleTown.setPlayerLocation(theGame.getTrainerLocation());
-    	  cobvilleTown.movePlayer(event.getCode(), "under");
-      }
+      
+//      else {
+//    	  System.out.println(gameLogic == 'E');
+//    	  System.out.println((int)gameLogic);
+//    	  System.out.println((int) ' ');
+//      }
+      
+      // cast is a promise to compiler that pane's center node is a gameBackground obj
+      drawGameBackground((GameBackground)pane.getCenter(), event, newLocationObject);
+      
 
     }
+    
+    public void drawWithCanvas(Door door, KeyEvent event, char newLocationObject) {
+    	
+    }
+
+	public void drawGameBackground(GameBackground gameBackground, KeyEvent event, char newLocationObject) {
+		// z is a char returned by theGame.playerMove() that's not used in map 
+		// to represent an obj, thus can be used to detect null 
+		if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {  
+			// We need to setBackGroundImage() only after entering/exiting doors
+		    //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+			gameBackground.setPlayerLocation(theGame.getTrainerLocation());
+			gameBackground.movePlayer(event.getCode(), "over");
+		 }
+		  
+		// Draw character under X objects
+		else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
+		    //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+			gameBackground.setPlayerLocation(theGame.getTrainerLocation());
+			gameBackground.movePlayer(event.getCode(), "under");
+		}
+	}
   }
 
   /*

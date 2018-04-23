@@ -9,6 +9,7 @@ import model.MainMap.EnermyTown;
 import model.MainMap.FryslaSafariZone;
 import model.MainMap.LilyCoveCity;
 import model.MainMap.MainMap;
+import model.MainMap.MartCity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,8 +21,10 @@ public class Game {
   private boolean playerWon;
 
   private MainMap currentMap;
+  private static MainMap currentMapStatic = new EnermyTown();;
 
   private MainMap enermyTown;
+  private MainMap mart;
   private MainMap lilyCoveCity;
   private MainMap fryslaSafariZone;
   private Trainer ash;
@@ -41,6 +44,7 @@ public class Game {
     playerWon = false;
 
     enermyTown = new EnermyTown();
+    mart = new MartCity();
     lilyCoveCity = new LilyCoveCity();
     fryslaSafariZone = new FryslaSafariZone();
     initializePokeLists();
@@ -52,6 +56,10 @@ public class Game {
     int y = currentMap.getMapPlayerPosition().y;
     ash.setLocation(x, y);
     areWeInSafariZone = false;
+  }
+  
+  public static char getCharAtIndex(int row, int col) {
+	  return currentMapStatic.getCharacterFromLocation(new Point (row,col));
   }
 
   /*
@@ -100,7 +108,9 @@ public class Game {
 
     Point player = ash.getLocation();
     Point newPoint = new Point();
-
+    
+    System.out.println("W -->" + currentMap.getMapWidth());
+    System.out.println("H -->" + currentMap.getMapHeight()); 
     if(direction == 'n' || direction == 'N') {
       newPoint.x = player.x - 1;
       newPoint.y = player.y;
@@ -110,6 +120,7 @@ public class Game {
         if(areWeInSafariZone) {
           currentSafariSteps++;
         }
+        System.out.println("Walkable 1");
         return currentMap.getCharacterFromLocation(newPoint);
       }
     }
@@ -122,6 +133,7 @@ public class Game {
         if(areWeInSafariZone) {
           currentSafariSteps++;
         }
+        System.out.println("Walkable 2");
         return currentMap.getCharacterFromLocation(newPoint);
       }
     }
@@ -134,6 +146,7 @@ public class Game {
         if(areWeInSafariZone) {
           currentSafariSteps++;
         }
+        System.out.println("Walkable 3");
         return currentMap.getCharacterFromLocation(newPoint);
       }
     }
@@ -146,6 +159,7 @@ public class Game {
         if(areWeInSafariZone) {
           currentSafariSteps++;
         }
+        System.out.println("Walkable 4");
         return currentMap.getCharacterFromLocation(newPoint);
       }
     }
