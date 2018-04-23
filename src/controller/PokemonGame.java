@@ -55,8 +55,8 @@ public class PokemonGame extends Application {
   private static Observer currentView, imageView, textAreaView;
   private MainMenu menu;
   private StateStack stateStack;
-
-  private STATE state = STATE.START; 
+  private static STATE state = STATE.START;
+  private StartScreen start;
 
   public static void main(String[] args) {
     launch(args);
@@ -64,7 +64,7 @@ public class PokemonGame extends Application {
 
   /**
    * 
-   * @author suresh
+   * @author Suresh
    * Different States signified by the enum
    * The render method will check what state it is right now
    * Then it will call the appropriate classes that draw to the graphics context
@@ -107,6 +107,7 @@ public class PokemonGame extends Application {
     //stateStack.push("cobTown");
 
     primaryStage = stage;
+    start = new StartScreen(primaryStage, g2D, this);
 
     new AnimationTimer()
     {
@@ -125,6 +126,18 @@ public class PokemonGame extends Application {
 
   }
 
+  /**
+   * @author Suresh
+   * This method would call all the classes that needs to be rendered
+   * The render method will check what state it is right now
+   * Then it will call the appropriate classes that draw to the graphics context
+   * 
+   * ALL drawing classes like start, menu, game, instruction, battle will take in
+   * the graphics context and primaryStage parameters in their constructor
+   * 
+   * All those classes should have a public method that renders/ draws stuff to the graphics context
+   * So render() method in the controller(pokemonGame) could call those methods when the STATE changes
+   */
   private void render() {
 
     // if there is a state in the stateStack
@@ -149,7 +162,8 @@ public class PokemonGame extends Application {
 
     if(state == STATE.START) {
       //call start class with primary stage, graphics context
-      state = STATE.MENU;
+      start.render();
+      //state = STATE.MENU;
     }
     else if(state == STATE.MENU) {
       //call menu class with primary stage, graphics context
@@ -187,6 +201,9 @@ public class PokemonGame extends Application {
     }
   }
 
+  public void setState(STATE newState) {
+    state = newState;
+  }
   // Add a listener that will start the Timeline's animation
   public class AnimateStarter implements EventHandler<KeyEvent> {
     @Override
