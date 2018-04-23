@@ -128,34 +128,27 @@ public class PokemonGame extends Application {
       
       char newLocationObject = 'Z';
       if (KeyCode.UP == event.getCode()) {
-    	  System.out.println("Test1");
           newLocationObject = theGame.playerMove('n');
         }
       else if (KeyCode.UP == event.getCode()) {
-    	  System.out.println("Test2");
         newLocationObject = theGame.playerMove('n');
       }
       else if (KeyCode.DOWN == event.getCode()) {
-    	  System.out.println("Test3");
         newLocationObject = theGame.playerMove('s');
       }
       else if (KeyCode.LEFT == event.getCode()) {
-    	  System.out.println("Test4");
         newLocationObject = theGame.playerMove('w');
       }
       else if (KeyCode.RIGHT == event.getCode()) {
-    	  System.out.println("Test5");
         newLocationObject = theGame.playerMove('e');
       }
       else if (KeyCode.S == event.getCode() && theGame.getCurrCameraMap() != theGame.getFryslaSafariZone()) {
-    	  System.out.println("Test6");
     	  playerOldLocation = theGame.getTrainerLocation();
     	  oldCurrentMap = theGame.getCurrCameraMap();
     	  theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
     	  theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
           theGame.weAreInSafariZone();
       } else if (KeyCode.P == event.getCode() && theGame.getCurrCameraMap() == theGame.getFryslaSafariZone()) {
-    	  System.out.println("Test7");
     	  theGame.setTrainerLocation(playerOldLocation);
     	  theGame.setCurrCameraMap(oldCurrentMap);
     	  theGame.weAreOutSafariZone();
@@ -165,7 +158,6 @@ public class PokemonGame extends Application {
 
       System.out.println("Game logic = " + newLocationObject);
       
-      System.out.println("Old location = " + theGame.getTrainerLocation());
       
       if (newLocationObject == 'D') {
         System.out.print("Encountered a Door\n");
@@ -173,9 +165,6 @@ public class PokemonGame extends Application {
         playerOldLocation.x = theGame.getTrainerLocation().x;
         playerOldLocation.y = theGame.getTrainerLocation().y;
         oldCurrentMap = theGame.getCurrCameraMap();
-//    	if (KeyCode.DOWN == event.getCode())
-//    		  playerOldLocation.x += 1;
-        System.out.println("REAL Old location = " + playerOldLocation);
         Door door = (Door) theGame.getCurrCameraMap().enteredDoor(theGame.getTrainerLocation().x, theGame.getTrainerLocation().y);
 
         /* 
@@ -183,36 +172,27 @@ public class PokemonGame extends Application {
          * ****Because we magically hop to different places****
          */
         if(door == null) {
-        	System.out.println("door == null" );
           theGame.setTrainerLocation(theGame.getCurrCameraMap().getMapPlayerPosition());
         }
         else {
-          //theGame.setCurrCameraMap(door.getInsideMapObject());
-          // ********* START: ********
-          // pane.setCenter instead?
-          //theGame.setTrainerLocation(door.getMapPlayerPos());
-          System.out.println("Old location = " + theGame.getTrainerLocation());
-          System.out.println("New location = " + door.getMapPlayerPos());
           theGame.setTrainerLocation(door.getMapPlayerPos());
           theGame.setCurrCameraMap(door.getInsideMapObject());
-          System.out.println(door.getInsideMapObject().getMapHeight());
-          System.out.println(door.getInsideMapObject().getMapWidth());
           pane.setCenter(door.getGameBackground());
           System.out.println(door.getGameBackground());
           drawGameBackground((GameBackground)pane.getCenter(), event, newLocationObject);
           return;
         }
       } else if (newLocationObject == 'E') {
-    	  System.out.println("Pokemon(201) Setting to old Map:");
-    	  System.out.println("setting to --> " + playerOldLocation);
-//    	  if (KeyCode.DOWN == event.getCode())
-//    		  playerOldLocation.x 
-        theGame.setTrainerLocation(playerOldLocation);
-        theGame.setCurrCameraMap(oldCurrentMap);
+    	  GameBackground backgroundToRemove = ((GameBackground)pane.getCenter());
+    	  backgroundToRemove.setDy(backgroundToRemove.getDy() + 32);
+    	  theGame.setTrainerLocation(playerOldLocation);
+    	  theGame.setCurrCameraMap(oldCurrentMap);
         
-        // adjust animation after exiting house 
-        cobvilleTown.setDy(cobvilleTown.getDy() - 16);
-        pane.setCenter(cobvilleTown);
+    	  // -32 (16) to adjust animation after exiting house 
+    	  // (16) to make sure that when he takes a step out the door, 
+    	  // he is put in the correct pos relative to grid
+    	  cobvilleTown.setDy(cobvilleTown.getDy() - 32);
+    	  pane.setCenter(cobvilleTown);
       } 
       else if (gameLogic == 'S') {
         playerOldLocation = theGame.getTrainerLocation();

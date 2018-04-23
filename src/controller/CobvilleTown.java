@@ -78,16 +78,6 @@ public class CobvilleTown extends GameBackground {
 	  g2D.clearRect(0, 0, 800, 800);
 	  background = changeOfMap;
 	}
-	
-	public double getDy() {
-		return dy;
-	}
-	  public void setDy(double newDy) {
-		  dy = newDy;
-//		  System.out.println("SETTING DX and DY mart");
-//	  	  dx = ((playerLocation.y) * 16);	  // LEFT TO RIGHT, y = col
-//	  	  dy = ((playerLocation.x) * 16) - 8; 
-	  }
   
   
   

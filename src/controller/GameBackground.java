@@ -63,14 +63,24 @@ public class GameBackground extends Canvas{
 		  return playerLocation;
 		
 	  }
-	  public double getDy() {
-		  return dy;
-	  }
 	
 	  public void setDXandDY(Point playerLoc) {
 		  System.out.println("SETTING DX and DY");
 	  	  dx = ((playerLocation.y) * 16);	  // LEFT TO RIGHT, y = col
 	  	  dy = ((playerLocation.x) * 16) - 8; 
+	  }
+	  public double getDx() {
+		  return dx;
+	  }
+	  public void setDx(double newDx) {
+		  dx = newDx;
+	  }
+	  
+	  public double getDy() {
+		  return dy;
+	  }
+	  public void setDy(double newDy) {
+		  dy = newDy;
 	  }
 	  
 	  public class AnimateStarter implements EventHandler<ActionEvent> {
