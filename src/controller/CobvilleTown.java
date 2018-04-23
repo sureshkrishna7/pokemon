@@ -43,6 +43,7 @@ public class CobvilleTown extends Canvas {
   private int closeToBottomPictureBounderSteps;
   private boolean afterTopLeftCornerCondition = false;
   private boolean afterBottomLeftCornerCondition = false;
+  private boolean afterBottomLeftCornerCondition2 = false;
   
   private int tic = 0;
   double sx, sy, sw, sh, dx, dy, dw, dh;
@@ -281,6 +282,15 @@ public class CobvilleTown extends Canvas {
         	animateImage("left, bottom", "last Valid DX and DY");
         }
         else if(row > 20 && col <= 10 && keyCode == KeyCode.LEFT) {
+        	/*
+        	 * NOTE: player last at bottom-left boundaries but
+        	 * moves right towards only bottom boundary (never
+        	 * updated bottom variable last step), subtract 3
+        	 */
+        	if (afterBottomLeftCornerCondition2) {
+        		closeToLeftPictureBounderSteps -= 3;
+        		afterBottomLeftCornerCondition2 = false;
+        	}
         	closeToLeftPictureBounderSteps++;
         	animateImage("left, bottom", "last Valid DX and DY");
         }
@@ -304,6 +314,7 @@ public class CobvilleTown extends Canvas {
         else if(row <= 10 && keyCode == KeyCode.LEFT) {
         	lastValidPlayerDX = dx;
         	animateImage("cam/2, top", "dx and last Valid DY");
+        	
         }
         else if(row <= 10 && keyCode == KeyCode.RIGHT) {
         	/*
@@ -370,12 +381,17 @@ public class CobvilleTown extends Canvas {
         	closeToBottomPictureBounderSteps--;
         	animateImage("cam/2, bottom", "dx and last Valid DY");
         }
+        else if(row > 20 && keyCode == KeyCode.RIGHT) {
+        	afterBottomLeftCornerCondition2 = true;
+        	lastValidPlayerDX = dx;
+        	animateImage("cam/2, bottom", "dx and last Valid DY");
+        }
        
         /*
          * Map layout doesnt let a user get close enough to boundary on south east / south west
          * so we only have to worry about the case where close to south boundary
          */
-        else if(row > 20 && (keyCode == KeyCode.LEFT ||  keyCode == KeyCode.RIGHT)) {
+        else if(row > 20 && keyCode == KeyCode.LEFT) {
         	lastValidPlayerDX = dx;
         	animateImage("cam/2, bottom", "dx and last Valid DY");
         }
