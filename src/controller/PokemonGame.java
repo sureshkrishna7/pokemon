@@ -8,27 +8,19 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
 
-import controller.StateMachine.StateStack;
+import controller.States.CobvilleTown;
+import controller.States.StartScreen;
+import controller.States.StateStack;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
-import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
-
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.ImageView;
-
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.Battle;
@@ -46,7 +38,7 @@ public class PokemonGame extends Application {
   private final double cameraViewSize = 20 * 16;
 
   public static Stage primaryStage;
-  public static Scene scene;
+  public static Scene currentScene;
   public static GraphicsContext g2D;
 
   private static Scanner sc;
@@ -64,37 +56,43 @@ public class PokemonGame extends Application {
   private static Observer currentView, imageView, textAreaView;
   private MainMenu menu;
   private StateStack stateStack;
-  private static STATE state = STATE.START;
   private StartScreen start;
 
+  public static STATE currentState;
+  
   public static void main(String[] args) {
     launch(args);
   }
 
   /**
    * 
-   * @author Suresh
-   * Different States signified by the enum
-   * The render method will check what state it is right now
-   * Then it will call the appropriate classes that draw to the graphics context
+   * @author Suresh Different States signified by the enum The render method will
+   *         check what state it is right now Then it will call the appropriate
+   *         classes that draw to the graphics context
    * 
-   * ALL drawing classes like start, menu, game, instruction, battle will take in
-   * the graphics context and primaryStage parameters in their constructor
+   *         ALL drawing classes like start, menu, game, instruction, battle will
+   *         take in the graphics context and primaryStage parameters in their
+   *         constructor
    * 
-   * All those classes should have a public method that renders/ draws stuff to the graphics context
-   * So render() method in  the controller(pokemonGame) could call those methods at the appropriate time
+   *         All those classes should have a public method that renders/ draws
+   *         stuff to the graphics context So render() method in the
+   *         controller(pokemonGame) could call those methods at the appropriate
+   *         time
    */
-  public enum STATE{
-    START,  //Start screen
-    MENU,   //Menu screen
-    GAME,   //Actual Game
-    INSTRUCTION, //How to play the Game
-    BATTLE, //Battle screen
+  public enum STATE {
+    START, // Start screen
+    MENU, // Menu screen
+    COBVILLETOWN, // Actual Game
+    INSTRUCTION, // How to play the Game
+    BATTLE, // Battle screen
   };
 
   private static void initializeGameForFirstTime() {
     theGame = new Game();
-
+    
+    // initialize state to start
+    currentState = STATE.COBVILLETOWN;
+    
     playerStartLocation.x = theGame.getTrainerLocation().x;
     playerStartLocation.y = theGame.getTrainerLocation().y;
 
@@ -110,22 +108,19 @@ public class PokemonGame extends Application {
   @Override
   public void start(Stage stage) throws Exception {
 
-    // initialization 
+    // initialization
     initializeGameForFirstTime();
-    //stateStack = new StateStack(theGame);
-    //stateStack.push("cobTown");
+    stateStack = new StateStack(theGame);
+    stateStack.push("cobTown");
 
     primaryStage = stage;
-    start = new StartScreen(primaryStage, g2D, this);
+    //start = new StartScreen(primaryStage, g2D, this);
 
-
-   // new AnimationTimer()
-   // {
-   //   public void handle(long currentNanoTime)
-      {
+    new AnimationTimer() {
+      public void handle(long currentNanoTime) {
         render();
       }
-   // }.start();
+    }.start();
 
     stage.show();
 
@@ -137,83 +132,76 @@ public class PokemonGame extends Application {
   }
 
   /**
-   * @author Suresh
-   * This method would call all the classes that needs to be rendered
-   * The render method will check what state it is right now
-   * Then it will call the appropriate classes that draw to the graphics context
+   * @author Suresh This method would call all the classes that needs to be
+   *         rendered The render method will check what state it is right now Then
+   *         it will call the appropriate classes that draw to the graphics
+   *         context
    * 
-   * ALL drawing classes like start, menu, game, instruction, battle will take in
-   * the graphics context and primaryStage parameters in their constructor
+   *         ALL drawing classes like start, menu, game, instruction, battle will
+   *         take in the graphics context and primaryStage parameters in their
+   *         constructor
    * 
-   * All those classes should have a public method that renders/ draws stuff to the graphics context
-   * So render() method in the controller(pokemonGame) could call those methods when the STATE changes
+   *         All those classes should have a public method that renders/ draws
+   *         stuff to the graphics context So render() method in the
+   *         controller(pokemonGame) could call those methods when the STATE
+   *         changes
    */
   private void render() {
 
     // if there is a state in the stateStack
-    /*if(stateStack.getStack().size() > 0) {
-      System.out.println(stateStack.peek());
-
-      // if that state is cobTown
-      if(stateStack.peek() == "cobTown") {
+    /*
+     * if(stateStack.getStack().size() > 0) { System.out.println(stateStack.peek());
+     * 
+     * // if that state is cobTown if(stateStack.peek() == "cobTown") { cobvilleTown
+     * = (CobvilleTown) stateStack.getState("cobTown"); scene =
+     * stateStack.pop().render(); scene.setOnKeyReleased(new AnimateStarter());
+     * scene.setOnKeyPressed(new KeyHandler()); } // if that state is mainMenu else
+     * if (stateStack.peek() == "mainMenu") { menu = (MainMenu)
+     * stateStack.getState("mainMenu"); menu.onEnter(); scene =
+     * stateStack.pop().render(); } primaryStage.setScene(scene); }
+     */
+    
+    if(!stateStack.isEmpty()) {
+      switch (currentState) {
+      case START:
+        break;
+      case COBVILLETOWN:
         cobvilleTown = (CobvilleTown) stateStack.getState("cobTown");
-        scene = stateStack.pop().render();
-        scene.setOnKeyReleased(new AnimateStarter());
-        scene.setOnKeyPressed(new KeyHandler());
+        currentScene = stateStack.pop().render();
+        primaryStage.setScene(currentScene);
+        currentScene.setOnKeyReleased(new AnimateStarter());
+        currentScene.setOnKeyPressed(new KeyHandler());
+        break;
+      case BATTLE:
+        break;
+      case INSTRUCTION:
+        break;
+      case MENU:
+        break;
+      default:
+        break;
       }
-      // if that state is mainMenu
-      else if (stateStack.peek() == "mainMenu") {
-        menu = (MainMenu) stateStack.getState("mainMenu");
-        menu.onEnter();
-        scene = stateStack.pop().render();
-      }
-      primaryStage.setScene(scene); 
-    }*/
-
-    if(state == STATE.START) {
-      //call start class with primary stage, graphics context
-      start.render();
-      //state = STATE.MENU;
     }
-    else if(state == STATE.MENU) {
-      //call menu class with primary stage, graphics context
-      
-      state = STATE.GAME;
-    }
-    else if(state == STATE.GAME) {
-      //call Cobville town and also keyhandler here
-      //somewhere in there were we might trigger a battle, we say
-      //state = STATE.BATTLE
-
-
-
-    }
-    else if(state == STATE.BATTLE) {
-      //call Battle Class with primary stage and graphics context
-    }
-    else if(state == STATE.INSTRUCTION) {
-      //display instruction
-    }
-
-
   }
 
-  public class KeyHandler implements EventHandler<KeyEvent>{
+  public class KeyHandler implements EventHandler<KeyEvent> {
 
     @Override
     public void handle(KeyEvent event) {
-      if(event.getCode() == KeyCode.M) {
+      if (event.getCode() == KeyCode.M) {
         // add to stack mainMenu, representing MainMenu object in Hashmap
-        //stateStack.push("mainMenu");
-        //PokemonGame.primaryStage.setScene(stateStack.pop().render());
-        state = STATE.MENU;
+        stateStack.push("mainMenu");
+        // PokemonGame.primaryStage.setScene(stateStack.pop().render());
+        currentState = STATE.MENU;
+        
       }
     }
   }
 
   public void setState(STATE newState) {
-    state = newState;
+    currentState = newState;
   }
+
   // Add a listener that will start the Timeline's animation
   public class AnimateStarter implements EventHandler<KeyEvent> {
     @Override
@@ -221,9 +209,9 @@ public class PokemonGame extends Application {
 
       /**
        * We monitor what arrow keys we are pressing only when we are in STATE.GAME
-       * This is to avoid key pressing conflicts when we not in GAME state 
+       * This is to avoid key pressing conflicts when we not in GAME state
        */
-      if (state == STATE.GAME) {
+      if (currentState == STATE.COBVILLETOWN) {
         /**
          * NOTE: If user inputs moves too fast, the player will move on the grid faster
          * than the animation timeline can draw the image, and will crash (runs into
@@ -252,12 +240,11 @@ public class PokemonGame extends Application {
           theGame.setTrainerLocation(playerOldLocation);
           theGame.setCurrCameraMap(oldCurrentMap);
           theGame.weAreOutSafariZone();
-        }else {
-          //System.out.println("---KeyCode ------  " +  event.getCode());
+        } else {
+          // System.out.println("---KeyCode ------ " + event.getCode());
         }
 
-        //System.out.println("Game logic = " + newLocationObject);
-
+        // System.out.println("Game logic = " + newLocationObject);
 
         if (newLocationObject == 'D') {
           System.out.print("Encountered a Door\n");
@@ -281,8 +268,7 @@ public class PokemonGame extends Application {
         } else if (newLocationObject == ' ') {
           theGame.setTrainerLocation(playerOldLocation);
           theGame.setCurrCameraMap(oldCurrentMap);
-        } 
-        else if (newLocationObject == 'S') {
+        } else if (newLocationObject == 'S') {
           playerOldLocation = theGame.getTrainerLocation();
           oldCurrentMap = theGame.getCurrCameraMap();
           theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
@@ -297,27 +283,21 @@ public class PokemonGame extends Application {
 
           // bush, check will battle at random, start battle with randomly instantiated
           // Pokemon
-        } 
-        else if (newLocationObject == 'B') {
+        } else if (newLocationObject == 'B') {
           foundPokemon = checkBush();
           if (foundPokemon) {
 
-
-            /** The Battle is about to start*/
-            state = STATE.BATTLE;
-
-
+            /** The Battle is about to start */
+            currentState = STATE.BATTLE;
 
             Pokemon wildPoke = getWildPoke();
             wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
           }
 
+          /** Once the battle is done set the state back to Game */
+          currentState = STATE.COBVILLETOWN;
 
-          /** Once the battle is done set the state back to Game*/
-          state = STATE.GAME;
-
-        }
-        else if (newLocationObject == 'N') {
+        } else if (newLocationObject == 'N') {
           System.out.print("Encountered a NPC\n");
         }
 
@@ -328,7 +308,7 @@ public class PokemonGame extends Application {
           /*
            * We need to setBackGroundImage() only after entering/exiting doors
            */
-          //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+          // cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
           cobvilleTown.setPlayerLocation(theGame.getTrainerLocation());
           cobvilleTown.movePlayer(event.getCode(), "over");
         }
@@ -337,34 +317,34 @@ public class PokemonGame extends Application {
          * Draw character under X objects
          */
         else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
-          //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+          // cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
           cobvilleTown.setPlayerLocation(theGame.getTrainerLocation());
           cobvilleTown.movePlayer(event.getCode(), "under");
         }
       }
     }
-    
+
     public void drawWithCanvas(Door door, KeyEvent event, char newLocationObject) {
-    	
+
     }
 
-	public void drawGameBackground(GameBackground gameBackground, KeyEvent event, char newLocationObject) {
-		// z is a char returned by theGame.playerMove() that's not used in map 
-		// to represent an obj, thus can be used to detect null 
-		if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {  
-			// We need to setBackGroundImage() only after entering/exiting doors
-		    //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
-			gameBackground.setPlayerLocation(theGame.getTrainerLocation());
-			gameBackground.movePlayer(event.getCode(), "over");
-		 }
-		  
-		// Draw character under X objects
-		else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
-		    //cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
-			gameBackground.setPlayerLocation(theGame.getTrainerLocation());
-			gameBackground.movePlayer(event.getCode(), "under");
-		}
-	}
+    public void drawGameBackground(GameBackground gameBackground, KeyEvent event, char newLocationObject) {
+      // z is a char returned by theGame.playerMove() that's not used in map
+      // to represent an obj, thus can be used to detect null
+      if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {
+        // We need to setBackGroundImage() only after entering/exiting doors
+        // cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+        gameBackground.setPlayerLocation(theGame.getTrainerLocation());
+        gameBackground.movePlayer(event.getCode(), "over");
+      }
+
+      // Draw character under X objects
+      else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
+        // cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
+        gameBackground.setPlayerLocation(theGame.getTrainerLocation());
+        gameBackground.movePlayer(event.getCode(), "under");
+      }
+    }
   }
 
   /*

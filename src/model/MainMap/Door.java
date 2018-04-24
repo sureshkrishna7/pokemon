@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import controller.GameBackground;
-import controller.House1;
-import controller.House6;
-import controller.Mart;
+import controller.States.House1;
+import controller.States.House6;
+import controller.States.Mart;
 import javafx.scene.image.Image;
 
 public class Door implements MainMap{

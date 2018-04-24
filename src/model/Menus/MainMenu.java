@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import controller.PokemonGame;
-import controller.StateMachine.IState;
+import controller.States.IState;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -157,7 +157,7 @@ public class MainMenu implements IState {
 
   @Override
   public void onEnter() {
-    prevScene = PokemonGame.scene;
+    prevScene = PokemonGame.currentScene;
   }
 
   @Override

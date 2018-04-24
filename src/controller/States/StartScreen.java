@@ -1,5 +1,6 @@
-package controller;
+package controller.States;
 
+import controller.PokemonGame;
 import controller.PokemonGame.STATE;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PathTransition;
