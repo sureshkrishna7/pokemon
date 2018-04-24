@@ -53,7 +53,7 @@ public class StartScreen {
 
     this.primaryStage = theStage;
     this.controller = pokemonGame;
-    
+
     StackPane root = new StackPane();
 
     canvas = new Canvas(width, height);
@@ -82,13 +82,13 @@ public class StartScreen {
         //System.out.println("x ="+x);
         double y = 0 + 108 * Math.cos(t);
         //System.out.println("y ="+y);
-        
+
         // Background image also clears canvas
         gc.clearRect(0, 0, width, height);
         gc.drawImage( logo, x, y+100 );
         gc.fillText("Press Enter to Continue!", 215, 375, 575);
 
-        
+
         /**
          * PRESS ENTER to proceed further
          */
@@ -96,7 +96,7 @@ public class StartScreen {
           if (event.getCode() == KeyCode.ENTER) {
             controller.setState(STATE.MENU);
             this.stop();
-            afterEnterKeyIsPressed();
+            afterEnterKeyIsPressed(x, y);
           }});
       }
     }.start();
@@ -106,7 +106,7 @@ public class StartScreen {
     primaryStage.show();
   }
 
-  protected void afterEnterKeyIsPressed() {
+  protected void afterEnterKeyIsPressed(double x, double y) {
 
     /**
      * Image and pathTransition (How they work together?)
@@ -119,34 +119,47 @@ public class StartScreen {
     ImageView imageNode = new ImageView(logo);
     logo = ((ImageView) imageNode ).getImage();
     Path path = new Path();
-    
+
     // Start the logo from the center of the screen
-    path.getElements().add(new MoveTo(width/2, height/2));
-    path.getElements().add(new LineTo(160, 40));
-    path.getElements().add(new LineTo(150, 375));
-    path.getElements().add(new LineTo(320, 430));
-    path.getElements().add(new LineTo(400, 400));
-    path.getElements().add(new LineTo(600, 200));
-    path.getElements().add(new LineTo(800, 100));
+    // path.getElements().add(new MoveTo(width/2, height/2));
+
+    // Start the logo from the bottom of the screen
+    // path.getElements().add(new MoveTo(width/2, height+60));
+
+    // Start the logo from the top of the screen
+    // path.getElements().add(new MoveTo(width/2, -60));
+
+    // Start the logo at the position you clicked the enter button
+    path.getElements().add(new MoveTo(x+(logo.getWidth()/2),y+(logo.getHeight()/2)+100));
+
+    path.getElements().add(new LineTo(width/2, 80));
+    path.getElements().add(new LineTo(-30, 30));
+    path.getElements().add(new LineTo(-85, 200));
+    path.getElements().add(new LineTo(200, 600));
+    path.getElements().add(new LineTo(700, 200));
+
+    // Going from center to correct postion
+    //path.getElements().add(new LineTo(250, 350));
+
+    // Going from side to correct postion
+    path.getElements().add(new LineTo(800, 74));
+
     path.getElements().add(new LineTo(397, 74));
     pathTransition = new PathTransition();
-    pathTransition.setDuration(Duration.millis(5020));
+    pathTransition.setDuration(Duration.millis(5000));
 
     // Logo (Image) converted to a node is built above
     pathTransition.setNode(imageNode);
     pathTransition.setPath(path);
 
-
-    // A circle black object is created here
-    
-    // Start the circle from the center of the screen
+    // A circle black object is created here, Start the circle from the center of the screen
     Circle blackCircle = new Circle(width/2, height/2, 1, Color.BLACK);
     final StackPane circlePane = new StackPane(blackCircle);
     circlePane.setPrefSize(width, height);
 
     // Both the nodes are added to a Group
     Group root = new Group(imageNode,circlePane);
-    
+
     // The Group is added to one scene
     Scene scene = new Scene(root, width, height);
     primaryStage.setScene(scene);
