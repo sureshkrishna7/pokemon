@@ -136,13 +136,13 @@ public class StartScreen {
     path.getElements().add(new LineTo(-30, 30));
     path.getElements().add(new LineTo(-85, 200));
     path.getElements().add(new LineTo(200, 600));
-    path.getElements().add(new LineTo(700, 200));
+    path.getElements().add(new LineTo(600, 500));
 
     // Going from center to correct postion
     //path.getElements().add(new LineTo(250, 350));
 
     // Going from side to correct postion
-    path.getElements().add(new LineTo(800, 74));
+    path.getElements().add(new LineTo(800, 120));
 
     path.getElements().add(new LineTo(397, 74));
     pathTransition = new PathTransition();
