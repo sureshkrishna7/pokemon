@@ -157,7 +157,7 @@ public class MainMenu implements IState {
 
   @Override
   public void onEnter() {
-    prevScene = PokemonGame.scene;
+    prevScene = PokemonGame.currentScene;
   }
 
   @Override

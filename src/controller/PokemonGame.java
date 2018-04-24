@@ -13,24 +13,14 @@ import controller.States.StartScreen;
 import controller.States.StateStack;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
-import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
-
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.ImageView;
-
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.Battle;
@@ -48,7 +38,7 @@ public class PokemonGame extends Application {
   private final double cameraViewSize = 20 * 16;
 
   public static Stage primaryStage;
-  public static Scene scene;
+  public static Scene currentScene;
   public static GraphicsContext g2D;
 
   private static Scanner sc;
@@ -177,10 +167,10 @@ public class PokemonGame extends Application {
         break;
       case COBVILLETOWN:
         cobvilleTown = (CobvilleTown) stateStack.getState("cobTown");
-        scene = stateStack.pop().render();
-        primaryStage.setScene(scene);
-        scene.setOnKeyReleased(new AnimateStarter());
-        scene.setOnKeyPressed(new KeyHandler());
+        currentScene = stateStack.pop().render();
+        primaryStage.setScene(currentScene);
+        currentScene.setOnKeyReleased(new AnimateStarter());
+        currentScene.setOnKeyPressed(new KeyHandler());
         break;
       case BATTLE:
         break;

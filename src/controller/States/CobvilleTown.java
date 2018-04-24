@@ -115,7 +115,7 @@ public class CobvilleTown extends GameBackground implements IState {
     // draw a varying subimage from a spritesheet over the desert dirt.
     public void handle(ActionEvent event) {
 
-      System.out.println("Cobvile animating");
+      //System.out.println("Cobvile animating");
       tic++;
 
       if (KeyCode.UP == keyCode) {
@@ -479,6 +479,7 @@ public class CobvilleTown extends GameBackground implements IState {
 
   @Override
   public Scene render() {
+    System.out.println("Yo?");
     BorderPane bp = new BorderPane();
     bp.setCenter(this);
     Scene scene = new Scene(bp, this.getCameraViewWidth(), this.getCameraViewHeight());
