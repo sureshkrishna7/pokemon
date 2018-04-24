@@ -1,4 +1,4 @@
-package controller.StateMachine;
+package controller.States;
 
 import javafx.scene.Scene;
 

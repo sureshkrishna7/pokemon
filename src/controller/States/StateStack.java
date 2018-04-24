@@ -1,11 +1,10 @@
-package controller.StateMachine;
+package controller.States;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import controller.CobvilleTown;
 import javafx.scene.Scene;
 import model.Game;
 import model.Menus.MainMenu;
@@ -24,6 +23,10 @@ public class StateStack implements IState {
     mStates.put("cobTown", new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage()));
     mStates.put("mainMenu", new MainMenu(theGame));
     stack = new Stack<>();
+  }
+  
+  public boolean isEmpty() {
+    return stack.size() == 0;
   }
   
   public IState getState(String id) {
