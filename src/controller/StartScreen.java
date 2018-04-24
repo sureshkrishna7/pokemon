@@ -82,16 +82,24 @@ public class StartScreen {
             scene.setOnKeyPressed(event -> {
               if (event.getCode() == KeyCode.ENTER) {
                 controller.setState(STATE.MENU);
+                this.stop();
+                afterEnterKeyIsPressed();
+                //System.out.println("This runs");
               }});
             //gc.drawImage( sun, 196, 196 );
         }
     }.start();
     
-    
+    //System.out.println("This runs");
     //gc.drawImage(logo, 200, 10);
     primaryStage.setTitle("Welcome to Pokemon World");
     primaryStage.setScene(scene);
     
     primaryStage.show();
+  }
+
+  protected void afterEnterKeyIsPressed() {
+    
+    
   }
 }
