@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import controller.States.CobvilleTown;
+import controller.States.StartScreen;
 import controller.States.StateStack;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;

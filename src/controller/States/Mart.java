@@ -1,7 +1,8 @@
-package controller;
+package controller.States;
 
 import java.awt.Point;
 
+import controller.GameBackground;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

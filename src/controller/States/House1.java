@@ -1,8 +1,9 @@
-package controller;
+package controller.States;
 
 
 import java.awt.Point;
 
+import controller.GameBackground;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -12,9 +13,9 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 
-public class House6 extends GameBackground{
+public class House1 extends GameBackground{
 
-	public  House6(Point point, Image mapBackground) {
+	public  House1(Point point, Image mapBackground) {
 		super(point, mapBackground);
 		  this.setWidth(mapBackground.getWidth());
 		  this.setHeight(mapBackground.getHeight());
