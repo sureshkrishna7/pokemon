@@ -80,9 +80,7 @@ public class CobvilleTown extends GameBackground {
   }
   
   
-  private class AnimateStarter implements EventHandler<ActionEvent> {
-
-
+  
   private class AnimateStarter implements EventHandler<ActionEvent> {
 
     public AnimateStarter() {

@@ -119,13 +119,13 @@ public class PokemonGame extends Application {
     start = new StartScreen(primaryStage, g2D, this);
 
 
-    new AnimationTimer()
-    {
-      public void handle(long currentNanoTime)
+   // new AnimationTimer()
+   // {
+   //   public void handle(long currentNanoTime)
       {
         render();
       }
-    }.start();
+   // }.start();
 
     stage.show();
 

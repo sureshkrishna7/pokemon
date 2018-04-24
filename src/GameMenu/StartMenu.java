@@ -43,19 +43,19 @@ public class StartMenu extends Application{
     Image displayPoke2 = new Image("file:src/images/474.gif",100,100,false,true);
     Image displayPoke3 = new Image("file:src/images/696.gif",100,100,false,true);
     Image displayPoke4 = new Image("file:src/images/111.gif",100,100,false,true);
-    Image displayPoke5 = new Image("file:src/images/112.gif",100,100,false,true);
+    Image displayPoke5 = new Image("file:src/images/112.gif",105,100,false,true);
     Image displayPoke6 = new Image("file:src/images/113.gif",100,100,false,true);
     Image displayPoke7 = new Image("file:src/images/114.gif",100,100,false,true);
     
     imagesPane.getChildren().add(new ImageView(logo));
    
-    pokePane.add(new ImageView(displayPoke), 0, 0);
+    pokePane.add(new ImageView(displayPoke6), 0, 0);
     pokePane.add(new ImageView(displayPoke1), 1, 0);
-    pokePane.add(new ImageView(displayPoke2), 0, 1);
-    pokePane.add(new ImageView(displayPoke3), 1, 1);
-    pokePane.add(new ImageView(displayPoke4), 2, 0);
-    pokePane.add(new ImageView(displayPoke5), 2, 1);
-    pokePane.add(new ImageView(displayPoke6), 3, 1);
+    pokePane.add(new ImageView(displayPoke), 0, 1);
+    pokePane.add(new ImageView(displayPoke4), 1, 1);
+    pokePane.add(new ImageView(displayPoke3), 2, 0);
+    pokePane.add(new ImageView(displayPoke2), 2, 1);
+    pokePane.add(new ImageView(displayPoke5), 3, 1);
     pokePane.add(new ImageView(displayPoke7), 3, 0);
     
     
