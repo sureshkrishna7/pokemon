@@ -183,7 +183,7 @@ public class StartScreen {
     scaler.setAutoReverse(true);
 
     // Cycle count is reduced from infinity to 2
-    scaler.setCycleCount(2);
+    scaler.setCycleCount(3);
 
     // Play both the animation at the same time
     scaler.play();
