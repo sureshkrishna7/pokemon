@@ -109,11 +109,11 @@ public class PokemonGame extends Application {
     initializeGameForFirstTime();
     
     // initialize state to start
-    currentState = STATE.START;
+    currentState = STATE.COBVILLETOWN;
     
     // initialize stateStack, push STATE.START to it
     stateStack = new StateStack(theGame, stage, this);
-    stateStack.push(STATE.START);
+    stateStack.push(STATE.COBVILLETOWN);
 
     /*
      * if(!(stateStack.isStateInStack("start"))){
