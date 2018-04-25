@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
-public class StartScreen {
+public class StartScreen implements IState {
 
   /**
    * @param primaryStage
@@ -50,7 +50,7 @@ public class StartScreen {
   private PathTransition pathTransition;
   private ScaleTransition scaler;
 
-  public StartScreen(Stage theStage, GraphicsContext g2D, PokemonGame pokemonGame) {
+  public StartScreen(Stage theStage, PokemonGame pokemonGame) {
 
     this.primaryStage = theStage;
     this.controller = pokemonGame;
@@ -64,7 +64,7 @@ public class StartScreen {
     scene = new Scene(root, width, height);
   }
 
-  public void render() {
+  public Scene render() {
 
     // Our pokemon Logo
     logo = new Image("file:src/Images/GameLogo.png", 400, 200, true, true);
@@ -95,7 +95,7 @@ public class StartScreen {
          */
         scene.setOnKeyPressed(event -> {
           if (event.getCode() == KeyCode.ENTER) {
-            controller.setState(STATE.MENU);
+            controller.setState(STATE.COBVILLETOWN);
             this.stop();
             afterEnterKeyIsPressed(x, y);
           }});
@@ -103,8 +103,9 @@ public class StartScreen {
     }.start();
 
     primaryStage.setTitle("Welcome to Pokemon World");
-    primaryStage.setScene(scene);
-    primaryStage.show();
+    //primaryStage.setScene(scene);
+    //primaryStage.show();
+    return scene;
   }
 
   protected void afterEnterKeyIsPressed(double x, double y) {
@@ -184,10 +185,34 @@ public class StartScreen {
     scaler.setAutoReverse(true);
 
     // Cycle count is reduced from infinity to 2
-    scaler.setCycleCount(3);
+    scaler.setCycleCount(1);
 
     // Play both the animation at the same time
     scaler.play();
     pathTransition.play();
+  }
+
+  @Override
+  public String getName() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void update(float elapsedTime) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void onEnter() {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void onExit() {
+    // TODO Auto-generated method stub
+    
   }
 }

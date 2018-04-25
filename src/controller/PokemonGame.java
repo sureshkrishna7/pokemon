@@ -58,8 +58,8 @@ public class PokemonGame extends Application {
   private StateStack stateStack;
   private StartScreen start;
 
-  public static STATE currentState;
-  
+  private static STATE currentState;
+
   public static void main(String[] args) {
     launch(args);
   }
@@ -89,10 +89,10 @@ public class PokemonGame extends Application {
 
   private static void initializeGameForFirstTime() {
     theGame = new Game();
-    
+
     // initialize state to start
-    currentState = STATE.COBVILLETOWN;
-    
+    currentState = STATE.START;
+
     playerStartLocation.x = theGame.getTrainerLocation().x;
     playerStartLocation.y = theGame.getTrainerLocation().y;
 
@@ -110,11 +110,32 @@ public class PokemonGame extends Application {
 
     // initialization
     initializeGameForFirstTime();
-    stateStack = new StateStack(theGame);
-    stateStack.push("cobTown");
+    stateStack = new StateStack(theGame, stage, this);
+
+    if(!(stateStack.isStateInStack("start"))){
+      System.out.println("correct start is not there");
+    }
+
+    if(!(stateStack.isStateInStack("cobTown"))){
+      System.out.println("correct cobTown is not there");
+    }
+
+    if(stateStack.push("start")) {
+      System.out.println("start is pushed");
+      if(stateStack.isStateInStack("start")){
+        System.out.println("correct start is right here...");
+      }
+    }
+    if(stateStack.push("cobTown")) {
+      System.out.println("cobTown is pushed");
+      if(stateStack.isStateInStack("cobTown")){
+        System.out.println("correct cobTown is right here...");
+      }
+    }
+    //stateStack.push("start");
 
     primaryStage = stage;
-    //start = new StartScreen(primaryStage, g2D, this);
+    //start = new StartScreen(primaryStage, this);
 
     new AnimationTimer() {
       public void handle(long currentNanoTime) {
@@ -160,17 +181,38 @@ public class PokemonGame extends Application {
      * stateStack.getState("mainMenu"); menu.onEnter(); scene =
      * stateStack.pop().render(); } primaryStage.setScene(scene); }
      */
-    
+    System.out.println("Current State = " + currentState);
+
+    if(stateStack.isEmpty()) {
+      System.out.println("Stack is empty");
+    }
+
     if(!stateStack.isEmpty()) {
+      System.out.println("Stack is not empty");
       switch (currentState) {
       case START:
+        if(stateStack.isStateInStack("start")){
+          start = (StartScreen) stateStack.getState("start");
+          currentScene = stateStack.pop().render();
+        }
+        if(currentScene == null) {
+          System.out.println("Current scene is null");
+        }
+        primaryStage.setScene(currentScene);
+        System.out.println("Start case");
+        primaryStage.show();
+        //currentState = STATE.COBVILLETOWN;
         break;
       case COBVILLETOWN:
-        cobvilleTown = (CobvilleTown) stateStack.getState("cobTown");
-        currentScene = stateStack.pop().render();
+        if(stateStack.isStateInStack("cobTown")){
+          System.out.println("Cobville case");
+          cobvilleTown = (CobvilleTown) stateStack.getState("cobTown");
+          currentScene = stateStack.pop().render();
+        }
         primaryStage.setScene(currentScene);
         currentScene.setOnKeyReleased(new AnimateStarter());
         currentScene.setOnKeyPressed(new KeyHandler());
+        primaryStage.show();
         break;
       case BATTLE:
         break;
@@ -193,7 +235,7 @@ public class PokemonGame extends Application {
         stateStack.push("mainMenu");
         // PokemonGame.primaryStage.setScene(stateStack.pop().render());
         currentState = STATE.MENU;
-        
+
       }
     }
   }

@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import controller.PokemonGame;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 import model.Game;
 import model.Menus.MainMenu;
 
@@ -17,11 +19,12 @@ public class StateStack implements IState {
   private IState top;
   private Scene scene;
   
-  public StateStack(Game theGame) {
+  public StateStack(Game theGame, Stage stage, PokemonGame pokemonController) {
     // constructor initializes HashMap and Stack
     mStates = new HashMap<>();
     mStates.put("cobTown", new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage()));
     mStates.put("mainMenu", new MainMenu(theGame));
+    mStates.put("start", new StartScreen(stage, pokemonController));
     stack = new Stack<>();
   }
   
@@ -29,6 +32,14 @@ public class StateStack implements IState {
     return stack.size() == 0;
   }
   
+  public boolean isStateInStack(String id) {
+    if(stack.contains(mStates.get(id))){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
   public IState getState(String id) {
     return mStates.get(id);
   }
@@ -37,9 +48,10 @@ public class StateStack implements IState {
     return this.stack;
   }
   
-  public void push(String name) {
+  public boolean push(String name) {
     top = mStates.get(name);
     stack.add(top);
+    return true;
   }
   
   public IState pop() {
