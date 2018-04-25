@@ -212,7 +212,7 @@ public class StartScreen implements IState {
 
   @Override
   public void onExit() {
-    // TODO Auto-generated method stub
+    
     
   }
 }

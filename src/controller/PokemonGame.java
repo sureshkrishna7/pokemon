@@ -90,9 +90,6 @@ public class PokemonGame extends Application {
   private static void initializeGameForFirstTime() {
     theGame = new Game();
 
-    // initialize state to start
-    currentState = STATE.START;
-
     playerStartLocation.x = theGame.getTrainerLocation().x;
     playerStartLocation.y = theGame.getTrainerLocation().y;
 
@@ -110,32 +107,31 @@ public class PokemonGame extends Application {
 
     // initialization
     initializeGameForFirstTime();
+    
+    // initialize state to start
+    currentState = STATE.COBVILLETOWN;
+    
+    // initialize stateStack, push STATE.START to it
     stateStack = new StateStack(theGame, stage, this);
+    stateStack.push(STATE.COBVILLETOWN);
 
-    if(!(stateStack.isStateInStack("start"))){
-      System.out.println("correct start is not there");
-    }
-
-    if(!(stateStack.isStateInStack("cobTown"))){
-      System.out.println("correct cobTown is not there");
-    }
-
-    if(stateStack.push("start")) {
-      System.out.println("start is pushed");
-      if(stateStack.isStateInStack("start")){
-        System.out.println("correct start is right here...");
-      }
-    }
-    if(stateStack.push("cobTown")) {
-      System.out.println("cobTown is pushed");
-      if(stateStack.isStateInStack("cobTown")){
-        System.out.println("correct cobTown is right here...");
-      }
-    }
-    //stateStack.push("start");
+    /*
+     * if(!(stateStack.isStateInStack("start"))){
+     * System.out.println("correct start is not there"); }
+     * 
+     * if(!(stateStack.isStateInStack("cobTown"))){
+     * System.out.println("correct cobTown is not there"); }
+     * 
+     * if(stateStack.push("start")) { System.out.println("start is pushed");
+     * if(stateStack.isStateInStack("start")){
+     * System.out.println("correct start is right here..."); } }
+     * if(stateStack.push("cobTown")) { System.out.println("cobTown is pushed");
+     * if(stateStack.isStateInStack("cobTown")){
+     * System.out.println("correct cobTown is right here..."); } }
+     */
 
     primaryStage = stage;
-    //start = new StartScreen(primaryStage, this);
+    // start = new StartScreen(primaryStage, this);
 
     new AnimationTimer() {
       public void handle(long currentNanoTime) {
@@ -183,32 +179,39 @@ public class PokemonGame extends Application {
      */
     System.out.println("Current State = " + currentState);
 
-    if(stateStack.isEmpty()) {
+    if (stateStack.isEmpty()) {
       System.out.println("Stack is empty");
     }
 
-    if(!stateStack.isEmpty()) {
+    if (!stateStack.isEmpty()) {
       System.out.println("Stack is not empty");
+      // call onExit() method for the currentState (an IState object)
+      stateStack.getIState(currentState).onExit();
+      
+      // change currentState to be what is in the top of the stack
+      currentState = stateStack.pop();
+      
       switch (currentState) {
       case START:
-        if(stateStack.isStateInStack("start")){
-          start = (StartScreen) stateStack.getState("start");
-          currentScene = stateStack.pop().render();
-        }
-        if(currentScene == null) {
+        // if(stateStack.isStateInStack("start")){
+        start = (StartScreen) stateStack.getIState(STATE.START);
+        currentScene = start.render();
+        // }
+        if (currentScene == null) {
           System.out.println("Current scene is null");
         }
         primaryStage.setScene(currentScene);
         System.out.println("Start case");
         primaryStage.show();
-        //currentState = STATE.COBVILLETOWN;
+        currentState = STATE.START;
         break;
       case COBVILLETOWN:
-        if(stateStack.isStateInStack("cobTown")){
-          System.out.println("Cobville case");
-          cobvilleTown = (CobvilleTown) stateStack.getState("cobTown");
-          currentScene = stateStack.pop().render();
-        }
+        // if(stateStack.isStateInStack("cobTown")){
+        System.out.println("Cobville case");
+        cobvilleTown = (CobvilleTown) stateStack.getIState(STATE.COBVILLETOWN);
+        currentScene = cobvilleTown.render();
+        // }
+        currentState = STATE.COBVILLETOWN;
         primaryStage.setScene(currentScene);
         currentScene.setOnKeyReleased(new AnimateStarter());
         currentScene.setOnKeyPressed(new KeyHandler());
@@ -232,7 +235,7 @@ public class PokemonGame extends Application {
     public void handle(KeyEvent event) {
       if (event.getCode() == KeyCode.M) {
         // add to stack mainMenu, representing MainMenu object in Hashmap
-        stateStack.push("mainMenu");
+        stateStack.push(STATE.MENU);
         // PokemonGame.primaryStage.setScene(stateStack.pop().render());
         currentState = STATE.MENU;
 

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Stack;
 
 import controller.PokemonGame;
+import controller.PokemonGame.STATE;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.Game;
@@ -13,18 +14,18 @@ import model.Menus.MainMenu;
 
 public class StateStack implements IState {
   // hash map of states, keys as strings, IState objects as values
-  private Map<String, IState> mStates;
+  private Map<STATE, IState> mStates;
   // the stack we will use to keep track of states
-  private List<IState> stack;
-  private IState top;
+  private List<STATE> stack;
+  private STATE top;
   private Scene scene;
   
   public StateStack(Game theGame, Stage stage, PokemonGame pokemonController) {
     // constructor initializes HashMap and Stack
     mStates = new HashMap<>();
-    mStates.put("cobTown", new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage()));
-    mStates.put("mainMenu", new MainMenu(theGame));
-    mStates.put("start", new StartScreen(stage, pokemonController));
+    mStates.put(STATE.COBVILLETOWN, new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage()));
+    mStates.put(STATE.MENU, new MainMenu(theGame));
+    mStates.put(STATE.START, new StartScreen(stage, pokemonController));
     stack = new Stack<>();
   }
   
@@ -32,46 +33,46 @@ public class StateStack implements IState {
     return stack.size() == 0;
   }
   
-  public boolean isStateInStack(String id) {
-    if(stack.contains(mStates.get(id))){
+  public boolean isStateInStack(STATE st) {
+    if(stack.contains(st)){
       return true;
     }
     else {
       return false;
     }
   }
-  public IState getState(String id) {
-    return mStates.get(id);
+  
+  public IState getIState(STATE st) {
+    return mStates.get(st);
   }
   
-  public List<IState> getStack(){
+  public List<STATE> getStack(){
     return this.stack;
   }
   
-  public boolean push(String name) {
-    top = mStates.get(name);
-    stack.add(top);
+  public boolean push(STATE st) {
+    stack.add(st);
     return true;
   }
   
-  public IState pop() {
+  public STATE pop() {
     return stack.remove(stack.size() - 1);
   }
   
   public String peek() {
-    return stack.get(stack.size() - 1).getName();
+    return stack.get(stack.size() - 1).toString();
   }
   
   @Override
   public void update(float elapsedTime) {
     top = stack.get(stack.size() - 1);
-    top.update(elapsedTime);
+    //top.update(elapsedTime);
   }
   
   @Override
   public Scene render() {
     top = stack.get(stack.size() - 1);
-    scene = top.render();
+    scene = mStates.get(top).render();
     return scene;
   }
   
