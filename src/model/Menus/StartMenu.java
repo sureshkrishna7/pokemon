@@ -1,4 +1,4 @@
-package GameMenu;
+package model.Menus;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;

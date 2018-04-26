@@ -2,6 +2,7 @@ package controller.States;
 
 import java.awt.Point;
 
+import controller.PokemonGame;
 import javafx.animation.Animation;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
@@ -392,7 +393,7 @@ public class CobvilleTown extends Canvas implements IState {
 
   @Override
   public void onExit() {
-    // TODO Auto-generated method stub
+    System.out.println("Changing state, exiting CobvilleTown");
 
   }
 

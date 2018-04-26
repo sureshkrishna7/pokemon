@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import model.Game;
 import model.Menus.MainMenu;
 
-public class StateStack implements IState {
+public class StateMachine implements IState {
   // hash map of states, keys as strings, IState objects as values
   private Map<STATE, IState> mStates;
   // the stack we will use to keep track of states
@@ -21,7 +21,7 @@ public class StateStack implements IState {
   private STATE top;
   private Scene scene;
   
-  public StateStack(Game theGame, Stage stage, PokemonGame pokemonController) {
+  public StateMachine(Game theGame, Stage stage, PokemonGame pokemonController) {
     // constructor initializes HashMap and Stack
     mStates = new HashMap<>();
     mStates.put(STATE.COBVILLETOWN, new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage()));
