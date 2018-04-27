@@ -19,14 +19,24 @@ public class GameBackground extends Canvas{
 	  protected GraphicsContext g2D;
 	  protected Timeline timeline;
 	  protected Point playerLocation;
+	  protected double lastValidPlayerDX;
+	  protected double lastValidPlayerDY;
+	  protected double playerPixelsFromTopBoundary;
+	  protected double playerPixelsFromLeftBoundary;
+	  protected double playerPixelsFromBottomBoundary;
+	  protected int closeToTopPictureBounderSteps;
+	  protected int closeToLeftPictureBounderSteps;
+	  protected int closeToBottomPictureBounderSteps;
+
+	  protected boolean afterTopLeftCornerCondition = false;
+	  protected boolean afterBottomLeftCornerCondition = false;
+	  protected boolean afterBottomLeftCornerCondition2 = false;
 	  
 	  protected int tic = 0;
 	  protected double sx, sy, sw, sh, dx, dy, dw, dh;
 	  protected String drawPlayerOverOrUnder;
 	  protected KeyCode keyCode;
 	  protected final double cameraViewSize = 20 * 16;
-	  protected double lastValidPlayerDX;
-	  protected double lastValidPlayerDY;
 	  
 	  
 	  public GameBackground(Point point, Image mapBackground) {
@@ -84,6 +94,158 @@ public class GameBackground extends Canvas{
 	  public void setDy(double newDy) {
 		  dy = newDy;
 	  }
+
+		public void drawTrainer() {
+			if (KeyCode.UP == keyCode ) {
+	      	  dy -= (16 / 3.0);
+	      	  if (drawPlayerOverOrUnder.equals("over")) {
+	          	  // get picture that makes trainer look going north
+	      		  if (tic == 1) {
+	            	  sx = 128;
+	              	  sy = 5; 
+	      		  }
+	      		  else if (tic == 2) {
+	            	  sx = 147;
+	              	  sy = 5;
+	      		  }
+	      		  else if (tic == 3){
+	            	  sx = 109;
+	              	  sy = 5;
+	      		  }
+	      	  }else {
+	      		System.out.println("TEST handle else");
+	          	  sx = 0;
+	          	  sy = 0;
+	      	  }
+
+	        }
+	        else if(KeyCode.DOWN == keyCode) {
+	      	  dy += (16 / 3.0);
+	      	  if (drawPlayerOverOrUnder.equals("over")) {
+	          	  // get picture that makes trainer look going south
+	      		  if (tic == 1) {
+	              	  sx = 69;
+	              	  sy = 5;
+	      		  }
+	      		  else if (tic == 2) {
+	              	  sx = 89;
+	              	  sy = 5;
+	      		  }
+	      		  else if (tic == 3){
+	              	  sx = 50;
+	              	  sy = 5;
+	      		  }
+	      	  }
+	      	  else {
+	          	  sx = 0;
+	          	  sy = 0;
+	      	  }
+
+	        }
+	        else if(KeyCode.RIGHT == keyCode) {
+	      	  dx += (16 / 3.0);
+	      	  if (drawPlayerOverOrUnder.equals("over")) {
+	          	  // get picture that makes trainer look going east
+	      		  if (tic == 1) {
+	              	  sx = 68;
+	              	  sy = 29; 
+	      		  }
+	      		  else if (tic == 2) {
+	              	  sx = 89;
+	              	  sy = 29; 
+	      		  }
+	      		  else if (tic == 3){
+	              	  sx = 50;
+	              	  sy = 29; 
+	      		  }
+	      	  }
+	      	  else {
+	          	  sx = 0;
+	          	  sy = 0;
+	      	  }
+
+	        }
+	        else if(KeyCode.LEFT == keyCode) {
+	      	  dx -= (16 / 3.0);
+	      	  if (drawPlayerOverOrUnder.equals("over")) {
+	          	  // get picture that makes trainer look going west
+	      		  if (tic == 1) {
+	              	  sx = 127;
+	              	  sy = 29;
+	      		  }
+	      		  else if (tic == 2) {
+	              	  sx = 144;
+	              	  sy = 29;
+	      		  }
+	      		  else if (tic == 3){
+	              	  sx = 107;
+	              	  sy = 29;
+	      		  }
+	      	  }
+	      	  else {
+	          	  sx = 0;
+	          	  sy = 0;
+	      	  }
+
+	        }
+	        else {
+	      	  System.out.println("KeyCode   = "+ keyCode);
+	        }
+		}
+		
+
+		public void animateImage(String playerDrawStrategy, String dXOrDyDrawStrategy) {
+			
+			System.out.println("animateImage()");
+			playerPixelsFromTopBoundary  = (cameraViewSize / 2.0) - ((closeToTopPictureBounderSteps * 16) / 3.0);
+			playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
+			playerPixelsFromBottomBoundary = (cameraViewSize / 2.0) + ((closeToBottomPictureBounderSteps * 16) / 3.0);
+			
+			if (dXOrDyDrawStrategy.equals("last Valid DX and DY")) {
+				if (playerDrawStrategy.equals("cam/2, top")) {
+					g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+					g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, playerPixelsFromTopBoundary, dw, dh);
+				}
+				else if (playerDrawStrategy.equals("cam/2, bottom")) {
+					g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+					g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, playerPixelsFromBottomBoundary, dw, dh);
+				}
+				else if (playerDrawStrategy.equals("cam/2, cam/2")) {
+					g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+					g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, cameraViewSize / 2.0, dw, dh);
+				}
+				else if (playerDrawStrategy.equals("left, cam/2")) {
+					g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+					g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, cameraViewSize / 2.0, dw, dh);
+				}
+				else if (playerDrawStrategy.equals("left, top")) {
+					g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+					g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromTopBoundary, dw, dh);
+				}
+				else if (playerDrawStrategy.equals("left, bottom")) {
+					g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+					g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromBottomBoundary, dw, dh);
+				}
+			}
+			else if (dXOrDyDrawStrategy.equals("last Valid DX and dy")) {
+				if (playerDrawStrategy.equals("left, cam/2")) {
+					g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  dy - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+					g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, cameraViewSize / 2.0, dw, dh);
+				}
+			}
+			else if (dXOrDyDrawStrategy.equals("dx and last Valid DY")) {
+				if (playerDrawStrategy.equals("cam/2, top")) {
+					g2D.drawImage(background, dx - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+					g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, playerPixelsFromTopBoundary, dw, dh);
+				}
+				if (playerDrawStrategy.equals("cam/2, bottom")) {
+					g2D.drawImage(background, dx - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+					g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, playerPixelsFromBottomBoundary, dw, dh);
+				}
+			}
+
+
+		}
 	  
 	  public class AnimateStarter implements EventHandler<ActionEvent> {
 		  
@@ -106,7 +268,14 @@ public class GameBackground extends Canvas{
 		  }
 
 		@Override
-		public void handle(ActionEvent event) {}
+		public void handle(ActionEvent event) {
+			
+			
+		}
+		
+		
+		
+		
 	  }
 
 }

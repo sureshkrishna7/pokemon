@@ -19,40 +19,18 @@ import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
 
 /**
- * This view contains an animation of a running girl thought the desert. It can
- * be added to any Pane elsewhere and started with the instance method
+ * This view contains an animation of the CobvilleTown map and sets 
+ * the point of the player and image background when constructed.
  * 
- * public void animate()
+ * Timeline will call Animate Starter, in parent class GameBackground which
+ * will handle drawing the trainer ontop of the map.
  * 
- * @author Rick Mercer
+ * @Daniel Lopez
  */
 
 public class CobvilleTown extends GameBackground implements IState{
 
 
-	  private double lastValidPlayerDX;
-	  private double lastValidPlayerDY;
-	  private double playerPixelsFromTopBoundary;
-	  private double playerPixelsFromLeftBoundary;
-	  private double playerPixelsFromBottomBoundary;
-	  private int closeToTopPictureBounderSteps;
-	  private int closeToLeftPictureBounderSteps;
-	  private int closeToBottomPictureBounderSteps;
-
-	  private boolean afterTopLeftCornerCondition = false;
-	  private boolean afterBottomLeftCornerCondition = false;
-	  private boolean afterBottomLeftCornerCondition2 = false;
-
-//	  private Image character, background;
-//	  private GraphicsContext g2D;
-//	  private Timeline timeline;
-//	  private Point playerLocation;
-	  
-//	  private int tic = 0;
-//	  private double sx, sy, sw, sh, dx, dy, dw, dh;
-//	  private String drawPlayerOverOrUnder;
-//	  private KeyCode keyCode;
-//	  private final double cameraViewSize = 20 * 16;
 
 	  public CobvilleTown(Point point, Image mapBackground) {
 		  super(point, mapBackground);
@@ -128,7 +106,7 @@ public class CobvilleTown extends GameBackground implements IState{
 	      dh = 21;
 
 	      g2D.drawImage(background, dx - (cameraViewSize / 2), dy - (cameraViewSize / 2), cameraViewSize, cameraViewSize, 0,
-	          0, cameraViewSize, cameraViewSize);
+	    		  		0, cameraViewSize, cameraViewSize);
 	      g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, cameraViewSize / 2.0, dw, dh);
 	    }
 
@@ -137,113 +115,17 @@ public class CobvilleTown extends GameBackground implements IState{
 	    // draw a varying subimage from a spritesheet over the desert dirt.
 	    public void handle(ActionEvent event) {
 
-	    	System.out.println("Cobvile animating");
-	        tic++;
-	        System.out.println("TEST -- 0");
-	        if (KeyCode.UP == keyCode ) {
-	        	  dy -= (16 / 3.0);
-	        	  if (drawPlayerOverOrUnder.equals("over")) {
-	            	  // get picture that makes trainer look going north
-	        		  if (tic == 1) {
-	              	  sx = 128;
-	                	  sy = 5; 
-	        		  }
-	        		  else if (tic == 2) {
-	              	  sx = 147;
-	                	  sy = 5;
-	        		  }
-	        		  else if (tic == 3){
-	              	  sx = 109;
-	                	  sy = 5;
-	        		  }
-	        	  }else {
-	            	  sx = 0;
-	            	  sy = 0;
-	        	  }
-
-	          }
-	          else if(KeyCode.DOWN == keyCode) {
-	          	//if (!(Game.getCharAtIndex(playerLocation.x, playerLocation.x) == 'E')) {
-	          		dy += (16 / 3.0);
-	          	//}
-	        	  
-	        	  if (drawPlayerOverOrUnder.equals("over")) {
-	            	  // get picture that makes trainer look going south
-	        		  if (tic == 1) {
-	                	  sx = 69;
-	                	  sy = 5;
-	        		  }
-	        		  else if (tic == 2) {
-	                	  sx = 89;
-	                	  sy = 5;
-	        		  }
-	        		  else if (tic == 3){
-	                	  sx = 50;
-	                	  sy = 5;
-	        		  }
-	        	  }
-	        	  else {
-	            	  sx = 0;
-	            	  sy = 0;
-	        	  }
-
-	          }
-	          else if(KeyCode.RIGHT == keyCode) {
-	        	  dx += (16 / 3.0);
-	        	  if (drawPlayerOverOrUnder.equals("over")) {
-	            	  // get picture that makes trainer look going east
-	        		  if (tic == 1) {
-	                	  sx = 68;
-	                	  sy = 29; 
-	        		  }
-	        		  else if (tic == 2) {
-	                	  sx = 89;
-	                	  sy = 29; 
-	        		  }
-	        		  else if (tic == 3){
-	                	  sx = 50;
-	                	  sy = 29; 
-	        		  }
-	        	  }
-	        	  else {
-	            	  sx = 0;
-	            	  sy = 0;
-	        	  }
-
-	          }
-	          else if(KeyCode.LEFT == keyCode) {
-	        	  dx -= (16 / 3.0);
-	        	  if (drawPlayerOverOrUnder.equals("over")) {
-	            	  // get picture that makes trainer look going west
-	        		  if (tic == 1) {
-	                	  sx = 127;
-	                	  sy = 29;
-	        		  }
-	        		  else if (tic == 2) {
-	                	  sx = 144;
-	                	  sy = 29;
-	        		  }
-	        		  else if (tic == 3){
-	                	  sx = 107;
-	                	  sy = 29;
-	        		  }
-	        	  }
-	        	  else {
-	            	  sx = 0;
-	            	  sy = 0;
-	        	  }
-
-	          }
-	          else {
-	        	  System.out.println("KeyCode   = "+ keyCode);
-	          }
+	    	  //System.out.println("Cobville animating");
+	          tic++;
+	        
+	          drawTrainer();
 	          
 	          //System.out.println("Player at  = "+ playerLocation);
 	          g2D.clearRect(0, 0, 800, 800);
 	          
 	          int row = playerLocation.x;
 	          int col = playerLocation.y;
-	          
+	        
 	          /*
 	           * Conditions when player is close to top-left boundaries of screen
 	           * rows <= 10 and col <= 10
@@ -406,12 +288,9 @@ public class CobvilleTown extends GameBackground implements IState{
 	              g2D.drawImage(background, dx - (cameraViewSize / 2.0),  dy - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
 	              g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0,  cameraViewSize / 2.0, dw, dh);	
 	          }
-
-	        
-	        System.out.println("TEST 2");
-
-	        System.out.println("DX --> " + dx);
-	        System.out.println("DY --> " + dy);
+	          
+	        //System.out.println("DX = " + dx);
+	        //System.out.println("DY = " + dy);
 	        // stop timeline from drawing after final sprite 
 	        if (tic == 3) {
 	        	timeline.stop();
@@ -431,60 +310,6 @@ public class CobvilleTown extends GameBackground implements IState{
 		
 		public double getCameraViewHeight() {
 			return cameraViewSize;
-		}
-
-
-		public void animateImage(String playerDrawStrategy, String dXOrDyDrawStrategy) {
-			
-			System.out.println("animateImage()");
-			playerPixelsFromTopBoundary  = (cameraViewSize / 2.0) - ((closeToTopPictureBounderSteps * 16) / 3.0);
-			playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
-			playerPixelsFromBottomBoundary = (cameraViewSize / 2.0) + ((closeToBottomPictureBounderSteps * 16) / 3.0);
-			
-			if (dXOrDyDrawStrategy.equals("last Valid DX and DY")) {
-				if (playerDrawStrategy.equals("cam/2, top")) {
-					g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-					g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, playerPixelsFromTopBoundary, dw, dh);
-				}
-				else if (playerDrawStrategy.equals("cam/2, bottom")) {
-					g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-					g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, playerPixelsFromBottomBoundary, dw, dh);
-				}
-				else if (playerDrawStrategy.equals("cam/2, cam/2")) {
-					g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-					g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, cameraViewSize / 2.0, dw, dh);
-				}
-				else if (playerDrawStrategy.equals("left, cam/2")) {
-					g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-					g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, cameraViewSize / 2.0, dw, dh);
-				}
-				else if (playerDrawStrategy.equals("left, top")) {
-					g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-					g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromTopBoundary, dw, dh);
-				}
-				else if (playerDrawStrategy.equals("left, bottom")) {
-					g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-					g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, playerPixelsFromBottomBoundary, dw, dh);
-				}
-			}
-			else if (dXOrDyDrawStrategy.equals("last Valid DX and dy")) {
-				if (playerDrawStrategy.equals("left, cam/2")) {
-					g2D.drawImage(background, lastValidPlayerDX - (cameraViewSize / 2.0),  dy - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-					g2D.drawImage(character, sx, sy, sw, sh, playerPixelsFromLeftBoundary, cameraViewSize / 2.0, dw, dh);
-				}
-			}
-			else if (dXOrDyDrawStrategy.equals("dx and last Valid DY")) {
-				if (playerDrawStrategy.equals("cam/2, top")) {
-					g2D.drawImage(background, dx - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-					g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, playerPixelsFromTopBoundary, dw, dh);
-				}
-				if (playerDrawStrategy.equals("cam/2, bottom")) {
-					g2D.drawImage(background, dx - (cameraViewSize / 2.0), lastValidPlayerDY - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-					g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, playerPixelsFromBottomBoundary, dw, dh);
-				}
-			}
-
-
 		}
 		
 
