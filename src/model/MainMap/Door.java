@@ -48,8 +48,8 @@ public class Door implements MainMap{
     }
     else if(txt.equals("cave.txt")){
     	System.out.println("Creating Cave image!");
-    	gameBackground = new Cave(new Point(6, 9), insideMapImage);
-    	insideMap = new House1_TEXT();
+    	gameBackground = new Cave(new Point(18, 22), insideMapImage);
+    	insideMap = new Cave_TEXT();
     }
     else {
     
