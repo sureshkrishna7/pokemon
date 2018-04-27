@@ -80,6 +80,7 @@ public class Door implements MainMap{
   }
   
   public GameBackground getGameBackground() {
+	  System.out.println(gameBackground == null);
 	  return gameBackground;
   }
 //  public MainMap getGameBackground() {

@@ -54,6 +54,9 @@ public class Game {
     ash = new Trainer(new String("Ash"));
     int x = currentMap.getMapPlayerPosition().x;
     int y = currentMap.getMapPlayerPosition().y;
+    System.out.println("Game line 57");
+    System.out.println("ash x = " + x);
+    System.out.println("ash y = " + y);
     ash.setLocation(x, y);
     areWeInSafariZone = false;
   }

@@ -50,12 +50,14 @@ public class GameBackground extends Canvas{
 	  }
 	  
 	  public void movePlayer(KeyCode code, String overOrUnder) {
+		  System.out.println("Moving player in GameBackground line 53");
 		  keyCode = code;
 		  drawPlayerOverOrUnder = overOrUnder;
 		  tic = 0;
 		  timeline.play();
 	  }
 	  public void setPlayerLocation(Point trainerLocation) {
+		  System.out.println("Setting player location in GameBackground  line 59");
 		  playerLocation = trainerLocation;
 	  }
 		
