@@ -3,6 +3,7 @@ package controller;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Observer;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
@@ -23,6 +24,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.Battle;
 import model.Game;
@@ -72,8 +74,6 @@ public class PokemonGame extends Application {
   private StateMachine stateMachine;
   private StartScreen start;
   private StartMenu startMenu;
-  private static CobvilleTown cobvilleTown;
-  private MainMenu menu;
 
   public static STATE currentState;
   public static STATE previousState;
@@ -111,8 +111,6 @@ public class PokemonGame extends Application {
     theGame = new Game();
     pane = new BorderPane();
     currBackground = new GameBackground(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
-    
-    
     
     playerStartLocation.x = theGame.getTrainerLocation().x;
     playerStartLocation.y = theGame.getTrainerLocation().y;
@@ -222,13 +220,13 @@ public class PokemonGame extends Application {
         currentState = STATE.MART;
         System.out.println("Mart case");
         //cobvilleTown = (Mart) stateMachine.getIState(STATE.MART);
-        GameBackground mart = door.getGameBackground();
+        //GameBackground mart = door.getGameBackground();
+        mart = (Mart) stateMachine.getIState(STATE.MART);
         currBackground = mart;
-        currentScene = ((Mart)mart).render();
+        currentScene = mart.render();
         currentScene.setOnKeyReleased(animateStarter);
         currentScene.setOnKeyPressed(keyHandler);
         primaryStage.setScene(currentScene);
-        primaryStage.show();
         break;
       case BATTLE:
         break;
