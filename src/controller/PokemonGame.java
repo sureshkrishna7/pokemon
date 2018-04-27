@@ -13,7 +13,6 @@ import controller.States.StartScreen;
 import controller.States.StateMachine;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
@@ -64,7 +63,7 @@ public class PokemonGame extends Application {
   private StartScreen start;
 
   public static STATE currentState;
-  private static STATE previousState;
+  public static STATE previousState;
 
   public static void main(String[] args) {
     launch(args);
@@ -128,8 +127,6 @@ public class PokemonGame extends Application {
       @Override
       public void handle(long current) {
         if(current - last >= 28000000) {
-          renderCount++;
-          //System.out.println(renderCount);
           render();
           last = current;
         }
@@ -173,6 +170,7 @@ public class PokemonGame extends Application {
       case START:
         stateChanged = false;
         currentState = STATE.START;
+        previousState = STATE.START;
         
         start = (StartScreen) stateMachine.getIState(STATE.START);
         currentScene = start.render();
@@ -185,13 +183,12 @@ public class PokemonGame extends Application {
       case COBVILLETOWN:
         stateChanged = false;
         currentState = STATE.COBVILLETOWN;
-        
         System.out.println("Cobville case");
         cobvilleTown = (CobvilleTown) stateMachine.getIState(STATE.COBVILLETOWN);
         currentScene = cobvilleTown.render();
-        primaryStage.setScene(currentScene);
         currentScene.setOnKeyReleased(new AnimateStarter());
         currentScene.setOnKeyPressed(new KeyHandler());
+        primaryStage.setScene(currentScene);
         break;
       case BATTLE:
         break;

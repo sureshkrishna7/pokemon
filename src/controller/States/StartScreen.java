@@ -5,6 +5,8 @@ import controller.PokemonGame.STATE;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PathTransition;
 import javafx.animation.ScaleTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -170,8 +172,8 @@ public class StartScreen implements IState {
     // This method plays both the animation at the same time
     // By calling play at the very end
     closingSceneAnimateCircle(blackCircle);
-    PokemonGame.currentState = STATE.COBVILLETOWN;
-    PokemonGame.stateChanged = true;
+    //PokemonGame.currentState = STATE.COBVILLETOWN;
+    //PokemonGame.stateChanged = true;
   }
 
   private void closingSceneAnimateCircle(Circle circle) {
@@ -192,6 +194,16 @@ public class StartScreen implements IState {
     // Play both the animation at the same time
     scaler.play();
     pathTransition.play();
+    
+    pathTransition.setOnFinished(new EventHandler<ActionEvent>(){
+
+      @Override
+      public void handle(ActionEvent arg0) {
+        // TODO Auto-generated method stub
+        PokemonGame.currentState = STATE.COBVILLETOWN;
+        PokemonGame.stateChanged = true;
+      }
+    });
   }
 
   @Override
@@ -214,7 +226,8 @@ public class StartScreen implements IState {
 
   @Override
   public void onExit() {
-    
-    
+    System.out.println("Exiting StartScreen");
+    //PokemonGame.currentState = STATE.COBVILLETOWN;
+    //PokemonGame.stateChanged = true;
   }
 }
