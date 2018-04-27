@@ -95,7 +95,7 @@ public class StartScreen implements IState {
          */
         scene.setOnKeyPressed(event -> {
           if (event.getCode() == KeyCode.ENTER) {
-            controller.setState(STATE.COBVILLETOWN);
+            //controller.setState(STATE.COBVILLETOWN);
             this.stop();
             afterEnterKeyIsPressed(x, y);
           }});
@@ -170,6 +170,8 @@ public class StartScreen implements IState {
     // This method plays both the animation at the same time
     // By calling play at the very end
     closingSceneAnimateCircle(blackCircle);
+    PokemonGame.currentState = STATE.COBVILLETOWN;
+    PokemonGame.stateChanged = true;
   }
 
   private void closingSceneAnimateCircle(Circle circle) {

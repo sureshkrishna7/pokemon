@@ -38,6 +38,8 @@ public class PokemonGame extends Application {
 
   private final double cameraViewSize = 20 * 16;
 
+  public static int renderCount = 1;
+  
   public static Stage primaryStage;
   public static Scene currentScene;
   public static GraphicsContext g2D;
@@ -52,7 +54,7 @@ public class PokemonGame extends Application {
   private static boolean running;
   private static boolean foundPokemon;
   private static boolean wonBattle;
-  private boolean stateChanged;
+  public static boolean stateChanged;
   private static final double encounterChance = 0.6;
   private static CobvilleTown cobvilleTown, town;
   private static BorderPane pane;
@@ -61,7 +63,7 @@ public class PokemonGame extends Application {
   private StateMachine stateMachine;
   private StartScreen start;
 
-  private static STATE currentState;
+  public static STATE currentState;
   private static STATE previousState;
 
   public static void main(String[] args) {
@@ -113,7 +115,7 @@ public class PokemonGame extends Application {
     initializeGameForFirstTime();
 
     // initialize state to start
-    currentState = STATE.COBVILLETOWN;
+    currentState = STATE.START;
     stateChanged = true;
 
     stateMachine = new StateMachine(theGame, stage, this);
@@ -122,8 +124,12 @@ public class PokemonGame extends Application {
     new AnimationTimer() {
       
       private long last = 0;
+      
+      @Override
       public void handle(long current) {
         if(current - last >= 28000000) {
+          renderCount++;
+          //System.out.println(renderCount);
           render();
           last = current;
         }
@@ -153,6 +159,7 @@ public class PokemonGame extends Application {
    *         controller(pokemonGame) could call those methods when the STATE
    *         changes
    */
+  
   private void render() {
 
     if(stateChanged) {
@@ -164,23 +171,24 @@ public class PokemonGame extends Application {
       
       switch (currentState) {
       case START:
-        // if(stateStack.isStateInStack("start")){
+        stateChanged = false;
+        currentState = STATE.START;
+        
         start = (StartScreen) stateMachine.getIState(STATE.START);
         currentScene = start.render();
-        // }
         if (currentScene == null) {
           System.out.println("Current scene is null");
         }
         primaryStage.setScene(currentScene);
         System.out.println("Start case");
-        // primaryStage.show();
-        currentState = STATE.START;
         break;
       case COBVILLETOWN:
+        stateChanged = false;
+        currentState = STATE.COBVILLETOWN;
+        
         System.out.println("Cobville case");
         cobvilleTown = (CobvilleTown) stateMachine.getIState(STATE.COBVILLETOWN);
         currentScene = cobvilleTown.render();
-        currentState = STATE.COBVILLETOWN;
         primaryStage.setScene(currentScene);
         currentScene.setOnKeyReleased(new AnimateStarter());
         currentScene.setOnKeyPressed(new KeyHandler());
@@ -190,6 +198,7 @@ public class PokemonGame extends Application {
       case INSTRUCTION:
         break;
       case MENU:
+        stateChanged = false;
         menu = (MainMenu) stateMachine.getIState(STATE.MENU);
         menu.onEnter();
         currentScene = menu.render();
@@ -200,7 +209,6 @@ public class PokemonGame extends Application {
         System.out.println("Am I really that big of an idiot?");
         break;
       }
-      stateChanged = false;
     }
   }// end render()
 
