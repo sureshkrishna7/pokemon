@@ -19,7 +19,7 @@ public class House6_TEXT extends TextFileReader{
     } catch (FileNotFoundException e) {
       System.out.println("house_6 text file isn't found");
     }
-    mainMap = new Image("file:src/images/house_6GRID.png", false);
+    mainMap = new Image("file:src/images/house_6.png", false);
     setMapPlayerPosition(9,19);
   }
 

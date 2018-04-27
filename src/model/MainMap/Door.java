@@ -9,8 +9,10 @@ import java.util.Scanner;
 import controller.GameBackground;
 import controller.States.Cave;
 import controller.States.House1;
+import controller.States.House2;
 import controller.States.House6;
 import controller.States.Mart;
+import controller.States.ProfessorLab;
 import javafx.scene.image.Image;
 
 public class Door implements MainMap{
@@ -45,6 +47,16 @@ public class Door implements MainMap{
     	System.out.println("Creating House 1 image!");
     	gameBackground = new House1(new Point(6, 9), insideMapImage);
     	insideMap = new House1_TEXT();
+    }
+    else if(txt.equals("professor_lab.txt")){
+    	System.out.println("Creating professor_lab image!");
+    	gameBackground = new ProfessorLab(new Point(7, 14), insideMapImage);
+    	insideMap = new ProfessorLab_TEXT();
+    }
+    else if(txt.equals("house_2.txt")){
+    	System.out.println("Creating house_2 image!");
+    	gameBackground = new House2(new Point(4, 8), insideMapImage);
+    	insideMap = new House2_TEXT();
     }
     else if(txt.equals("cave.txt")){
     	System.out.println("Creating Cave image!");

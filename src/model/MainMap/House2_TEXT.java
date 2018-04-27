@@ -1,5 +1,6 @@
 package model.MainMap;
 
+
 import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,18 +10,20 @@ import java.util.Scanner;
 
 import javafx.scene.image.Image;
 
-public class MartCity extends TextFileReader{
+public class House2_TEXT extends TextFileReader{
 
-  public MartCity() {
+
+  public House2_TEXT() {
     initializeBoard();
     try {
-    	createMapGridFromTxtFile("src/Mart.txt");
+      createMapGridFromTxtFile("src/house_2.txt");
     } catch (FileNotFoundException e) {
-      System.out.println("Mart text file isn't found");
+      System.out.println("house_2 text file isn't found");
     }
-    mainMap = new Image("file:src/images/Mart.png", false);
-    //createDoorObjects();
-    setMapPlayerPosition(9,19);
+    mainMap = new Image("file:src/images/house_2.png", false);
   }
 
+
 }
+
+
