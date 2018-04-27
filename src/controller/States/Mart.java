@@ -8,11 +8,13 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
 
-public class Mart extends GameBackground{
+public class Mart extends GameBackground implements IState{
 
 	public Mart(Point point, Image mapBackground) {
 		super(point, mapBackground);
@@ -31,7 +33,49 @@ public class Mart extends GameBackground{
 		timeline = new Timeline(new KeyFrame(Duration.millis(90), new AnimateStarter()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 	}
+	  public double getCameraViewWidth() {
+		    return cameraViewSize;
+	  }
+	  
+	  public double getCameraViewHeight() {
+		    return cameraViewSize;
+	  }
 	
+	  @Override
+	  public void update(float elapsedTime) {
+	    // TODO Auto-generated method stub
+
+	  }
+
+	  @Override
+	  public Scene render() {
+		  System.out.println("Setting image " + background.getHeight());
+	    BorderPane bp = new BorderPane();
+	    bp.setCenter(this);
+	    Scene scene = new Scene(bp, this.getCameraViewWidth(), this.getCameraViewHeight());
+	    System.out.println("Returning marts scene");
+	    return scene;
+	  }
+
+	  @Override
+	  public void onEnter() {
+	    // TODO Auto-generated method stub
+
+	  }
+
+	  @Override
+	  public void onExit() {
+	    System.out.println("Changing state, exiting Mart");
+
+	  }
+
+
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	public double getDy() {
 		return dy;
 	}
