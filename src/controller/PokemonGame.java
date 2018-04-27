@@ -208,9 +208,10 @@ public class PokemonGame extends Application {
       case MART:
         stateChanged = false;
         currentState = STATE.MART;
-        System.out.println("Mart case");
+        System.out.println("Mart case !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         //cobvilleTown = (Mart) stateMachine.getIState(STATE.MART);
         GameBackground mart = door.getGameBackground();
+        
         currBackground = mart;
         currentScene = ((Mart)mart).render();
         currentScene.setOnKeyReleased(animateStarter);
@@ -258,6 +259,7 @@ public class PokemonGame extends Application {
     @Override
     public void handle(KeyEvent event) {
 
+    	System.out.println("State = " + currentState);
       /**
        * We monitor what arrow keys we are pressing only when we are in STATE.GAME
        * This is to avoid key pressing conflicts when we not in GAME state
@@ -315,17 +317,17 @@ public class PokemonGame extends Application {
             }
             else {
               currentState = STATE.MART;
+              stateChanged = true;
               theGame.setTrainerLocation(door.getMapPlayerPos());
               theGame.setCurrCameraMap(door.getInsideMapObject());
               pane.setCenter(door.getGameBackground());
               currBackground = (GameBackground)pane.getCenter();
-//              System.out.println("Drawing MART gameBack in Poke line 322");
-//              System.out.println("     " + door.getGameBackground());
               drawGameBackground(currBackground, event, newLocationObject);
               return;
             }
           } else if (newLocationObject == 'E') {
-        	  GameBackground backgroundToRemove = ((GameBackground)pane.getCenter());
+        	  
+        	  GameBackground backgroundToRemove = currBackground;
         	  backgroundToRemove.setDy(backgroundToRemove.getDy() + 32);
         	  theGame.setTrainerLocation(playerOldLocation);
         	  theGame.setCurrCameraMap(oldCurrentMap);
@@ -334,43 +336,45 @@ public class PokemonGame extends Application {
         	  // (16) to make sure that when he takes a step out the door, 
         	  // he is put in the correct pos relative to grid
         	  currentState = STATE.COBVILLETOWN;
+        	  stateChanged = true;
+        	  //System.out.println(cobvilleTown == null);
         	  currBackground = cobvilleTown;
         	  cobvilleTown.setDy(cobvilleTown.getDy() - 32);
         	  pane.setCenter(cobvilleTown);
           }  else if (newLocationObject == ' ') {
-          theGame.setTrainerLocation(playerOldLocation);
-          theGame.setCurrCameraMap(oldCurrentMap);
+        	  theGame.setTrainerLocation(playerOldLocation);
+        	  theGame.setCurrCameraMap(oldCurrentMap);
         } else if (newLocationObject == 'S') {
-          playerOldLocation = theGame.getTrainerLocation();
-          oldCurrentMap = theGame.getCurrCameraMap();
-          theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
-          theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
-          theGame.weAreInSafariZone();
+        	playerOldLocation = theGame.getTrainerLocation();
+        	oldCurrentMap = theGame.getCurrCameraMap();
+        	theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
+        	theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
+        	theGame.weAreInSafariZone();
         }
         // after exhausting 500 steps in Safari Zone, eject back to PokemonTown
         else if (theGame.haveExhaustedSafariZone()) {
-          theGame.setTrainerLocation(playerOldLocation);
-          theGame.setCurrCameraMap(oldCurrentMap);
-          theGame.weAreOutSafariZone();
+        	theGame.setTrainerLocation(playerOldLocation);
+        	theGame.setCurrCameraMap(oldCurrentMap);
+        	theGame.weAreOutSafariZone();
 
           // bush, check will battle at random, start battle with randomly instantiated
           // Pokemon
         } else if (newLocationObject == 'B') {
-          foundPokemon = checkBush();
-          if (foundPokemon) {
-
-            /** The Battle is about to start */
-            currentState = STATE.BATTLE;
-
-            Pokemon wildPoke = getWildPoke();
-            wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
-          }
-
-          /** Once the battle is done set the state back to Game */
-          currentState = STATE.COBVILLETOWN;
+	          foundPokemon = checkBush();
+	          if (foundPokemon) {
+	
+	            /** The Battle is about to start */
+	            currentState = STATE.BATTLE;
+	
+	            Pokemon wildPoke = getWildPoke();
+	            wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
+	          }
+	
+	          /** Once the battle is done set the state back to Game */
+	          currentState = STATE.COBVILLETOWN;
 
         } else if (newLocationObject == 'N') {
-          System.out.print("Encountered a NPC\n");
+            System.out.print("Encountered a NPC\n");
         }
         
        //Scene sc = new Scene();
