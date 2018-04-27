@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import controller.GameBackground;
+import controller.States.Cave;
 import controller.States.House1;
 import controller.States.House6;
 import controller.States.Mart;
@@ -34,18 +35,20 @@ public class Door implements MainMap{
     if (txt.equals("Mart.txt")) {
     	System.out.println("Creating Mart image!");
     	gameBackground = new Mart(new Point(9,19), insideMapImage);
-    	//gameBackground = new Mart(new Point(10,5), new Image("file:src/images/house_6GRID.png", false));
     	insideMap = new MartCity();
     }else if(txt.equals("house_6.txt")){
     	System.out.println("Creating House 6 image!");
     	gameBackground = new House6(new Point(5, 10), insideMapImage);
-    	//gameBackground = new Mart(new Point(10,5), new Image("file:src/images/house_6GRID.png", false));
     	insideMap = new House6_TEXT();
     }
     else if(txt.equals("house_1.txt")){
     	System.out.println("Creating House 1 image!");
     	gameBackground = new House1(new Point(6, 9), insideMapImage);
-    	//gameBackground = new Mart(new Point(10,5), new Image("file:src/images/house_6GRID.png", false));
+    	insideMap = new House1_TEXT();
+    }
+    else if(txt.equals("cave.txt")){
+    	System.out.println("Creating Cave image!");
+    	gameBackground = new Cave(new Point(6, 9), insideMapImage);
     	insideMap = new House1_TEXT();
     }
     else {
