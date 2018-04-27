@@ -29,8 +29,12 @@ public class StateMachine implements IState {
     mStates.put(STATE.COBVILLETOWN, new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage()));
     mStates.put(STATE.MENU, new MainMenu(theGame));
     mStates.put(STATE.START, new StartScreen(stage));
-    //mStates.put(STATE.MART, new Mart());
+    mStates.put(STATE.MART, new Mart(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage()));
     stack = new Stack<>();
+  }
+  
+  public void updateIState(STATE state, IState iState) {
+    mStates.put(state, iState);
   }
   
   public boolean isEmpty() {
@@ -48,23 +52,6 @@ public class StateMachine implements IState {
   
   public IState getIState(STATE st) {
     return mStates.get(st);
-  }
-  
-  public List<STATE> getStack(){
-    return this.stack;
-  }
-  
-  public boolean push(STATE st) {
-    stack.add(st);
-    return true;
-  }
-  
-  public STATE pop() {
-    return stack.remove(stack.size() - 1);
-  }
-  
-  public String peek() {
-    return stack.get(stack.size() - 1).toString();
   }
   
   @Override

@@ -221,8 +221,9 @@ public class PokemonGame extends Application {
         System.out.println("Mart case");
         //cobvilleTown = (Mart) stateMachine.getIState(STATE.MART);
         //GameBackground mart = door.getGameBackground();
+        stateMachine.updateIState(STATE.MART, new Mart(theGame.getTrainerLocation(), door.getInsideMapImage()));
         mart = (Mart) stateMachine.getIState(STATE.MART);
-        currBackground = mart;
+        currBackground = door.getGameBackground();
         currentScene = mart.render();
         currentScene.setOnKeyReleased(animateStarter);
         currentScene.setOnKeyPressed(keyHandler);
@@ -323,14 +324,16 @@ public class PokemonGame extends Application {
               theGame.setTrainerLocation(theGame.getCurrCameraMap().getMapPlayerPosition());
             }
             else {
+              previousState = currentState;
               currentState = STATE.MART;
+              stateChanged = true;
               theGame.setTrainerLocation(door.getMapPlayerPos());
               theGame.setCurrCameraMap(door.getInsideMapObject());
-              pane.setCenter(door.getGameBackground());
-              currBackground = (GameBackground)pane.getCenter();
+              //pane.setCenter(door.getGameBackground());
+              currBackground = (GameBackground) pane.getCenter();
 //              System.out.println("Drawing MART gameBack in Poke line 322");
 //              System.out.println("     " + door.getGameBackground());
-              drawGameBackground(currBackground, event, newLocationObject);
+              //drawGameBackground(currBackground, event, newLocationObject);
               return;
             }
           } else if (newLocationObject == 'E') {
