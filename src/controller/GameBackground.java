@@ -200,7 +200,6 @@ public class GameBackground extends Canvas implements IState{
 
 	public void animateImage(String playerDrawStrategy, String dXOrDyDrawStrategy) {
 		
-		System.out.println("animateImage()");
 		playerPixelsFromTopBoundary  = (cameraViewSize / 2.0) - ((closeToTopPictureBounderSteps * 16) / 3.0);
 		playerPixelsFromLeftBoundary = (cameraViewSize / 2.0) - ((closeToLeftPictureBounderSteps * 16) / 3.0);
 		playerPixelsFromBottomBoundary = (cameraViewSize / 2.0) + ((closeToBottomPictureBounderSteps * 16) / 3.0);

@@ -79,8 +79,8 @@ public class Mart extends GameBackground {
 	        
 	        drawTrainer();
 	        
-	        System.out.println("DX --> " + dx);
-	        System.out.println("DY --> " + dy);
+//	        System.out.println("DX = " + dx);
+//	        System.out.println("DY = " + dy);
 	        
 	        g2D.drawImage(background, 0, 0);
 	        g2D.drawImage(character, sx, sy, sw, sh, dx,  dy, dw, dh);

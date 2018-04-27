@@ -268,7 +268,7 @@ public class PokemonGame extends Application {
          * things on grid before image). So if animation is on, ignore button clicked
          */
         if (currBackground.isTimelineAnimating()) {
-        	System.out.println("ERROR: Already Animating!!");
+        	//System.out.println("NOTICE: Not taking input, already animating");
           return;
         }
         //System.out.println("Accepting input... ");
