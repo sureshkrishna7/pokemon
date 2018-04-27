@@ -97,7 +97,7 @@ public class PokemonGame extends Application {
     START, // Start screen
     MENU, // Menu screen
     COBVILLETOWN, // Actual Game
-    MART,		// inside house
+    INSIDE_BUILDING,		// inside house
     INSTRUCTION, // How to play the Game
     BATTLE, // Battle screen
   };
@@ -205,15 +205,12 @@ public class PokemonGame extends Application {
         currentScene.setOnKeyPressed(keyHandler);
         primaryStage.setScene(currentScene);
         break;
-      case MART:
+      case INSIDE_BUILDING:
         stateChanged = false;
-        currentState = STATE.MART;
-        System.out.println("Mart case !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        //cobvilleTown = (Mart) stateMachine.getIState(STATE.MART);
-        GameBackground mart = door.getGameBackground();
-        
-        currBackground = mart;
-        currentScene = ((Mart)mart).render();
+        currentState = STATE.INSIDE_BUILDING;
+        GameBackground mapInsideBuilding = door.getGameBackground();
+        currBackground = mapInsideBuilding;
+        currentScene = ((GameBackground) mapInsideBuilding).render();
         currentScene.setOnKeyReleased(animateStarter);
         currentScene.setOnKeyPressed(keyHandler);
         primaryStage.setScene(currentScene);
@@ -264,7 +261,7 @@ public class PokemonGame extends Application {
        * We monitor what arrow keys we are pressing only when we are in STATE.GAME
        * This is to avoid key pressing conflicts when we not in GAME state
        */
-      if (currentState == STATE.COBVILLETOWN || currentState == STATE.MART) {
+      if (currentState == STATE.COBVILLETOWN || currentState == STATE.INSIDE_BUILDING) {
         /**
          * NOTE: If user inputs moves too fast, the player will move on the grid faster
          * than the animation timeline can draw the image, and will crash (runs into
@@ -295,7 +292,7 @@ public class PokemonGame extends Application {
           theGame.setCurrCameraMap(oldCurrentMap);
           theGame.weAreOutSafariZone();
         } else {
-          // System.out.println("---KeyCode ------ " + event.getCode());
+          // System.out.println("KeyCode =" + event.getCode());
         }
 
         //System.out.println("Game logic = " + newLocationObject);
@@ -316,7 +313,7 @@ public class PokemonGame extends Application {
               theGame.setTrainerLocation(theGame.getCurrCameraMap().getMapPlayerPosition());
             }
             else {
-              currentState = STATE.MART;
+              currentState = STATE.INSIDE_BUILDING;
               stateChanged = true;
               theGame.setTrainerLocation(door.getMapPlayerPos());
               theGame.setCurrCameraMap(door.getInsideMapObject());
@@ -385,26 +382,17 @@ public class PokemonGame extends Application {
       
     }
 
-    public void drawWithCanvas(Door door, KeyEvent event, char newLocationObject) {
-
-    }
-
     public void drawGameBackground(GameBackground gameBackground, KeyEvent event, char newLocationObject) {
       // z is a char returned by theGame.playerMove() that's not used in map
       // to represent an obj, thus can be used to detect null
       if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {
         // We need to setBackGroundImage() only after entering/exiting doors
-        // cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
-//    	  System.out.println("Testing");
-//    	 System.out.println(event.getCode());
-//    	 System.out.println(gameBackground);
         gameBackground.setPlayerLocation(theGame.getTrainerLocation());
         gameBackground.movePlayer(event.getCode(), "over");
       }
 
       // Draw character under X objects
       else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
-        // cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
         gameBackground.setPlayerLocation(theGame.getTrainerLocation());
         gameBackground.movePlayer(event.getCode(), "under");
       }
