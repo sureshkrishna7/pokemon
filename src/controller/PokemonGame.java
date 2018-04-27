@@ -326,7 +326,6 @@ public class PokemonGame extends Application {
               return;
             }
           } else if (newLocationObject == 'E') {
-        	  
         	  GameBackground backgroundToRemove = currBackground;
         	  backgroundToRemove.setDy(backgroundToRemove.getDy() + 32);
         	  theGame.setTrainerLocation(playerOldLocation);
