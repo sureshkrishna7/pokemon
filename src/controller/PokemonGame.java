@@ -3,7 +3,6 @@ package controller;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Observer;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
@@ -21,7 +20,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.Battle;
 import model.Game;
@@ -29,6 +27,7 @@ import model.Pokemon;
 import model.MainMap.Door;
 import model.MainMap.MainMap;
 import model.Menus.MainMenu;
+import model.Menus.StartMenu;
 import model.UsableItems.UsableItem;
 
 //Simply Create the User and insert User into PokeTownMap, the rest of the maps will be embedded within PokeTownMap
@@ -55,12 +54,13 @@ public class PokemonGame extends Application {
   private static boolean wonBattle;
   public static boolean stateChanged;
   private static final double encounterChance = 0.6;
-  private static CobvilleTown cobvilleTown, town;
-  private static BorderPane pane;
-  private static Observer currentView, imageView, textAreaView;
-  private MainMenu menu;
+  
+  // IState objects
   private StateMachine stateMachine;
   private StartScreen start;
+  private StartMenu startMenu;
+  private static CobvilleTown cobvilleTown;
+  private MainMenu menu;
 
   public static STATE currentState;
   public static STATE previousState;
@@ -85,7 +85,8 @@ public class PokemonGame extends Application {
    *         time
    */
   public enum STATE {
-    START, // Start screen
+    START, // Start screen, first state
+    STARTMENU, // StartMenu, second state
     MENU, // Menu screen
     COBVILLETOWN, // Actual Game
     INSTRUCTION, // How to play the Game
@@ -180,6 +181,13 @@ public class PokemonGame extends Application {
         primaryStage.setScene(currentScene);
         System.out.println("Start case");
         break;
+      case STARTMENU:
+        stateChanged = false;
+        currentState = STATE.STARTMENU;
+        startMenu = (StartMenu) stateMachine.getIState(STATE.STARTMENU);
+        currentScene = startMenu.render();
+        primaryStage.setScene(currentScene);
+        break;
       case COBVILLETOWN:
         stateChanged = false;
         currentState = STATE.COBVILLETOWN;
@@ -203,7 +211,6 @@ public class PokemonGame extends Application {
         primaryStage.setScene(currentScene);
         break;
       default:
-        System.out.println("Am I really that big of an idiot?");
         break;
       }
     }
@@ -213,7 +220,7 @@ public class PokemonGame extends Application {
 
     @Override
     public void handle(KeyEvent event) {
-      if (event.getCode() == KeyCode.M) {
+      if (event.getCode() == KeyCode.ESCAPE) {
         previousState = currentState;
         currentState = STATE.MENU;
         stateChanged = true;

@@ -44,7 +44,6 @@ public class StartScreen implements IState {
   private final double width = 600;
   private final double height = 400;
 
-  private PokemonGame controller;
   private Image logo;
 
   private static final Duration SCALE_DURATION = Duration.seconds(3);
@@ -52,10 +51,9 @@ public class StartScreen implements IState {
   private PathTransition pathTransition;
   private ScaleTransition scaler;
 
-  public StartScreen(Stage theStage, PokemonGame pokemonGame) {
+  public StartScreen(Stage theStage) {
 
     this.primaryStage = theStage;
-    this.controller = pokemonGame;
 
     StackPane root = new StackPane();
 
@@ -97,7 +95,6 @@ public class StartScreen implements IState {
          */
         scene.setOnKeyPressed(event -> {
           if (event.getCode() == KeyCode.ENTER) {
-            //controller.setState(STATE.COBVILLETOWN);
             this.stop();
             afterEnterKeyIsPressed(x, y);
           }});
@@ -105,8 +102,6 @@ public class StartScreen implements IState {
     }.start();
 
     primaryStage.setTitle("Welcome to Pokemon World");
-    //primaryStage.setScene(scene);
-    //primaryStage.show();
     return scene;
   }
 
@@ -198,9 +193,8 @@ public class StartScreen implements IState {
     pathTransition.setOnFinished(new EventHandler<ActionEvent>(){
 
       @Override
-      public void handle(ActionEvent arg0) {
-        // TODO Auto-generated method stub
-        PokemonGame.currentState = STATE.COBVILLETOWN;
+      public void handle(ActionEvent arg) {
+        PokemonGame.currentState = STATE.STARTMENU;
         PokemonGame.stateChanged = true;
       }
     });
@@ -226,8 +220,6 @@ public class StartScreen implements IState {
 
   @Override
   public void onExit() {
-    System.out.println("Exiting StartScreen");
-    //PokemonGame.currentState = STATE.COBVILLETOWN;
-    //PokemonGame.stateChanged = true;
+    
   }
 }

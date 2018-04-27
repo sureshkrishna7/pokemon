@@ -1,12 +1,15 @@
 package model.Menus;
 
-import javafx.application.Application;
+import controller.PokemonGame;
+import controller.PokemonGame.STATE;
+import controller.States.IState;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -14,29 +17,68 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
-public class StartMenu extends Application{
+public class StartMenu implements IState{
 
   private static final int width = 600;
   private static final int height = 400;
-  public static void main(String args[]) {
-    launch(args);
+  
+  private int currentItem = 0;
+  private static MenuItem start;
+  private static MenuItem instructions;
+  private static MenuItem quit;
+  public Scene scene;
+  private VBox menuBox;
+  
+  public StartMenu() {
+    scene = new Scene(getStartMenu());
+    scene.getStylesheets().add("file:src/style.css");
+    
+    scene.setOnKeyPressed(event -> {
+      if(event.getCode() == KeyCode.UP) {
+        if(currentItem > 0) {
+          getMenuItem(currentItem).setActive(false);
+          getMenuItem(--currentItem).setActive(true);
+        }
+      }
+      
+      if(event.getCode() == KeyCode.DOWN) {
+        if(currentItem < menuBox.getChildren().size() - 1) {
+          getMenuItem(currentItem).setActive(false);
+          getMenuItem(++currentItem).setActive(true);
+        }
+      }
+      
+      if (event.getCode() == KeyCode.ENTER) {
+        getMenuItem(currentItem).activate();
+      }
+    });
+    
+    /*
+    primaryStage.setScene(scene);
+    primaryStage.sizeToScene();
+    primaryStage.show();
+    primaryStage.setMinWidth(width);
+    primaryStage.setMinHeight(height);
+    */
   }
 
-  @Override
-  public void start(Stage primaryStage) throws Exception {
+  private Parent getStartMenu() {
     BorderPane all = new BorderPane();
-    GridPane buttonPane = new GridPane();
     GridPane imagesPane = new GridPane();
     GridPane pokePane = new GridPane();
     
+    /*
     Button start = new Button("START");
     Button save = new Button("SAVE");
     Button inrt = new Button("INSTRUCTIONS");
     Button exit = new Button("EXIT");
-
+    */
+    
     Image logo = new Image("file:src/images/GameLogo.png",400,200,true,true);
     Image displayPoke = new Image("file:src/images/223.gif",100,100,false,true);
     Image displayPoke1 = new Image("file:src/images/335.gif",100,100,false,true);
@@ -68,34 +110,88 @@ public class StartMenu extends Application{
     //then you set to your node
     all.setBackground(new Background(myBI));
 
-    buttonPane.add(start, 0,0);
-    buttonPane.add(save, 0,1);
-    buttonPane.add(inrt,0,2);
-    buttonPane.add(exit,0,3);
-
-    buttonPane.setHgap(10); // horizontal gap in pixels => that's what you are asking for
-    buttonPane.setVgap(30);
-
-    all.setCenter(buttonPane);
+    initMenuItems();
+    
+    menuBox = new VBox(10,start, instructions, quit);
+    menuBox.setPadding(new Insets(60.0, 0, 0, 80.0));
+    
+    all.setCenter(menuBox);
     all.setRight(imagesPane);
+    return all;
+    
+  }
 
-    BorderPane.setMargin(buttonPane, new Insets(60, 10, 10, 30));
-
-
-
-    start.setOnMouseClicked(event -> {
-      System.out.println(event.toString());
+  private void initMenuItems() {
+    start = new MenuItem("START");
+    start.setOnActivate(() -> {
+        PokemonGame.currentState = STATE.COBVILLETOWN;
+        PokemonGame.stateChanged = true;
     });
+    
+    instructions = new MenuItem("INSTRUCTIONS");
+    quit = new MenuItem("QUIT");
+    quit.setOnActivate(() -> System.exit(0));
+    
+  }
 
+  private static class MenuItem extends HBox {
+    private Text text;
+    private Runnable script;
 
+    public MenuItem(String name) {
+        super(15);
+        setAlignment(Pos.CENTER);
+        text = new Text(name);
+        
+        getChildren().addAll(text);
+        if(name == "START") setActive(true);
+        else setActive(false);
+        setOnActivate(() -> System.out.println(name + " activated"));
+    }
 
+    public void setActive(boolean b) {
+        text.setFill(b ? Color.BLUE : Color.AQUA);
+    }
 
-    Scene scene = new Scene(all);
-    scene.getStylesheets().add("file:src/GameMenu/style.css");
-    primaryStage.setScene(scene);
-    primaryStage.sizeToScene();
-    primaryStage.show();
-    primaryStage.setMinWidth(width);
-    primaryStage.setMinHeight(height);
+    public void setOnActivate(Runnable r) {
+        script = r;
+    }
+
+    public void activate() {
+        if (script != null)
+            script.run();
+    }
+  }
+  
+  private MenuItem getMenuItem(int index) {
+    return (MenuItem)menuBox.getChildren().get(index);
+  }
+  
+  @Override
+  public String getName() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void update(float elapsedTime) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public Scene render() {
+    return this.scene;
+  }
+
+  @Override
+  public void onEnter() {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void onExit() {
+    
   }
 }
