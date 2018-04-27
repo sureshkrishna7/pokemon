@@ -54,9 +54,6 @@ public class Game {
     ash = new Trainer(new String("Ash"));
     int x = currentMap.getMapPlayerPosition().x;
     int y = currentMap.getMapPlayerPosition().y;
-    System.out.println("Game line 57");
-    System.out.println("ash x = " + x);
-    System.out.println("ash y = " + y);
     ash.setLocation(x, y);
     areWeInSafariZone = false;
   }
@@ -112,8 +109,6 @@ public class Game {
     Point player = ash.getLocation();
     Point newPoint = new Point();
     
-    System.out.println("W -->" + currentMap.getMapWidth());
-    System.out.println("H -->" + currentMap.getMapHeight()); 
     if(direction == 'n' || direction == 'N') {
       newPoint.x = player.x - 1;
       newPoint.y = player.y;
@@ -123,7 +118,7 @@ public class Game {
         if(areWeInSafariZone) {
           currentSafariSteps++;
         }
-        System.out.println("Walkable 1");
+        //System.out.println("Walkable test 1");
         return currentMap.getCharacterFromLocation(newPoint);
       }
     }
@@ -136,7 +131,7 @@ public class Game {
         if(areWeInSafariZone) {
           currentSafariSteps++;
         }
-        System.out.println("Walkable 2");
+        //System.out.println("Walkable test 2");
         return currentMap.getCharacterFromLocation(newPoint);
       }
     }
@@ -149,7 +144,7 @@ public class Game {
         if(areWeInSafariZone) {
           currentSafariSteps++;
         }
-        System.out.println("Walkable 3");
+        //System.out.println("Walkable test 3");
         return currentMap.getCharacterFromLocation(newPoint);
       }
     }
@@ -162,7 +157,7 @@ public class Game {
         if(areWeInSafariZone) {
           currentSafariSteps++;
         }
-        System.out.println("Walkable 4");
+        //System.out.println("Walkable test 4");
         return currentMap.getCharacterFromLocation(newPoint);
       }
     }

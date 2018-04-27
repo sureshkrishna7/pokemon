@@ -25,10 +25,10 @@ import javafx.util.Duration;
  * Timeline will call Animate Starter, in parent class GameBackground which
  * will handle drawing the trainer ontop of the map.
  * 
- * @Daniel Lopez
+ * @author Daniel Lopez
  */
 
-public class CobvilleTown extends GameBackground implements IState{
+public class CobvilleTown extends GameBackground {
 
 
 
@@ -125,7 +125,7 @@ public class CobvilleTown extends GameBackground implements IState{
 	          
 	          int row = playerLocation.x;
 	          int col = playerLocation.y;
-	        
+
 	          /*
 	           * Conditions when player is close to top-left boundaries of screen
 	           * rows <= 10 and col <= 10
@@ -307,51 +307,7 @@ public class CobvilleTown extends GameBackground implements IState{
 			
 		}
 		
-		
-		public double getCameraViewHeight() {
-			return cameraViewSize;
-		}
-		
 
-	  
-
-	  public double getCameraViewWidth() {
-	    return cameraViewSize;
-	  }
-
-	  @Override
-	  public void update(float elapsedTime) {
-	    // TODO Auto-generated method stub
-
-	  }
-
-	  @Override
-	  public Scene render() {
-	    BorderPane bp = new BorderPane();
-	    bp.setCenter(this);
-	    Scene scene = new Scene(bp, this.getCameraViewWidth(), this.getCameraViewHeight());
-	    return scene;
-	  }
-
-	  @Override
-	  public void onEnter() {
-	    // TODO Auto-generated method stub
-
-	  }
-
-	  @Override
-	  public void onExit() {
-	    System.out.println("Changing state, exiting CobvilleTown");
-
-	  }
-
-
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 
