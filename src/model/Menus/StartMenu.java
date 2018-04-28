@@ -4,11 +4,15 @@ import controller.PokemonGame;
 import controller.PokemonGame.STATE;
 import controller.States.IState;
 import javafx.animation.PathTransition;
+import javafx.animation.ScaleTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -22,8 +26,10 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -42,7 +48,11 @@ public class StartMenu implements IState{
   private static MenuItem quit;
   public Scene scene;
   private VBox menuBox;
+  
+  private static final Duration SCALE_DURATION = Duration.seconds(3);
+  private static final double SCALE_FACTOR = 600;
   private PathTransition pathTransition;
+  private ScaleTransition scaler;
 
   public StartMenu() {
     scene = new Scene(getStartMenu());
@@ -142,7 +152,11 @@ public class StartMenu implements IState{
     menuBox.setStyle("-fx-border-color: red;");
     */
     
-    all.setCenter(menuBox);
+    //closingSceneAnimateCircle();
+    
+   // Group group = new Group(menuBox, closingSceneAnimateCircle());
+    all.setLeft(menuBox);
+    all.setCenter(closingSceneAnimateCircle());
     all.setRight(imagesPane);
     return all;
 
@@ -226,11 +240,37 @@ public class StartMenu implements IState{
  // Logo (Image) converted to a node is built above
     pathTransition.setNode(imageNode);
     pathTransition.setPath(path);
+    
     return imageNode;
   }
+  
+  private StackPane closingSceneAnimateCircle() {
+    
+    Circle blackCircle = new Circle(width/2, height/2, 1, Color.BLACK);
+    final StackPane circlePane = new StackPane(blackCircle);
+//    circlePane.setPrefSize(width-400, height-100);
+    
+    scaler = new ScaleTransition(
+        SCALE_DURATION,
+        blackCircle
+        );
+   
+    scaler.setFromX(SCALE_FACTOR);
+    scaler.setToX(0);
+    scaler.setFromY(SCALE_FACTOR);
+    scaler.setToY(0);
+
+    scaler.setAutoReverse(true);
+    
+    // Cycle count is reduced from infinity to 2
+    scaler.setCycleCount(1);
+    return circlePane;
+  }
+
 
   public void playAnimationLogo() {
     pathTransition.play();
+    scaler.play();
     return;
   }
   
