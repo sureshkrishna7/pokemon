@@ -36,7 +36,7 @@ public class Door implements MainMap{
     insideMapImage = new Image("file:src/images/"+img, false);
     if (txt.equals("Mart.txt")) {
     	System.out.println("Creating Mart image!");
-    	gameBackground = new Mart(new Point(9,19), insideMapImage);
+    	gameBackground = new Mart(new Point(9,20), insideMapImage);
     	insideMap = new MartCity();
     }else if(txt.equals("house_6.txt")){
     	System.out.println("Creating House 6 image!");

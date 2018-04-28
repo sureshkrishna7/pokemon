@@ -50,7 +50,7 @@ public class GameBackground extends Canvas implements IState{
 	  protected double sx, sy, sw, sh, dx, dy, dw, dh;
 	  protected String drawPlayerOverOrUnder;
 	  protected KeyCode keyCode;
-	  protected final double cameraViewSize = 20 * 16;
+	  protected final double cameraViewSize = 10 * 16;
 	  
 	  
 	  public GameBackground(Point point, Image mapBackground) {
@@ -202,6 +202,32 @@ public class GameBackground extends Canvas implements IState{
         }
 	}
 	
+	public void animateImageWithoutBoundary() {
+		System.out.println("Background size = height:" + background.getHeight()  + ", width: " + background.getWidth());
+		System.out.println("dx   = "+ (dx - (cameraViewSize / 2.0)));
+		System.out.println("dy   = "+ (dy - (cameraViewSize / 2.0)));
+		
+		double backgroundSX = dx - (cameraViewSize / 2.0);
+		double backgroundSY = dy - (cameraViewSize / 2.0);
+		
+//		if (backgroundDX < 0 && backgroundDY < 0) {
+//			System.out.println("Test 2");
+//			g2D.drawImage(background, 0, 0, cameraViewSize, cameraViewSize, dx - (cameraViewSize / 2.0),  dy - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize);
+//		}
+//		else if(backgroundDX < 0) {
+//			System.out.println("Test 2");
+//			g2D.drawImage(background, 0,  backgroundDY, cameraViewSize, cameraViewSize, dx - (cameraViewSize / 2.0),  0, cameraViewSize, cameraViewSize);
+//		}
+//		else if(backgroundDY < 0) {
+//			System.out.println("Test 2");
+//			g2D.drawImage(background, backgroundDX, 0, cameraViewSize, cameraViewSize, 0,  dy - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize);
+//		}
+//		else {
+//			g2D.drawImage(background, backgroundDX,  backgroundDY, cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+//		}
+		g2D.drawImage(background, backgroundSX,  backgroundSY, cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
+        g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0,  cameraViewSize / 2.0, dw, dh);	
+	}
 
 	public void animateImage(String playerDrawStrategy, String dXOrDyDrawStrategy) {
 		

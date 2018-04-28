@@ -30,6 +30,8 @@ public class Cave extends GameBackground{
 		timeline = new Timeline(new KeyFrame(Duration.millis(90), new AnimateStarter()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 	}
+	
+
 
 	  private class AnimateStarter implements EventHandler<ActionEvent> {
 		  
@@ -68,12 +70,12 @@ public class Cave extends GameBackground{
 	        tic++;
 	        
 	        drawTrainer();
-	        
-	        System.out.println("DX = " + dx);
-	        System.out.println("DY = " + dy);
-	        
-	        g2D.drawImage(background, 0, 0);
-	        g2D.drawImage(character, sx, sy, sw, sh, dx,  dy, dw, dh);
+	        animateImageWithoutBoundary();
+//	        System.out.println("DX = " + dx);
+//	        System.out.println("DY = " + dy);
+
+//	        g2D.drawImage(background, 0, 0);
+//	        g2D.drawImage(character, sx, sy, sw, sh, dx,  dy, dw, dh);
 	        // stop timeline from drawing after final sprite 
 	        if (tic == 3) {
 	        	timeline.stop();

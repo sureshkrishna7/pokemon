@@ -30,7 +30,7 @@ public class House1 extends GameBackground{
 		timeline = new Timeline(new KeyFrame(Duration.millis(90), new AnimateStarter()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 	}
-
+	
 	  private class AnimateStarter implements EventHandler<ActionEvent> {
 		  
 		  public AnimateStarter() {
@@ -69,10 +69,9 @@ public class House1 extends GameBackground{
 	        System.out.println("House1  animating");
 	        
 	        drawTrainer();
-
-	        
-	        g2D.drawImage(background, 0, 0);
-	        g2D.drawImage(character, sx, sy, sw, sh, dx,  dy, dw, dh);
+	        animateImageWithoutBoundary();
+//	        g2D.drawImage(background, 0, 0);
+//	        g2D.drawImage(character, sx, sy, sw, sh, dx,  dy, dw, dh);
 	        // stop timeline from drawing after final sprite 
 	        if (tic == 3) {
 	        	timeline.stop();

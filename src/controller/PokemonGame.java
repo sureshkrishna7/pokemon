@@ -383,20 +383,23 @@ public class PokemonGame extends Application {
       
     }
 
+    /**
+     * drawGameBackground()
+     * z is a char returned by theGame.playerMove() that's not used in map
+     * to represent an obj, thus can be used to detect null
+     * We need to setBackGroundImage() only after entering/exiting doors
+     */
     public void drawGameBackground(GameBackground gameBackground, KeyEvent event, char newLocationObject) {
-      // z is a char returned by theGame.playerMove() that's not used in map
-      // to represent an obj, thus can be used to detect null
-      if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {
-        // We need to setBackGroundImage() only after entering/exiting doors
-        gameBackground.setPlayerLocation(theGame.getTrainerLocation());
-        gameBackground.movePlayer(event.getCode(), "over");
-      }
+    	if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {
+    		gameBackground.setPlayerLocation(theGame.getTrainerLocation());
+    		gameBackground.movePlayer(event.getCode(), "over");
+    	}
 
-      // Draw character under X objects
-      else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
-        gameBackground.setPlayerLocation(theGame.getTrainerLocation());
-        gameBackground.movePlayer(event.getCode(), "under");
-      }
+    	// Draw character under X objects
+    	else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
+    		gameBackground.setPlayerLocation(theGame.getTrainerLocation());
+    		gameBackground.movePlayer(event.getCode(), "under");
+    	}
     }
   }
 
