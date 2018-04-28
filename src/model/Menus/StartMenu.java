@@ -118,7 +118,8 @@ public class StartMenu implements IState{
 
     menuBox = new VBox(30,start, instructions, quit);
     menuBox.setPadding(new Insets(60, 0, 0, 60));
-    final Rectangle redBorder = new Rectangle(0, 0, Color.TRANSPARENT);
+  
+    /*final Rectangle redBorder = new Rectangle(0, 0, Color.TRANSPARENT);
     start.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
 
       @Override
@@ -132,6 +133,7 @@ public class StartMenu implements IState{
 
   });
     menuBox.setStyle("-fx-border-color: red;");
+    */
     
     all.setCenter(menuBox);
     all.setRight(imagesPane);
@@ -181,7 +183,7 @@ public class StartMenu implements IState{
             "    -fx-border-radius: 20;\n" + 
             "    -fx-border-width: 3;\n" + 
             "    -fx-rotate: 10;");
-        //text.setFill(Color.valueOf("#cc0000"));
+        text.setFill(Color.valueOf("#cc0000"));
       }
       else {
         text.setStyle("-fx-font-weight: bold;\n" + 
@@ -189,7 +191,7 @@ public class StartMenu implements IState{
             "   -fx-background-radius: 22;\n" + 
             "   -fx-font-size: 16;\n" + 
             "   -fx-text-fill: white;");
-        //text.setFill(Color.valueOf("#003366"));
+        text.setFill(Color.valueOf("#003366"));
       }
     }
 

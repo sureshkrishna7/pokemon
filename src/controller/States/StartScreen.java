@@ -47,7 +47,7 @@ public class StartScreen implements IState {
   private Image logo;
 
   private static final Duration SCALE_DURATION = Duration.seconds(3);
-  private static final double SCALE_FACTOR = 370;
+  private static final double SCALE_FACTOR = 600;
   private PathTransition pathTransition;
   private ScaleTransition scaler;
 
@@ -131,21 +131,23 @@ public class StartScreen implements IState {
     // Start the logo at the position you clicked the enter button
     path.getElements().add(new MoveTo(x+(logo.getWidth()/2),y+(logo.getHeight()/2)+100));
 
-    path.getElements().add(new LineTo(width/2, 80));
-    path.getElements().add(new LineTo(-30, 30));
-    path.getElements().add(new LineTo(-85, 200));
-    path.getElements().add(new LineTo(200, 600));
-    path.getElements().add(new LineTo(600, 500));
+    //path.getElements().add(new LineTo(width/2, 80));
+    //path.getElements().add(new LineTo(-30, 30));
+    //path.getElements().add(new LineTo(-85, 200));
+    //path.getElements().add(new LineTo(200, 600));
+    //path.getElements().add(new LineTo(600, 500));
 
     // Going from center to correct postion
     //path.getElements().add(new LineTo(250, 350));
 
     // Going from side to correct postion
-    path.getElements().add(new LineTo(800, 120));
+    //path.getElements().add(new LineTo(800, 120));
 
     path.getElements().add(new LineTo(397, 74));
+    path.getElements().add(new LineTo(1000, 74));
+    path.getElements().add(new LineTo(1300, 74));
     pathTransition = new PathTransition();
-    pathTransition.setDuration(Duration.millis(5000));
+    pathTransition.setDuration(Duration.millis(3000));
 
     // Logo (Image) converted to a node is built above
     pathTransition.setNode(imageNode);
