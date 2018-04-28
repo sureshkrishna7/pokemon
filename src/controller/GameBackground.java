@@ -15,12 +15,17 @@ import javafx.animation.Timeline;
 import javafx.animation.Animation.Status;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public class GameBackground extends Canvas implements IState{
@@ -271,6 +276,7 @@ public class GameBackground extends Canvas implements IState{
 	  @Override
 	  public Scene render() {
 	    BorderPane bp = new BorderPane();
+	    bp.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0), new Insets(0,0,0,0) )));
 	    bp.setCenter(this);
 	    Scene scene = new Scene(bp, this.getCameraViewWidth(), this.getCameraViewHeight());
 	    return scene;

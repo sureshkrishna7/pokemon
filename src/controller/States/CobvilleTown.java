@@ -297,30 +297,7 @@ public class CobvilleTown extends GameBackground {
 	        }
 	    }
 	  }
-
-		public void setPlayerLocation(Point trainerLocation) {
-			playerLocation = trainerLocation;
-		}
-		
-		public Point getPlayerLocation(Point trainerLocation) {
-			return playerLocation;
-			
-		}
 		
 
-
-
-
-	public boolean isTimelineAnimating() {
-		  return timeline.getStatus() == Status.RUNNING;
-	  }
-	
-	  public void movePlayer(KeyCode code, String overOrUnder) {
-		  keyCode = code;
-		  drawPlayerOverOrUnder = overOrUnder;
-		  tic = 0;
-		  timeline.play();
-	  }
-	
 
 	}
