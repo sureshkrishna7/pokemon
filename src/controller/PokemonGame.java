@@ -274,12 +274,14 @@ public class PokemonGame extends Application {
           return;
         }
         
-        
-        //System.out.println("Accepting input... ");
         char newLocationObject = 'Z';
         if (KeyCode.UP == event.getCode()) {
           newLocationObject = theGame.playerMove('n');
+
           if (theGame.getIsTrainerAlreadyOnDoor()) {
+              // when the player is already on a door, they want to press up and 
+              // enter the building, but the map isWalkable() will not allow them
+              // to walk on the house object. newLocationObj == 'z' 
         	  newLocationObject = 'D';
         	  trainerWasAlreadyOnDoor = true;
           }
