@@ -131,7 +131,7 @@ public class PokemonGame extends Application {
     initializeGameForFirstTime();
 
     // initialize state to start
-    currentState = STATE.START;
+    currentState = STATE.COBVILLETOWN;
     //currentState = STATE.STARTMENU;
     
     stateChanged = true;
@@ -225,9 +225,9 @@ public class PokemonGame extends Application {
         System.out.println("Mart case");
         //cobvilleTown = (Mart) stateMachine.getIState(STATE.MART);
         //GameBackground mart = door.getGameBackground();
+        currBackground = door.getGameBackground();
         stateMachine.updateIState(STATE.MART, new Mart(theGame.getTrainerLocation(), door.getInsideMapImage()));
         mart = (Mart) stateMachine.getIState(STATE.MART);
-        currBackground = door.getGameBackground();
         currentScene = mart.render();
         currentScene.setOnKeyReleased(animateStarter);
         currentScene.setOnKeyPressed(keyHandler);
@@ -333,11 +333,9 @@ public class PokemonGame extends Application {
               stateChanged = true;
               theGame.setTrainerLocation(door.getMapPlayerPos());
               theGame.setCurrCameraMap(door.getInsideMapObject());
-              //pane.setCenter(door.getGameBackground());
-              currBackground = (GameBackground) pane.getCenter();
 //              System.out.println("Drawing MART gameBack in Poke line 322");
 //              System.out.println("     " + door.getGameBackground());
-              //drawGameBackground(currBackground, event, newLocationObject);
+              drawGameBackground(currBackground, event, newLocationObject);
               return;
             }
           } else if (newLocationObject == 'E') {
@@ -350,9 +348,7 @@ public class PokemonGame extends Application {
         	  // (16) to make sure that when he takes a step out the door, 
         	  // he is put in the correct pos relative to grid
         	  currentState = STATE.COBVILLETOWN;
-        	  currBackground = cobvilleTown;
         	  cobvilleTown.setDy(cobvilleTown.getDy() - 32);
-        	  pane.setCenter(cobvilleTown);
           }  else if (newLocationObject == ' ') {
           theGame.setTrainerLocation(playerOldLocation);
           theGame.setCurrCameraMap(oldCurrentMap);
