@@ -213,13 +213,14 @@ public class StartMenu implements IState{
       if(b) {
         text.setStyle("-fx-rotate: 12;");
         //text.setFill(Color.WHITE);
-        LinearGradient linearGradient = new LinearGradient(0, 0, 20, 20, false, CycleMethod.REFLECT, new Stop(0,Color.valueOf("ff9a9e")),new Stop(1,Color.valueOf("#667eea")));
-        //text.setStroke(linearGradient);
+        LinearGradient linearGradient = new LinearGradient(0, 0, 20, 20, false, CycleMethod.REFLECT, new Stop(0,Color.valueOf("ff7eb3")),new Stop(1,Color.valueOf("#96deda")));
+        text.setStroke(Color.TRANSPARENT);
         text.setFill(linearGradient);
       }
       else {
         text.setStyle("");
         text.setFill(Color.BLACK);
+        text.setStroke(Color.TRANSPARENT);
       }
     }
 
