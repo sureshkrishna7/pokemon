@@ -132,6 +132,8 @@ public class PokemonGame extends Application {
 
     // initialize state to start
     currentState = STATE.START;
+    //currentState = STATE.STARTMENU;
+    
     stateChanged = true;
 
     stateMachine = new StateMachine(theGame, stage, this);
