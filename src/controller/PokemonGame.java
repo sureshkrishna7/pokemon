@@ -204,6 +204,8 @@ public class PokemonGame extends Application {
         currentState = STATE.STARTMENU;
         startMenu = (StartMenu) stateMachine.getIState(STATE.STARTMENU);
         currentScene = startMenu.render();
+        // Play logo animation
+        startMenu.playAnimationLogo();
         primaryStage.setScene(currentScene);
         break;
       case COBVILLETOWN:

@@ -3,6 +3,7 @@ package model.Menus;
 import controller.PokemonGame;
 import controller.PokemonGame.STATE;
 import controller.States.IState;
+import javafx.animation.PathTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
@@ -23,8 +24,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public class StartMenu implements IState{
 
@@ -37,6 +42,7 @@ public class StartMenu implements IState{
   private static MenuItem quit;
   public Scene scene;
   private VBox menuBox;
+  private PathTransition pathTransition;
 
   public StartMenu() {
     scene = new Scene(getStartMenu());
@@ -70,7 +76,7 @@ public class StartMenu implements IState{
     primaryStage.setMinHeight(height);
      */
   }
-
+  
   private Parent getStartMenu() {
     BorderPane all = new BorderPane();
     GridPane imagesPane = new GridPane();
@@ -84,6 +90,7 @@ public class StartMenu implements IState{
      */
 
     Image logo = new Image("file:src/images/GameLogo.png",400,200,true,true);
+    
     Image displayPoke = new Image("file:src/images/223.gif",100,100,false,true);
     Image displayPoke1 = new Image("file:src/images/335.gif",100,100,false,true);
     Image displayPoke2 = new Image("file:src/images/474.gif",100,100,false,true);
@@ -93,7 +100,7 @@ public class StartMenu implements IState{
     Image displayPoke6 = new Image("file:src/images/113.gif",100,100,false,true);
     Image displayPoke7 = new Image("file:src/images/114.gif",100,100,false,true);
 
-    imagesPane.getChildren().add(new ImageView(logo));
+    imagesPane.add(addImageToNode(logo), 0, 0);
 
     pokePane.add(new ImageView(displayPoke6), 0, 0);
     pokePane.add(new ImageView(displayPoke1), 1, 0);
@@ -204,7 +211,29 @@ public class StartMenu implements IState{
         script.run();
     }
   }
+  
+  public ImageView addImageToNode(Image logo) {
+    ImageView imageNode = new ImageView(logo);
+    logo = ((ImageView) imageNode ).getImage();
+    Path path = new Path();
+    
+    path.getElements().add(new MoveTo(900, 74));
+    //path.getElements().add(new LineTo(1000, 74));
+    path.getElements().add(new LineTo(397-(logo.getWidth()/2), 74));
+    pathTransition = new PathTransition();
+    pathTransition.setDuration(Duration.millis(1600));
+    
+ // Logo (Image) converted to a node is built above
+    pathTransition.setNode(imageNode);
+    pathTransition.setPath(path);
+    return imageNode;
+  }
 
+  public void playAnimationLogo() {
+    pathTransition.play();
+    return;
+  }
+  
   private MenuItem getMenuItem(int index) {
     return (MenuItem)menuBox.getChildren().get(index);
   }
