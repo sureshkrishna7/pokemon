@@ -111,8 +111,8 @@ public class StartMenu implements IState{
     Image displayPoke2 = new Image("file:src/images/474.gif",100,100,false,true);
     Image displayPoke3 = new Image("file:src/images/696.gif",100,100,false,true);
     Image displayPoke4 = new Image("file:src/images/111.gif",100,100,false,true);
-    Image displayPoke5 = new Image("file:src/images/112.gif",105,100,false,true);
-    Image displayPoke6 = new Image("file:src/images/113.gif",100,100,false,true);
+    Image displayPoke5 = new Image("file:src/images/112.gif",100,100,false,true);
+    Image displayPoke6 = new Image("file:src/images/haunter-3.gif",90,90,false,true);
     Image displayPoke7 = new Image("file:src/images/114.gif",100,100,false,true);
 
     imagesPane.add(addImageToNode(logo), 0, 0);
@@ -129,7 +129,7 @@ public class StartMenu implements IState{
 
     imagesPane.add(pokePane, 0, 1);
 
-    BackgroundImage myBI= new BackgroundImage(new Image("file:src/images/GameBackground1.gif",width,height,false,true),
+    BackgroundImage myBI= new BackgroundImage(new Image("file:src/images/GameBackground1.gif",width,height,false,false),
         BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
         BackgroundSize.DEFAULT);
 
