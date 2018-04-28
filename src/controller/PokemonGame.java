@@ -270,6 +270,7 @@ public class PokemonGame extends Application {
          */
         if (currBackground.isTimelineAnimating()) {
         	//System.out.println("NOTICE: Not taking input, already animating");
+        	//currBackground.stopTimelineAnimating();
           return;
         }
         //System.out.println("Accepting input... ");
@@ -325,7 +326,8 @@ public class PokemonGame extends Application {
             }
           } else if (newLocationObject == 'E') {
         	  GameBackground backgroundToRemove = currBackground;
-        	  backgroundToRemove.setDy(backgroundToRemove.getDy() + 32);
+        	  //backgroundToRemove.setDy(backgroundToRemove.getDy() + 32);
+        	  backgroundToRemove.setDy(backgroundToRemove.getDy() + 16);
         	  theGame.setTrainerLocation(playerOldLocation);
         	  theGame.setCurrCameraMap(oldCurrentMap);
             

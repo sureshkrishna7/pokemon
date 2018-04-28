@@ -33,6 +33,7 @@ public class Door implements MainMap{
     this.col = 0;
     this.listOfDoorPositions = new ArrayList<Point>(0);
     this.listOfDoorPositions.add(new Point(posx,posy));
+    //insideMapImage = new Image("file:src/images/"+img, 600,600,false, true);
     insideMapImage = new Image("file:src/images/"+img, false);
     if (txt.equals("Mart.txt")) {
     	System.out.println("Creating Mart image!");
@@ -175,7 +176,11 @@ public class Door implements MainMap{
         insideBoard[x][y] = read.charAt(y);
 
         if(insideBoard[x][y] == 'E') {
-          playerPositionInsideMap = new Point(x,y);
+          // created an extra row on map to represent where the exit would
+          // be with alot of dots on both sides "..E..", thus spawn trainer
+          // one row above the exit when entering a map (correct pos. on map)
+          // so that player can press down key and exit when first entering. 
+          playerPositionInsideMap = new Point(x - 1,y);
         }
 
         y++;

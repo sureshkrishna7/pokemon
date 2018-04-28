@@ -180,7 +180,7 @@ public class TextFileReader implements MainMap{
 	    }else {
 	    	//if ()
 	    	//if (characterBoard[x - 1][y] != 0)
-	    	System.out.println("No condition!! -->");
+	    	System.out.println("No condition!! :(");
 	    	System.out.println("X = " + x);
 	    	System.out.println("Y = " + y);
 	    	System.out.println("Row = " + row);
