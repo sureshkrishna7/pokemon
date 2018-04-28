@@ -379,16 +379,16 @@ public class GameBackground extends Canvas implements IState{
 		
 	  }
 
-	public void stopTimelineAnimating() {
-		//timeline.stop();
-		try {
-			System.out.println("Current time: " + timeline.getTotalDuration());
-			timeline.wait((long) .0001);
-			//timeline.wait();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		}
-	}
+//	public void stopTimelineAnimating() {
+//		//timeline.stop();
+//		try {
+//			System.out.println("Current time: " + timeline.getTotalDuration());
+//			timeline.wait((long) .0001);
+//			//timeline.wait();
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			//e.printStackTrace();
+//		}
+//	}
 
 }
