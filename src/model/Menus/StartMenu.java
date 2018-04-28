@@ -15,6 +15,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -48,7 +50,7 @@ public class StartMenu implements IState{
   private static MenuItem quit;
   public Scene scene;
   private VBox menuBox;
-  
+
   private static final Duration SCALE_DURATION = Duration.seconds(3);
   private static final double SCALE_FACTOR = 600;
   private PathTransition pathTransition;
@@ -86,7 +88,7 @@ public class StartMenu implements IState{
     primaryStage.setMinHeight(height);
      */
   }
-  
+
   private Parent getStartMenu() {
     BorderPane all = new BorderPane();
     GridPane imagesPane = new GridPane();
@@ -100,7 +102,7 @@ public class StartMenu implements IState{
      */
 
     Image logo = new Image("file:src/images/GameLogo.png",400,200,true,true);
-    
+
     Image displayPoke = new Image("file:src/images/223.gif",100,100,false,true);
     Image displayPoke1 = new Image("file:src/images/335.gif",100,100,false,true);
     Image displayPoke2 = new Image("file:src/images/474.gif",100,100,false,true);
@@ -133,28 +135,11 @@ public class StartMenu implements IState{
 
     initMenuItems();
 
-    menuBox = new VBox(30,start, instructions, quit);
-    menuBox.setPadding(new Insets(60, 0, 0, 60));
-  
-    /*final Rectangle redBorder = new Rectangle(0, 0, Color.TRANSPARENT);
-    start.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
+    menuBox = new VBox(50,start, instructions, quit);
+    menuBox.setPadding(new Insets(80, 5, 5, 60));
 
-      @Override
-      public void changed(ObservableValue<? extends Bounds> observable,
-              Bounds oldValue, Bounds newValue) {
-          redBorder.setLayoutX(start.getBoundsInParent().getMinX());
-          redBorder.setLayoutY(start.getBoundsInParent().getMinY());
-          redBorder.setWidth(start.getBoundsInParent().getWidth());
-          redBorder.setHeight(start.getBoundsInParent().getHeight());
-      }
 
-  });
-    menuBox.setStyle("-fx-border-color: red;");
-    */
-    
-    //closingSceneAnimateCircle();
-    
-   // Group group = new Group(menuBox, closingSceneAnimateCircle());
+    // Group group = new Group(menuBox, closingSceneAnimateCircle());
     all.setLeft(menuBox);
     all.setCenter(closingSceneAnimateCircle());
     all.setRight(imagesPane);
@@ -164,13 +149,41 @@ public class StartMenu implements IState{
 
   private void initMenuItems() {
     start = new MenuItem("START");
+    start.setId("fancytext");
+
+    DropShadow dropShadow = new DropShadow();
+    dropShadow.setColor(Color.GREEN);
+    dropShadow.setRadius(25);
+    dropShadow.setSpread(0.50);
+    dropShadow.setBlurType(BlurType.GAUSSIAN);
+    start.setEffect(dropShadow);
+
+
     start.setOnActivate(() -> {
       PokemonGame.currentState = STATE.COBVILLETOWN;
       PokemonGame.stateChanged = true;
     });
 
     instructions = new MenuItem("INSTRUCTIONS");
+    instructions.setId("fancytext");
+    
+    DropShadow dropShadow2 = new DropShadow();
+    dropShadow2.setColor(Color.YELLOW);
+    dropShadow2.setRadius(25);
+    dropShadow2.setSpread(0.50);
+    dropShadow2.setBlurType(BlurType.GAUSSIAN);
+    instructions.setEffect(dropShadow2);
+
     quit = new MenuItem("QUIT");
+    quit.setId("fancytext");
+    
+    DropShadow dropShadow3 = new DropShadow();
+    dropShadow3.setColor(Color.RED);
+    dropShadow3.setRadius(25);
+    dropShadow3.setSpread(0.50);
+    dropShadow3.setBlurType(BlurType.GAUSSIAN);
+    quit.setEffect(dropShadow3);
+    
     quit.setOnActivate(() -> System.exit(0));
 
   }
@@ -178,7 +191,7 @@ public class StartMenu implements IState{
   private static class MenuItem extends HBox {
     private Text text;
     private Runnable script;
-    
+
     public MenuItem(String name) {
       super(15);
       setAlignment(Pos.CENTER);
@@ -188,31 +201,19 @@ public class StartMenu implements IState{
       if(name == "START") setActive(true);
       else setActive(false);
       setOnActivate(() -> System.out.println(name + " activated"));
-      
+
     }
 
     public void setActive(boolean b) {
       //        text.setFill(b ? Color.WHITE : Color.AQUA);
-   
+
       if(b) {
-        text.setStyle("-fx-font-weight: bold;\n" + 
-            "    -fx-background-color: white;\n" + 
-            "    -fx-background-radius: 22;\n" + 
-            "    -fx-font-size: 16;\n" + 
-            "    -fx-text-fill: #2196f3;\n" + 
-            "    -fx-border-color: #2196f3;\n" + 
-            "    -fx-border-radius: 20;\n" + 
-            "    -fx-border-width: 3;\n" + 
-            "    -fx-rotate: 10;");
-        text.setFill(Color.valueOf("#cc0000"));
+        text.setStyle("-fx-rotate: 10;");
+        text.setFill(Color.WHITE);
       }
       else {
-        text.setStyle("-fx-font-weight: bold;\n" + 
-            "   -fx-background-color: #2196f3;\n" + 
-            "   -fx-background-radius: 22;\n" + 
-            "   -fx-font-size: 16;\n" + 
-            "   -fx-text-fill: white;");
-        text.setFill(Color.valueOf("#003366"));
+        text.setStyle("");
+        text.setFill(Color.BLACK);
       }
     }
 
@@ -225,43 +226,43 @@ public class StartMenu implements IState{
         script.run();
     }
   }
-  
+
   public ImageView addImageToNode(Image logo) {
     ImageView imageNode = new ImageView(logo);
     logo = ((ImageView) imageNode ).getImage();
     Path path = new Path();
-    
+
     path.getElements().add(new MoveTo(900, 74));
     //path.getElements().add(new LineTo(1000, 74));
     path.getElements().add(new LineTo(397-(logo.getWidth()/2), 74));
     pathTransition = new PathTransition();
     pathTransition.setDuration(Duration.millis(1600));
-    
- // Logo (Image) converted to a node is built above
+
+    // Logo (Image) converted to a node is built above
     pathTransition.setNode(imageNode);
     pathTransition.setPath(path);
-    
+
     return imageNode;
   }
-  
+
   private StackPane closingSceneAnimateCircle() {
-    
+
     Circle blackCircle = new Circle(width/2, height/2, 1, Color.BLACK);
     final StackPane circlePane = new StackPane(blackCircle);
-//    circlePane.setPrefSize(width-400, height-100);
-    
+    //    circlePane.setPrefSize(width-400, height-100);
+
     scaler = new ScaleTransition(
         SCALE_DURATION,
         blackCircle
         );
-   
+
     scaler.setFromX(SCALE_FACTOR);
     scaler.setToX(0);
     scaler.setFromY(SCALE_FACTOR);
     scaler.setToY(0);
 
     scaler.setAutoReverse(true);
-    
+
     // Cycle count is reduced from infinity to 2
     scaler.setCycleCount(1);
     return circlePane;
@@ -273,7 +274,7 @@ public class StartMenu implements IState{
     scaler.play();
     return;
   }
-  
+
   private MenuItem getMenuItem(int index) {
     return (MenuItem)menuBox.getChildren().get(index);
   }
