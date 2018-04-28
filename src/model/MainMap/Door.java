@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import controller.GameBackground;
 import controller.States.Cave;
+import controller.States.FryslaSafariZone;
 import controller.States.House1;
 import controller.States.House2;
 import controller.States.House6;
@@ -64,9 +65,14 @@ public class Door implements MainMap{
     	gameBackground = new Cave(new Point(18, 22), insideMapImage);
     	insideMap = new Cave_TEXT();
     }
+    else if(txt.equals("FryslaSafariZone.txt")){
+    	System.out.println("Creating FryslaSafariZone image!");
+    	gameBackground = new FryslaSafariZone(new Point(45,44), insideMapImage);
+    	insideMap = new FryslaSafariZone_TEXT();
+    }
     else {
     
-    	System.out.println("ANS -->" + txt);
+    	System.out.println("answer = " + txt);
     }
     try {
       createMapFromTxtFile("src/"+txt);

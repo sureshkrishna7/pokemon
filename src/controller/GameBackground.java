@@ -10,6 +10,7 @@ import java.awt.Point;
 
 import controller.States.Cave;
 import controller.States.CobvilleTown;
+import controller.States.FryslaSafariZone;
 import controller.States.IState;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -205,7 +206,7 @@ public class GameBackground extends Canvas implements IState{
 		System.out.println("dx   = "+ (dx - (cameraViewSize / 2.0)));
 		System.out.println("dy   = "+ (dy - (cameraViewSize / 2.0)));
 		
-		 g2D.clearRect(0, 0, 800, 800);
+	    g2D.clearRect(0, 0, 800, 800);
 		double backgroundSX = dx - (cameraViewSize / 2.0);
 		double backgroundSY = dy - (cameraViewSize / 2.0);
 		
@@ -303,9 +304,11 @@ public class GameBackground extends Canvas implements IState{
 	    BorderPane bp = new BorderPane();
 	    bp.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0), new Insets(0,0,0,0) )));
 	    bp.setCenter(this);
+	    
 	    Scene scene = null;
 	    Scale scale = null;
-	    if (this instanceof CobvilleTown || this instanceof Cave) {
+	    
+	    if (this instanceof CobvilleTown || this instanceof Cave || this instanceof FryslaSafariZone ) {
 	    	System.out.println("instance of Cobville Town");
 	    	cameraViewSize = 15 * 16;
 		    scene = new Scene(bp, this.getCameraViewWidth() * 1.3, this.getCameraViewHeight() * 1.3);

@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 import javafx.scene.image.Image;
 
-public class FryslaSafariZone implements MainMap{
+public class FryslaSafariZone_TEXT implements MainMap{
 
   private char[][] characterBoard;
   private Point MainMapPlayerPos;
@@ -18,7 +18,7 @@ public class FryslaSafariZone implements MainMap{
   private int row;
   private Image mainMap;
 
-  public FryslaSafariZone() {
+  public FryslaSafariZone_TEXT() {
     initializeBoard();
     try {
       createMapGridFromTxtFile("src/FryslaSafariZone.txt");

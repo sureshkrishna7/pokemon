@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import model.MainMap.EnermyTown;
-import model.MainMap.FryslaSafariZone;
+import model.MainMap.FryslaSafariZone_TEXT;
 import model.MainMap.LilyCoveCity;
 import model.MainMap.MainMap;
 import model.MainMap.MartCity;
@@ -48,7 +48,7 @@ public class Game {
     enermyTown = new EnermyTown();
     mart = new MartCity();
     lilyCoveCity = new LilyCoveCity();
-    fryslaSafariZone = new FryslaSafariZone();
+    fryslaSafariZone = new FryslaSafariZone_TEXT();
     initializePokeLists();
     
     currentMap = enermyTown;
@@ -117,7 +117,7 @@ public class Game {
     Point newPoint = new Point();
     
     isTrainerAlreadyOnDoor = false;
-    
+    System.out.println("Player at = " + player);
     if(direction == 'n' || direction == 'N') {
       newPoint.x = player.x - 1;
       newPoint.y = player.y;

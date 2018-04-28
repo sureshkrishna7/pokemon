@@ -274,6 +274,7 @@ public class PokemonGame extends Application {
           return;
         }
         
+        System.out.println("TheGame = " + theGame.getCurrCameraMap() == null);
         char newLocationObject = 'Z';
         if (KeyCode.UP == event.getCode()) {
           newLocationObject = theGame.playerMove('n');
@@ -320,6 +321,7 @@ public class PokemonGame extends Application {
              * ****Because we magically hop to different places****
              */
 	        if(door == null) {
+	        	System.out.println("DOOR IS NULL");
 	            theGame.setTrainerLocation(theGame.getCurrCameraMap().getMapPlayerPosition());
 	        }
 	        else {

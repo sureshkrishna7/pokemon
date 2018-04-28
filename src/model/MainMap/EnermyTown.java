@@ -26,9 +26,11 @@ public class EnermyTown extends TextFileReader{
     listOfDoors.add(new Door(11,10,"house_6.png","house_6.txt"));
     listOfDoors.add(new Door(11,23,"Mart.png","Mart.txt")); 
     listOfDoors.add(new Door(12,34,"cave.png","cave.txt"));
-    //listOfDoors.add(new Door(12,34,"house_1.png","house_1.txt")); 
     listOfDoors.add(new Door(19,10,"house_2.png","house_2.txt"));
-    listOfDoors.add(new Door(19,21,"professor_lab.png","professor_lab.txt")); 
+    listOfDoors.add(new Door(19,21,"professor_lab.png","professor_lab.txt"));
+    
+    // Safari Town, not a house on map text file, just a 'D'
+    listOfDoors.add(new Door(5,30,"FryslaSafariZone.png","FryslaSafariZone.txt")); 
   }
 
 }
