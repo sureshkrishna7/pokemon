@@ -30,7 +30,7 @@ public class Mart extends GameBackground {
 		
 		// Create a TimeLine that call AnimateStarter.handle every 100ms
 		// class AnimateStarter has two method stubs you have to complete.
-		timeline = new Timeline(new KeyFrame(Duration.millis(90), new AnimateStarter()));
+		timeline = new Timeline(new KeyFrame(Duration.millis(75), new AnimateStarter()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 	}
 

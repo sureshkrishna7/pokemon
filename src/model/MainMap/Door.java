@@ -40,17 +40,17 @@ public class Door implements MainMap{
     	insideMap = new MartCity();
     }else if(txt.equals("house_6.txt")){
     	System.out.println("Creating House 6 image!");
-    	gameBackground = new House6(new Point(5, 10), insideMapImage);
+    	gameBackground = new House6(new Point(6, 11), insideMapImage);
     	insideMap = new House6_TEXT();
     }
     else if(txt.equals("house_1.txt")){
     	System.out.println("Creating House 1 image!");
-    	gameBackground = new House1(new Point(6, 9), insideMapImage);
+    	gameBackground = new House1(new Point(7, 9), insideMapImage);
     	insideMap = new House1_TEXT();
     }
     else if(txt.equals("professor_lab.txt")){
     	System.out.println("Creating professor_lab image!");
-    	gameBackground = new ProfessorLab(new Point(7, 14), insideMapImage);
+    	gameBackground = new ProfessorLab(new Point(8, 14), insideMapImage);
     	insideMap = new ProfessorLab_TEXT();
     }
     else if(txt.equals("house_2.txt")){

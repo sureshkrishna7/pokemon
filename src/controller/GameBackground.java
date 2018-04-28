@@ -8,6 +8,8 @@ package controller;
 
 import java.awt.Point;
 
+import controller.States.Cave;
+import controller.States.CobvilleTown;
 import controller.States.IState;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -26,6 +28,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Scale;
 import javafx.util.Duration;
 
 public class GameBackground extends Canvas implements IState{
@@ -50,7 +53,7 @@ public class GameBackground extends Canvas implements IState{
 	  protected double sx, sy, sw, sh, dx, dy, dw, dh;
 	  protected String drawPlayerOverOrUnder;
 	  protected KeyCode keyCode;
-	  protected final double cameraViewSize = 10 * 16;
+	  protected double cameraViewSize = 15 * 16;
 	  
 	  
 	  public GameBackground(Point point, Image mapBackground) {
@@ -64,8 +67,8 @@ public class GameBackground extends Canvas implements IState{
 		  
 		  // Create a TimeLine that call AnimateStarter.handle every 100ms
 		  // class AnimateStarter has two method stubs you have to complete.
-		  timeline = new Timeline(new KeyFrame(Duration.millis(90), new AnimateStarter()));
-		  timeline.setCycleCount(Animation.INDEFINITE);
+//		  timeline = new Timeline(new KeyFrame(Duration.millis(75), new AnimateStarter()));
+//		  timeline.setCycleCount(Animation.INDEFINITE);
 	  }
 	  
 	  public boolean isTimelineAnimating() {
@@ -207,6 +210,7 @@ public class GameBackground extends Canvas implements IState{
 		System.out.println("dx   = "+ (dx - (cameraViewSize / 2.0)));
 		System.out.println("dy   = "+ (dy - (cameraViewSize / 2.0)));
 		
+		 g2D.clearRect(0, 0, 800, 800);
 		double backgroundSX = dx - (cameraViewSize / 2.0);
 		double backgroundSY = dy - (cameraViewSize / 2.0);
 		
@@ -225,8 +229,8 @@ public class GameBackground extends Canvas implements IState{
 //		else {
 //			g2D.drawImage(background, backgroundDX,  backgroundDY, cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
 //		}
-		g2D.drawImage(background, backgroundSX,  backgroundSY, cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-        g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0,  cameraViewSize / 2.0, dw, dh);	
+		g2D.drawImage(background, backgroundSX,  backgroundSY, cameraViewSize, cameraViewSize, 0,  0, cameraViewSize , cameraViewSize);
+        g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, cameraViewSize / 2.0, dw , dh);	
 	}
 
 	public void animateImage(String playerDrawStrategy, String dXOrDyDrawStrategy) {
@@ -304,7 +308,23 @@ public class GameBackground extends Canvas implements IState{
 	    BorderPane bp = new BorderPane();
 	    bp.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0), new Insets(0,0,0,0) )));
 	    bp.setCenter(this);
-	    Scene scene = new Scene(bp, this.getCameraViewWidth(), this.getCameraViewHeight());
+	    Scene scene = null;
+	    Scale scale = null;
+	    if (this instanceof CobvilleTown || this instanceof Cave) {
+	    	System.out.println("instance of Cobville Town");
+	    	cameraViewSize = 15 * 16;
+		    scene = new Scene(bp, this.getCameraViewWidth() * 1.3, this.getCameraViewHeight() * 1.3);
+		    scale = new Scale(1.3, 1.3);
+	    }else {
+	    	System.out.println("NOT instance of Cobville Town");
+	    	cameraViewSize = 10 * 16;
+		    scene = new Scene(bp, this.getCameraViewWidth() * 1.5, this.getCameraViewHeight() * 1.5);
+		    scale = new Scale(1.5, 1.5);
+	    }
+
+	    scale.setPivotX(0);
+	    scale.setPivotY(0);
+	    scene.getRoot().getTransforms().setAll(scale);
 	    return scene;
 	  }
 

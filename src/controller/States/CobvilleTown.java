@@ -59,7 +59,7 @@ public class CobvilleTown extends GameBackground {
 		  
 		  // Create a TimeLine that call AnimateStarter.handle every 100ms
 		  // class AnimateStarter has two method stubs you have to complete.
-		  timeline = new Timeline(new KeyFrame(Duration.millis(90), new AnimateStarter()));
+		  timeline = new Timeline(new KeyFrame(Duration.millis(75), new AnimateStarter()));
 		  timeline.setCycleCount(Animation.INDEFINITE);
 
 	  }
@@ -285,8 +285,9 @@ public class CobvilleTown extends GameBackground {
 	          	  closeToBottomPictureBounderSteps = 0;
 	              lastValidPlayerDX = dx;
 	              lastValidPlayerDY = dy;
-	              g2D.drawImage(background, dx - (cameraViewSize / 2.0),  dy - (cameraViewSize / 2.0), cameraViewSize, cameraViewSize, 0,  0, cameraViewSize, cameraViewSize);
-	              g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0,  cameraViewSize / 2.0, dw, dh);	
+	    	      g2D.drawImage(background, dx - (cameraViewSize / 2), dy - (cameraViewSize / 2), cameraViewSize, cameraViewSize, 0,
+		    		  		0, cameraViewSize, cameraViewSize);
+	    	      g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, cameraViewSize / 2.0, dw, dh);
 	          }
 	          
 	        //System.out.println("DX = " + dx);
