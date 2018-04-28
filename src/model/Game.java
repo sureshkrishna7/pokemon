@@ -28,11 +28,13 @@ public class Game {
   private MainMap lilyCoveCity;
   private MainMap fryslaSafariZone;
   private Trainer ash;
-
+  
+  private boolean isTrainerAlreadyOnDoor;
   private boolean areWeInSafariZone;
   private int totalSafariZoneSteps; //would be 500
   private int totalSafariZoneBalls;
   private int currentSafariSteps;   //at start of a safari Zone, would be 0
+  
   
   private Map<String, String> allPokemonList;
   private ArrayList<String> pokemonNameList;
@@ -55,11 +57,16 @@ public class Game {
     int x = currentMap.getMapPlayerPosition().x;
     int y = currentMap.getMapPlayerPosition().y;
     ash.setLocation(x, y);
+    isTrainerAlreadyOnDoor = false;
     areWeInSafariZone = false;
   }
   
   public static char getCharAtIndex(int row, int col) {
 	  return currentMapStatic.getCharacterFromLocation(new Point (row,col));
+  }
+  
+  public boolean getIsTrainerAlreadyOnDoor() {
+	  return isTrainerAlreadyOnDoor;
   }
 
   /*
@@ -109,6 +116,8 @@ public class Game {
     Point player = ash.getLocation();
     Point newPoint = new Point();
     
+    isTrainerAlreadyOnDoor = false;
+    
     if(direction == 'n' || direction == 'N') {
       newPoint.x = player.x - 1;
       newPoint.y = player.y;
@@ -120,6 +129,10 @@ public class Game {
         }
         //System.out.println("Walkable test 1");
         return currentMap.getCharacterFromLocation(newPoint);
+      }
+      else if('D' == getCharAtIndex(ash.getLocation().x, ash.getLocation().y)) {
+    	 System.out.println("Already on door!");
+    	 isTrainerAlreadyOnDoor = true;
       }
     }
     else if(direction == 's' || direction == 'S') {
