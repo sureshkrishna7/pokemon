@@ -138,7 +138,7 @@ public class StartMenu implements IState{
 
     initMenuItems();
 
-    menuBox = new VBox(50,start, instructions, quit);
+    menuBox = new VBox(70,start, instructions, quit);
     menuBox.setPadding(new Insets(80, 5, 5, 60));
 
 
