@@ -31,6 +31,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -154,7 +157,7 @@ public class StartMenu implements IState{
     DropShadow dropShadow = new DropShadow();
     dropShadow.setColor(Color.GREEN);
     dropShadow.setRadius(25);
-    dropShadow.setSpread(0.50);
+    dropShadow.setSpread(1);
     dropShadow.setBlurType(BlurType.GAUSSIAN);
     start.setEffect(dropShadow);
 
@@ -170,7 +173,7 @@ public class StartMenu implements IState{
     DropShadow dropShadow2 = new DropShadow();
     dropShadow2.setColor(Color.YELLOW);
     dropShadow2.setRadius(25);
-    dropShadow2.setSpread(0.50);
+    dropShadow2.setSpread(1);
     dropShadow2.setBlurType(BlurType.GAUSSIAN);
     instructions.setEffect(dropShadow2);
 
@@ -180,7 +183,7 @@ public class StartMenu implements IState{
     DropShadow dropShadow3 = new DropShadow();
     dropShadow3.setColor(Color.RED);
     dropShadow3.setRadius(25);
-    dropShadow3.setSpread(0.50);
+    dropShadow3.setSpread(1);
     dropShadow3.setBlurType(BlurType.GAUSSIAN);
     quit.setEffect(dropShadow3);
     
@@ -208,8 +211,11 @@ public class StartMenu implements IState{
       //        text.setFill(b ? Color.WHITE : Color.AQUA);
 
       if(b) {
-        text.setStyle("-fx-rotate: 10;");
-        text.setFill(Color.WHITE);
+        text.setStyle("-fx-rotate: 12;");
+        //text.setFill(Color.WHITE);
+        LinearGradient linearGradient = new LinearGradient(0, 0, 20, 20, false, CycleMethod.REFLECT, new Stop(0,Color.valueOf("ff9a9e")),new Stop(1,Color.valueOf("#667eea")));
+        //text.setStroke(linearGradient);
+        text.setFill(linearGradient);
       }
       else {
         text.setStyle("");

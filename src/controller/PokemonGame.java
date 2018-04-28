@@ -131,8 +131,8 @@ public class PokemonGame extends Application {
     initializeGameForFirstTime();
 
     // initialize state to start
-    //currentState = STATE.START;
-    currentState = STATE.STARTMENU;
+    currentState = STATE.START;
+    //currentState = STATE.STARTMENU;
     
     stateChanged = true;
 
