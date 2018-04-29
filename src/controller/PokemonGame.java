@@ -388,7 +388,6 @@ public class PokemonGame extends Application {
         	
         	pane.setCenter(cobvilleTown);
         	currBackground = (GameBackground)pane.getCenter();
-
         	return;
         	  
         }  else if (newLocationObject == ' ') {
