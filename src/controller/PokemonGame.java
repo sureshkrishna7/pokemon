@@ -363,12 +363,32 @@ public class PokemonGame extends Application {
 	        }
         } 
         else if (newLocationObject == 'E') {
+        	
+        	GameBackground backgroundToRemove = currBackground;
+        	backgroundToRemove.setDy(backgroundToRemove.getDy() + 16);
+        	theGame.setTrainerLocation(playerOldLocation);
+            theGame.setCurrCameraMap(oldCurrentMap);
+            
             // align back to mainmap destination after exitin building
         	// since animation increments/decrements the location on GUI
         	// when moving on different maps (grids)
         	currBackground.closingSceneAnimateCircle(this, currBackground.getTransitionViewCircle(), "exiting");
+        	
+        	// -32 (16) to adjust animation after exiting house 
+        	// (16) to make sure that when he takes a step out the door, 
+        	// he is put in the correct pos relative to grid
+        	// less adjusting if was already on door
+        	if (trainerWasAlreadyOnDoor) {
+        		cobvilleTown.setDy(cobvilleTown.getDy() - 16);
+        		trainerWasAlreadyOnDoor = false;
+        	}else {
+        		cobvilleTown.setDy(cobvilleTown.getDy() - 32);
+        	}
+        	
+        	pane.setCenter(cobvilleTown);
+        	currBackground = (GameBackground)pane.getCenter();
+
         	return;
-        	//pane.setCenter(cobvilleTown);
         	  
         }  else if (newLocationObject == ' ') {
         	theGame.setTrainerLocation(playerOldLocation);
@@ -422,27 +442,8 @@ public class PokemonGame extends Application {
     }
     
     public void continueExitingBuildingAnimation() {
-    	GameBackground backgroundToRemove = currBackground;
-    	backgroundToRemove.setDy(backgroundToRemove.getDy() + 16);
-    	theGame.setTrainerLocation(playerOldLocation);
-        theGame.setCurrCameraMap(oldCurrentMap);
-        
-        //currBackground.closingSceneAnimateCircle(this, currBackground.getTransitionViewCircle(), "exiting");
-        
-    	// -32 (16) to adjust animation after exiting house 
-    	// (16) to make sure that when he takes a step out the door, 
-    	// he is put in the correct pos relative to grid
     	currentState = STATE.COBVILLETOWN;
     	stateChanged = true;
-    	currBackground = cobvilleTown;
-    	pane.setCenter(cobvilleTown);
-    	// less adjusting if was already on door
-    	if (trainerWasAlreadyOnDoor) {
-    		cobvilleTown.setDy(cobvilleTown.getDy() - 16);
-    		trainerWasAlreadyOnDoor = false;
-    	}else {
-    		cobvilleTown.setDy(cobvilleTown.getDy() - 32);
-    	}
         drawGameBackground(currBackground, currKeyEvent, currLocationChar);
     }
  
