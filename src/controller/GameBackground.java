@@ -64,7 +64,7 @@ public class GameBackground extends Canvas implements IState{
 	  protected KeyCode keyCode;
 	  protected double cameraViewSize = 15 * 16;
 	  
-	  private static final Duration SCALE_DURATION = Duration.seconds(3);
+	  private static final Duration SCALE_DURATION = Duration.seconds(1);
 	  private static final double SCALE_FACTOR = 600;
 	  private PathTransition pathTransition;
 	  private ScaleTransition scaler;
