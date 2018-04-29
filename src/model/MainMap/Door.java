@@ -12,6 +12,7 @@ import controller.States.FryslaSafariZone;
 import controller.States.House1;
 import controller.States.House2;
 import controller.States.House6;
+import controller.States.LilyCoveCity;
 import controller.States.Mart;
 import controller.States.ProfessorLab;
 import javafx.scene.image.Image;
@@ -69,6 +70,11 @@ public class Door implements MainMap{
     	System.out.println("Creating FryslaSafariZone image!");
     	gameBackground = new FryslaSafariZone(new Point(45,44), insideMapImage);
     	insideMap = new FryslaSafariZone_TEXT();
+    }
+    else if(txt.equals("LilyCoveCity.txt")){
+    	System.out.println("Creating LilyCoveCity image!");
+    	gameBackground = new LilyCoveCity(new Point(27, 50), insideMapImage);
+    	insideMap = new LilyCoveCity_TEXT();
     }
     else {
     

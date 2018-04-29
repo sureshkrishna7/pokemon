@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 import javafx.scene.image.Image;
 
-public class LilyCoveCity implements MainMap{
+public class LilyCoveCity_TEXT implements MainMap{
 
   private char[][] characterBoard;
   private Point MainMapPlayerPos;
@@ -18,7 +18,7 @@ public class LilyCoveCity implements MainMap{
   private int row;
   private Image mainMap;
 
-  public LilyCoveCity() {
+  public LilyCoveCity_TEXT() {
     initializeBoard();
     try {
       createMapGridFromTxtFile("src/LilyCoveCity.txt");
@@ -27,7 +27,7 @@ public class LilyCoveCity implements MainMap{
     }
     mainMap = new Image("file:src/images/LilyCoveCity.png", false);
     createDoorObjects();
-    setMapPlayerPosition(22,38);
+    //setMapPlayerPosition(22,38);
   }
 
   private void createDoorObjects() { 
@@ -133,7 +133,10 @@ public class LilyCoveCity implements MainMap{
       i = 0;
       while (i < read.length()) {
         characterBoard[j][i] = read.charAt(i);
-
+        if (characterBoard[j][i] == 'E') {
+        	System.out.println("******************                    EXIT ROW = " + j);
+        	System.out.println("******************                    EXIT COL = " + i + "\n\n");
+        }
         i++;
       }
       j++;
@@ -189,11 +192,15 @@ public class LilyCoveCity implements MainMap{
 
     // Checking if its a valid existing point
     if ((x >= 0 && x < row) && (y >= 0 && y < col)) {
-
-      if (characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D'
-          || characterBoard[x][y] == 'S' || characterBoard[x][y] == '0' || characterBoard[x][y] == 'X' || characterBoard[x][y] == ' ') {
-        return true;
-      }
+        if (characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'S' || characterBoard[x][y] == '0' || characterBoard[x][y] == 'X' || characterBoard[x][y] == ' ') {
+              return true;
+            }
+        
+        // NOTE: doors not implemented yet, nor exits
+//      if (characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D'
+//          || characterBoard[x][y] == 'S' || characterBoard[x][y] == '0' || characterBoard[x][y] == 'X' || characterBoard[x][y] == ' ') {
+//        return true;
+//      }
     }
     return false;
   }

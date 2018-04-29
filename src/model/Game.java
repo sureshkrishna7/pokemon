@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 import model.MainMap.EnermyTown;
 import model.MainMap.FryslaSafariZone_TEXT;
-import model.MainMap.LilyCoveCity;
+import model.MainMap.LilyCoveCity_TEXT;
 import model.MainMap.MainMap;
 import model.MainMap.MartCity;
 
@@ -47,7 +47,7 @@ public class Game {
 
     enermyTown = new EnermyTown();
     mart = new MartCity();
-    lilyCoveCity = new LilyCoveCity();
+    lilyCoveCity = new LilyCoveCity_TEXT();
     fryslaSafariZone = new FryslaSafariZone_TEXT();
     initializePokeLists();
     
