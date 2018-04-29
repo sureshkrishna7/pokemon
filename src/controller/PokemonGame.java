@@ -71,11 +71,14 @@ public class PokemonGame extends Application {
   private AnimateStarter animateStarter = new AnimateStarter();;
   private KeyHandler keyHandler = new KeyHandler();
   private MainMenu menu;
+  private boolean animationFinished = false;
+  
   // IState objects
-
   private StateMachine stateMachine;
   private StartScreen start;
   private StartMenu startMenu;
+  private KeyEvent currKeyEvent;
+  private char currLocationChar;
 
   public static STATE currentState;
   public static STATE previousState;
@@ -227,10 +230,12 @@ public class PokemonGame extends Application {
         currentState = STATE.INSIDE_BUILDING;
         GameBackground mapInsideBuilding = door.getGameBackground();
         currBackground = mapInsideBuilding;
+        //drawGameBackground(currBackground, currKeyEvent, currLocationChar);
         currentScene = ((GameBackground) mapInsideBuilding).render();
         currentScene.setOnKeyReleased(animateStarter);
         currentScene.setOnKeyPressed(keyHandler);
         primaryStage.setScene(currentScene);
+        
         break;
       case BATTLE:
         break;
@@ -286,8 +291,9 @@ public class PokemonGame extends Application {
           return;
         }
         
-        System.out.println("TheGame = " + theGame.getCurrCameraMap() == null);
+        currKeyEvent = event;
         char newLocationObject = 'Z';
+        currLocationChar = newLocationObject;
         if (KeyCode.UP == event.getCode()) {
           newLocationObject = theGame.playerMove('n');
 
@@ -319,6 +325,7 @@ public class PokemonGame extends Application {
         }
 
         //System.out.println("Game logic = " + newLocationObject);
+        currLocationChar = newLocationObject;
 
         if (newLocationObject == 'D') {
             System.out.print("Encountered a Door\n");
@@ -338,32 +345,38 @@ public class PokemonGame extends Application {
 	            theGame.setTrainerLocation(theGame.getCurrCameraMap().getMapPlayerPosition());
 	        }
 	        else {
-	            currentState = STATE.INSIDE_BUILDING;
-	            stateChanged = true;
 	            theGame.setTrainerLocation(door.getMapPlayerPos());
 	            theGame.setCurrCameraMap(door.getInsideMapObject());
+	            System.out.println("Curr Background = " + currBackground);
+	            currBackground.closingSceneAnimateCircle(this, currBackground.getTransitionViewCircle(), "entering");
 	            pane.setCenter(door.getGameBackground());
-	            currBackground = (GameBackground)pane.getCenter();
-	            drawGameBackground(currBackground, event, newLocationObject);
+	            
+	        	currBackground = (GameBackground)pane.getCenter();
+	        	
+	        	/** 
+	        	 * NOTE: new background (entering door) will be drawn when transition view
+	        	 * currBackground.closingSceneAnimateCircle() is done animating which
+	        	 * will call continueEnteringBuildingAnimation() in this class to finish
+	        	 * off the code that should run at this point. 
+	        	 */
 	            return;
 	        }
         } 
         else if (newLocationObject == 'E') {
-            // align back to mainmap destination after exitin building
-        	// since animation increments/decrements the location on GUI
-        	// when moving on different maps (grids)
+        	
         	GameBackground backgroundToRemove = currBackground;
         	backgroundToRemove.setDy(backgroundToRemove.getDy() + 16);
         	theGame.setTrainerLocation(playerOldLocation);
             theGame.setCurrCameraMap(oldCurrentMap);
             
+            // align back to mainmap destination after exitin building
+        	// since animation increments/decrements the location on GUI
+        	// when moving on different maps (grids)
+        	currBackground.closingSceneAnimateCircle(this, currBackground.getTransitionViewCircle(), "exiting");
+        	
         	// -32 (16) to adjust animation after exiting house 
         	// (16) to make sure that when he takes a step out the door, 
         	// he is put in the correct pos relative to grid
-        	currentState = STATE.COBVILLETOWN;
-        	stateChanged = true;
-        	currBackground = cobvilleTown;
-        	  
         	// less adjusting if was already on door
         	if (trainerWasAlreadyOnDoor) {
         		cobvilleTown.setDy(cobvilleTown.getDy() - 16);
@@ -371,7 +384,11 @@ public class PokemonGame extends Application {
         	}else {
         		cobvilleTown.setDy(cobvilleTown.getDy() - 32);
         	}
+        	
         	pane.setCenter(cobvilleTown);
+        	currBackground = (GameBackground)pane.getCenter();
+
+        	return;
         	  
         }  else if (newLocationObject == ' ') {
         	theGame.setTrainerLocation(playerOldLocation);
@@ -417,26 +434,41 @@ public class PokemonGame extends Application {
       
       
     }
-
-    /**
-     * drawGameBackground()
-     * z is a char returned by theGame.playerMove() that's not used in map
-     * to represent an obj, thus can be used to detect null
-     * We need to setBackGroundImage() only after entering/exiting doors
-     */
-    public void drawGameBackground(GameBackground gameBackground, KeyEvent event, char newLocationObject) {
-    	if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {
-    		gameBackground.setPlayerLocation(theGame.getTrainerLocation());
-    		gameBackground.movePlayer(event.getCode(), "over");
-    	}
-
-    	// Draw character under X objects
-    	else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
-    		gameBackground.setPlayerLocation(theGame.getTrainerLocation());
-    		gameBackground.movePlayer(event.getCode(), "under");
-    	}
+    
+    public void continueEnteringBuildingAnimation() {
+        currentState = STATE.INSIDE_BUILDING;
+        stateChanged = true;
+        drawGameBackground(currBackground, currKeyEvent, currLocationChar);
     }
+    
+    public void continueExitingBuildingAnimation() {
+    	currentState = STATE.COBVILLETOWN;
+    	stateChanged = true;
+        drawGameBackground(currBackground, currKeyEvent, currLocationChar);
+    }
+ 
+
+  } // end AnimateStarter
+  
+  /**
+   * drawGameBackground()
+   * z is a char returned by theGame.playerMove() that's not used in map
+   * to represent an obj, thus can be used to detect null
+   * We need to setBackGroundImage() only after entering/exiting doors
+   */
+  public void drawGameBackground(GameBackground gameBackground, KeyEvent event, char newLocationObject) {
+  	if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {
+  		gameBackground.setPlayerLocation(theGame.getTrainerLocation());
+  		gameBackground.movePlayer(event.getCode(), "over");
+  	}
+
+  	// Draw character under X objects
+  	else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
+  		gameBackground.setPlayerLocation(theGame.getTrainerLocation());
+  		gameBackground.movePlayer(event.getCode(), "under");
+  	}
   }
+  
 
   /*
    * getWildPoke() -- after checkBush() returns true (it found a Pokemon), this
@@ -552,4 +584,5 @@ public class PokemonGame extends Application {
     Optional<ButtonType> result = statSheet.showAndWait();
 
   }
+
 }
