@@ -291,7 +291,6 @@ public class CobvilleTown extends GameBackground {
 	    	      g2D.drawImage(background, dx - (cameraViewSize / 2), dy - (cameraViewSize / 2), cameraViewSize, cameraViewSize, 0,
 		    		  		0, cameraViewSize, cameraViewSize);
 	    	      g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, cameraViewSize / 2.0, dw, dh);
-	    	      drawNPCs();
 	          }
 	          
 	        //System.out.println("DX = " + dx);

@@ -329,8 +329,12 @@ public class PokemonGame extends Application {
           theGame.setTrainerLocation(playerOldLocation);
           theGame.setCurrCameraMap(oldCurrentMap);
           theGame.weAreOutSafariZone();
-        } else {
-          // System.out.println("KeyCode =" + event.getCode());
+        } else if(KeyCode.ENTER == event.getCode()) {
+          System.out.print("Encountered NPC\n");
+          if (newLocationObject == 'N') {
+            System.out.print("Encountered NPC\n");
+            System.out.println("\tIntiate Dialog Box Here!");
+          }
         }
 
         //System.out.println("Game logic = " + newLocationObject);
@@ -432,8 +436,8 @@ public class PokemonGame extends Application {
 	          /** Once the battle is done set the state back to Game */
 	          currentState = STATE.COBVILLETOWN;
 
-        } else if (newLocationObject == 'X') {
-            System.out.print("Encountered Tain\n");
+        } else {
+            
         }
         
         drawGameBackground( currBackground, event, newLocationObject);
