@@ -20,7 +20,6 @@ public class Tain extends NPC {
     initializeInventory();
     initializePokeList();
     setRandomCurPoke();
-    setCoords();
   }
   
   @Override
@@ -138,9 +137,4 @@ public class Tain extends NPC {
     this.inventory.put("mid tonic", l2);
   }
 
-  @Override
-  public void setCoords() {
-    this.xCoord = 40;
-    this.yCoord = 50;
-  }
 }

@@ -17,8 +17,6 @@ public abstract class NPC extends Items {
   protected Pokemon currentPokemon; // current battle pokemon, switch dynamically while in battle
   protected Map<String, ArrayList<UsableItem>> inventory;
   protected ArrayList<Pokemon> listOfPokemon;
-  protected double xCoord;
-  protected double yCoord;
   protected Image img;
 
   /*
@@ -45,14 +43,6 @@ public abstract class NPC extends Items {
 
   public Map<String, ArrayList<UsableItem>> getInventory() {
     return this.inventory;
-  }
-  
-  public double getYCoord() {
-    return yCoord;
-  }
-
-  public double getXCoord() {
-    return xCoord;
   }
   
   public Image getImage() {
@@ -112,5 +102,4 @@ public abstract class NPC extends Items {
 
   public abstract void initializeInventory();
   
-  public abstract void setCoords();
 }

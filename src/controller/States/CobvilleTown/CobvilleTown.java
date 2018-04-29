@@ -1,4 +1,4 @@
-package controller.States;
+package controller.States.CobvilleTown;
 
 import java.awt.Point;
 
@@ -296,7 +296,7 @@ public class CobvilleTown extends GameBackground {
 	          
 	        //System.out.println("DX = " + dx);
 	        //System.out.println("DY = " + dy);
-	        // stop timeline from drawing after final sprite 
+	        // stop timeline from drawing after final sprite  
 	        if (tic == 3) {
 	        	timeline.stop();
 	        }

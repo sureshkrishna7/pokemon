@@ -10,10 +10,10 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
 
-import controller.States.CobvilleTown;
 import controller.States.Mart;
 import controller.States.StartScreen;
 import controller.States.StateMachine;
+import controller.States.CobvilleTown.CobvilleTown;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
