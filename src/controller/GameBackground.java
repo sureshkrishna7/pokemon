@@ -47,6 +47,7 @@ public class GameBackground extends Canvas implements IState{
 	  protected int closeToBottomPictureBounderSteps;
 
 	  protected boolean afterTopLeftCornerCondition = false;
+	  protected boolean afterTopLeftCornerCondition2 = false;
 	  protected boolean afterBottomLeftCornerCondition = false;
 	  protected boolean afterBottomLeftCornerCondition2 = false;
 	  
