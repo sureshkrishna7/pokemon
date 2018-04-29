@@ -435,7 +435,6 @@ public class PokemonGame extends Application {
     public void continueToAnimation() {
         currentState = STATE.INSIDE_BUILDING;
         stateChanged = true;
-       
         drawGameBackground(currBackground, currKeyEvent, currLocationChar);
     }
  
