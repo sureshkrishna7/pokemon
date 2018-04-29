@@ -71,7 +71,7 @@ public class PokemonGame extends Application {
   private AnimateStarter animateStarter = new AnimateStarter();;
   private KeyHandler keyHandler = new KeyHandler();
   private MainMenu menu;
-  private boolean animationFinished = false;
+  private boolean notAcceptingInput = false;
   
   // IState objects
   private StateMachine stateMachine;
@@ -287,7 +287,7 @@ public class PokemonGame extends Application {
          * than the animation timeline can draw the image, and will crash (runs into
          * things on grid before image). So if animation is on, ignore button clicked
          */
-        if (currBackground.isTimelineAnimating()) {
+        if (currBackground.isTimelineAnimating() || notAcceptingInput) {
           return;
         }
         
@@ -348,6 +348,7 @@ public class PokemonGame extends Application {
 	            theGame.setTrainerLocation(door.getMapPlayerPos());
 	            theGame.setCurrCameraMap(door.getInsideMapObject());
 	            System.out.println("Curr Background = " + currBackground);
+	            notAcceptingInput = true;
 	            currBackground.closingSceneAnimateCircle(this, currBackground.getTransitionViewCircle(), "entering");
 	            pane.setCenter(door.getGameBackground());
 	            
@@ -372,6 +373,7 @@ public class PokemonGame extends Application {
             // align back to mainmap destination after exitin building
         	// since animation increments/decrements the location on GUI
         	// when moving on different maps (grids)
+            notAcceptingInput = true;
         	currBackground.closingSceneAnimateCircle(this, currBackground.getTransitionViewCircle(), "exiting");
         	
         	// -32 (16) to adjust animation after exiting house 
@@ -436,12 +438,14 @@ public class PokemonGame extends Application {
     }
     
     public void continueEnteringBuildingAnimation() {
+    	notAcceptingInput = false;
         currentState = STATE.INSIDE_BUILDING;
         stateChanged = true;
         drawGameBackground(currBackground, currKeyEvent, currLocationChar);
     }
     
     public void continueExitingBuildingAnimation() {
+    	notAcceptingInput = false;
     	currentState = STATE.COBVILLETOWN;
     	stateChanged = true;
         drawGameBackground(currBackground, currKeyEvent, currLocationChar);

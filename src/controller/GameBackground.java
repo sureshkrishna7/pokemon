@@ -87,7 +87,10 @@ public class GameBackground extends Canvas implements IState{
 	      circlePane = new StackPane(blackCircle);
 	      circlePane.setPrefSize(width, height);
 
-
+		    scaler = new ScaleTransition(
+			        SCALE_DURATION,
+			        blackCircle
+			        );
 	  }
 	  
 	  public Circle getTransitionViewCircle() {
@@ -132,7 +135,7 @@ public class GameBackground extends Canvas implements IState{
 	  }
 	  
 	  public boolean isTransitionViewAnimating() {
-		  System.out.println("Checking---");
+		  
 		  return scaler.getStatus() == Status.RUNNING;
 	  }
 	  
