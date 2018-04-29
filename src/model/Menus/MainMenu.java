@@ -4,18 +4,20 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import controller.PokemonGame;
-import controller.PokemonGame.STATE;
 import controller.States.IState;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -25,12 +27,15 @@ import model.Pokemon;
 import model.UsableItems.UsableItem;
 
 public class MainMenu implements IState {
+  
+  private static final int width = 600;
+  private static final int height = 400;
+  
   private static final Font FONT1 = Font.font("Serif",FontWeight.NORMAL, 18);
   private static final Font FONT2 = Font.font("Serif", FontWeight.BOLD, 26);
   private Scene scene;
   private static Scene prevScene;
-  private static STATE prevState;
-  private HBox menuBox;
+  private VBox menuBox;
   private int currentItem = 0;
   private static MenuItem save;
   private static MenuItem quit;
@@ -39,14 +44,14 @@ public class MainMenu implements IState {
   public MainMenu(Game theGame) {  
     scene = new Scene(getGameMenu(theGame));
     scene.setOnKeyPressed(event -> {
-      if (event.getCode() == KeyCode.LEFT) {
+      if (event.getCode() == KeyCode.UP) {
         if (currentItem > 0) {
           getMenuItem(currentItem).setActive(false);
           getMenuItem(--currentItem).setActive(true);
         }
       }
       
-      if (event.getCode() == KeyCode.RIGHT) {
+      if (event.getCode() == KeyCode.DOWN) {
         if (currentItem < menuBox.getChildren().size() - 1) {
           getMenuItem(currentItem).setActive(false);
           getMenuItem(++currentItem).setActive(true);
@@ -63,11 +68,15 @@ public class MainMenu implements IState {
     return this.scene;
   }
   
-  @SuppressWarnings("static-access")
+  
   private Parent getGameMenu(Game theGame) {
-    StackPane root = new StackPane();
-    root.setPrefSize(600, 600);
-    root.setPadding(new Insets(15,15,15,15));
+    BorderPane root = new BorderPane();
+    
+    BackgroundImage myBI= new BackgroundImage(new Image("file:src/images/GameBackground1.gif",width,height,false,true),
+        BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+        BackgroundSize.DEFAULT);
+    
+    root.setBackground(new Background(myBI));
     
     StringBuilder sb = new StringBuilder();
 
@@ -83,19 +92,13 @@ public class MainMenu implements IState {
     Text text = new Text(sb.toString());
     text.setFont(FONT1);
     text.setFill(Color.ANTIQUEWHITE);
-    BackgroundFill fill = new BackgroundFill(Color.CORNFLOWERBLUE, CornerRadii.EMPTY,
-            Insets.EMPTY);
-    Background background = new Background(fill);
-    root.setBackground(background);
-    System.out.println(text.getFont().toString());
     
     initMenuItems();
     
-    menuBox = new HBox(10, save, exit, quit);
-    menuBox.setPadding(new Insets(0, 0, 0, 80.0));
-    root.getChildren().addAll(text, menuBox);
-    root.setAlignment(text, Pos.TOP_CENTER);
-    root.setAlignment(menuBox, Pos.BOTTOM_CENTER);
+    menuBox = new VBox(10, save, exit, quit);
+    menuBox.setPadding(new Insets(60.0, 0, 0, 80.0));
+    root.setRight(text);
+    root.setCenter(menuBox);
     return root;
   }
   
@@ -103,8 +106,10 @@ public class MainMenu implements IState {
     save = new MenuItem("Save");
     exit = new MenuItem("Exit Menu");
     exit.setOnActivate(() -> {
-      System.out.println(prevScene);
-      PokemonGame.primaryStage.setScene(prevScene);
+      //System.out.println(prevScene);
+      //PokemonGame.primaryStage.setScene(prevScene);
+      PokemonGame.currentState = PokemonGame.previousState;
+      PokemonGame.stateChanged = true;
     });
     
     quit = new MenuItem("Quit");
@@ -112,7 +117,7 @@ public class MainMenu implements IState {
     
   }
   
-  private static class MenuItem extends HBox {
+  private static class MenuItem extends VBox {
     private Text text;
     private Runnable script;
 

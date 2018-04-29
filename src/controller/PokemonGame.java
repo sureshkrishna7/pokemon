@@ -33,6 +33,7 @@ import model.Pokemon;
 import model.MainMap.Door;
 import model.MainMap.MainMap;
 import model.Menus.MainMenu;
+import model.Menus.StartMenu;
 import model.UsableItems.UsableItem;
 
 //Simply Create the User and insert User into PokeTownMap, the rest of the maps will be embedded within PokeTownMap
@@ -70,8 +71,11 @@ public class PokemonGame extends Application {
   private AnimateStarter animateStarter = new AnimateStarter();;
   private KeyHandler keyHandler = new KeyHandler();
   private MainMenu menu;
+  // IState objects
+
   private StateMachine stateMachine;
   private StartScreen start;
+  private StartMenu startMenu;
 
   public static STATE currentState;
   public static STATE previousState;
@@ -96,7 +100,8 @@ public class PokemonGame extends Application {
    *         time
    */
   public enum STATE {
-    START, // Start screen
+    START, // Start screen, first state
+    STARTMENU, // StartMenu, second state
     MENU, // Menu screen
     COBVILLETOWN, // Actual Game
     INSIDE_BUILDING,		// inside house
@@ -108,8 +113,6 @@ public class PokemonGame extends Application {
     theGame = new Game();
     pane = new BorderPane();
     currBackground = new GameBackground(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
-    
-    
     
     playerStartLocation.x = theGame.getTrainerLocation().x;
     playerStartLocation.y = theGame.getTrainerLocation().y;
@@ -131,7 +134,9 @@ public class PokemonGame extends Application {
     initializeGameForFirstTime();
 
     // initialize state to start
-    currentState = STATE.START;
+    currentState = STATE.COBVILLETOWN;
+    //currentState = STATE.STARTMENU;
+    
     stateChanged = true;
 
     stateMachine = new StateMachine(theGame, stage, this);
@@ -197,6 +202,15 @@ public class PokemonGame extends Application {
         primaryStage.setScene(currentScene);
         System.out.println("Start case");
         break;
+      case STARTMENU:
+        stateChanged = false;
+        currentState = STATE.STARTMENU;
+        startMenu = (StartMenu) stateMachine.getIState(STATE.STARTMENU);
+        currentScene = startMenu.render();
+        // Play logo animation
+        startMenu.playAnimationLogo();
+        primaryStage.setScene(currentScene);
+        break;
       case COBVILLETOWN:
         stateChanged = false;
         currentState = STATE.COBVILLETOWN;
@@ -217,7 +231,6 @@ public class PokemonGame extends Application {
         currentScene.setOnKeyReleased(animateStarter);
         currentScene.setOnKeyPressed(keyHandler);
         primaryStage.setScene(currentScene);
-        primaryStage.show();
         break;
       case BATTLE:
         break;
@@ -232,7 +245,6 @@ public class PokemonGame extends Application {
         primaryStage.setScene(currentScene);
         break;
       default:
-        System.out.println("Am I really that big of an idiot?");
         break;
       }
     }
@@ -242,7 +254,7 @@ public class PokemonGame extends Application {
 
     @Override
     public void handle(KeyEvent event) {
-      if (event.getCode() == KeyCode.M) {
+      if (event.getCode() == KeyCode.ESCAPE) {
         previousState = currentState;
         currentState = STATE.MENU;
         stateChanged = true;
@@ -320,6 +332,7 @@ public class PokemonGame extends Application {
              * ****We would be in safari Zone if the door is null****
              * ****Because we magically hop to different places****
              */
+
 	        if(door == null) {
 	        	System.out.println("DOOR IS NULL");
 	            theGame.setTrainerLocation(theGame.getCurrCameraMap().getMapPlayerPosition());
@@ -363,6 +376,7 @@ public class PokemonGame extends Application {
         }  else if (newLocationObject == ' ') {
         	theGame.setTrainerLocation(playerOldLocation);
         	theGame.setCurrCameraMap(oldCurrentMap);
+
         } else if (newLocationObject == 'S') {
         	playerOldLocation = theGame.getTrainerLocation();
         	oldCurrentMap = theGame.getCurrCameraMap();

@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.Game;
 import model.Menus.MainMenu;
+import model.Menus.StartMenu;
 
 public class StateMachine implements IState {
   // hash map of states, keys as strings, IState objects as values
@@ -24,10 +25,16 @@ public class StateMachine implements IState {
   public StateMachine(Game theGame, Stage stage, PokemonGame pokemonController) {
     // constructor initializes HashMap and Stack
     mStates = new HashMap<>();
+    mStates.put(STATE.STARTMENU, new StartMenu());
     mStates.put(STATE.COBVILLETOWN, new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage()));
     mStates.put(STATE.MENU, new MainMenu(theGame));
-    mStates.put(STATE.START, new StartScreen(stage, pokemonController));
+    mStates.put(STATE.START, new StartScreen(stage));
+    mStates.put(STATE.MART, new Mart(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage()));
     stack = new Stack<>();
+  }
+  
+  public void updateIState(STATE state, IState iState) {
+    mStates.put(state, iState);
   }
   
   public boolean isEmpty() {
@@ -45,23 +52,6 @@ public class StateMachine implements IState {
   
   public IState getIState(STATE st) {
     return mStates.get(st);
-  }
-  
-  public List<STATE> getStack(){
-    return this.stack;
-  }
-  
-  public boolean push(STATE st) {
-    stack.add(st);
-    return true;
-  }
-  
-  public STATE pop() {
-    return stack.remove(stack.size() - 1);
-  }
-  
-  public String peek() {
-    return stack.get(stack.size() - 1).toString();
   }
   
   @Override
