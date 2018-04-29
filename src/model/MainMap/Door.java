@@ -68,7 +68,7 @@ public class Door implements MainMap{
     }
     else if(txt.equals("FryslaSafariZone.txt")){
     	System.out.println("Creating FryslaSafariZone image!");
-    	gameBackground = new FryslaSafariZone(new Point(45,44), insideMapImage);
+    	gameBackground = new FryslaSafariZone(new Point(39, 22), insideMapImage);
     	insideMap = new FryslaSafariZone_TEXT();
     }
     else if(txt.equals("LilyCoveCity.txt")){

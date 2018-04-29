@@ -133,10 +133,7 @@ public class LilyCoveCity_TEXT implements MainMap{
       i = 0;
       while (i < read.length()) {
         characterBoard[j][i] = read.charAt(i);
-        if (characterBoard[j][i] == 'E') {
-        	System.out.println("******************                    EXIT ROW = " + j);
-        	System.out.println("******************                    EXIT COL = " + i + "\n\n");
-        }
+
         i++;
       }
       j++;
