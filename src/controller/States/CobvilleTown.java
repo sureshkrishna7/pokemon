@@ -132,6 +132,7 @@ public class CobvilleTown extends GameBackground {
 	           */
 	          if (row <= 10 && col <= 10 && keyCode == KeyCode.UP) {
 	          	closeToTopPictureBounderSteps++;
+	          	afterTopLeftCornerCondition2 = true;
 	          	animateImage("left, top", "last Valid DX and DY");
 	          }
 	          else if (row <= 10 && col <= 10 && keyCode == KeyCode.DOWN) {
@@ -246,6 +247,11 @@ public class CobvilleTown extends GameBackground {
 	          else if(col <= 10 && keyCode == KeyCode.DOWN) {
 	          	lastValidPlayerDY = dy;
 	          	animateImage("left, cam/2", "last Valid DX and dy");
+	          	
+	          	if (afterTopLeftCornerCondition2) {
+	          		closeToTopPictureBounderSteps -= 3;
+	          		afterTopLeftCornerCondition2 = false;
+	          	}
 	          }
 	          
 	          /*
