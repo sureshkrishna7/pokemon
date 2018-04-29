@@ -161,6 +161,7 @@ public class TextFileReader implements MainMap{
 	   * U - Items                            / Get from NPC/SHOP or Placed dynamically on the Map
 	   * **********************************************************************************************************************
 	   */
+	 
 	  public boolean isWalkable(int x, int y) {
 
 	    // Checking if its a valid existing point
@@ -173,7 +174,7 @@ public class TextFileReader implements MainMap{
 	    	//System.out.println("Attemp to walk on: " + characterBoard[x][y]);
 	      if (characterBoard[x][y] == 'G' || characterBoard[x][y] == 'B' || characterBoard[x][y] == 'D'
 	          || characterBoard[x][y] == 'S' || characterBoard[x][y] == '0' || characterBoard[x][y] == 'X' 
-	          || characterBoard[x][y] == 'E'  || characterBoard[x][y] == ' ') {
+	          || characterBoard[x][y] == 'E'  || characterBoard[x][y] == ' ' || characterBoard[x][y] == 'N') {
 	        return true;
 	      }
 	      
@@ -198,6 +199,7 @@ public class TextFileReader implements MainMap{
 	    }
 	    return 'Z';
 	  }
+
 	  
 	  public char getCharacterFromLocation(Point pos) {
 	    return getCharacterFromLocation(pos.x, pos.y);
