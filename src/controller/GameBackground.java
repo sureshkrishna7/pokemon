@@ -12,6 +12,7 @@ import controller.States.Cave;
 import controller.States.CobvilleTown;
 import controller.States.FryslaSafariZone;
 import controller.States.IState;
+import controller.States.LilyCoveCity;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -309,7 +310,8 @@ public class GameBackground extends Canvas implements IState{
 	    Scene scene = null;
 	    Scale scale = null;
 	    
-	    if (this instanceof CobvilleTown || this instanceof Cave || this instanceof FryslaSafariZone ) {
+	    if (this instanceof CobvilleTown || this instanceof Cave || 
+	    	this instanceof FryslaSafariZone  || this instanceof LilyCoveCity) {
 	    	System.out.println("instance of Cobville Town");
 	    	cameraViewSize = 15 * 16;
 		    scene = new Scene(bp, this.getCameraViewWidth() * 1.3, this.getCameraViewHeight() * 1.3);

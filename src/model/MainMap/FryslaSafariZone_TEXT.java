@@ -157,7 +157,10 @@ public class FryslaSafariZone_TEXT implements MainMap{
       i = 0;
       while (i < read.length()) {
         characterBoard[j][i] = read.charAt(i);
-
+        if (characterBoard[j][i] == 'E') {
+        	System.out.println("\n\n\n\n******************                    EXIT ROW = " + j);
+        	System.out.println("******************                    EXIT COL = " + i + "\n\n\n\n");
+        }
         i++;
       }
       j++;
