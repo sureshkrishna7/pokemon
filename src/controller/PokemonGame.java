@@ -347,7 +347,6 @@ public class PokemonGame extends Application {
 	        else {
 	            theGame.setTrainerLocation(door.getMapPlayerPos());
 	            theGame.setCurrCameraMap(door.getInsideMapObject());
-	            System.out.println("Curr Background = " + currBackground);
 	            notAcceptingInput = true;
 	            currBackground.closingSceneAnimateCircle(this, currBackground.getTransitionViewCircle(), "entering");
 	            pane.setCenter(door.getGameBackground());
