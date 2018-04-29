@@ -64,7 +64,7 @@ public class GameBackground extends Canvas implements IState{
 	  protected KeyCode keyCode;
 	  protected double cameraViewSize = 15 * 16;
 	  
-	  private static final Duration SCALE_DURATION = Duration.seconds(1);
+	  private static final Duration SCALE_DURATION = Duration.seconds(2);
 	  private static final double SCALE_FACTOR = 600;
 	  private PathTransition pathTransition;
 	  private ScaleTransition scaler;
@@ -111,7 +111,7 @@ public class GameBackground extends Canvas implements IState{
 		    scaler.setAutoReverse(true);
 
 		    // Cycle count is reduced from infinity to 2
-		    scaler.setCycleCount(2);
+		    scaler.setCycleCount(1);
 
 		    // Play both the animation at the same time
 		    scaler.play();
