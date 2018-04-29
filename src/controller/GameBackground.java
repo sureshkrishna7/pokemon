@@ -38,90 +38,190 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.transform.Scale;
 import javafx.util.Duration;
-import model.NPC.NPC;
 
-public class GameBackground extends Canvas implements IState {
-  protected Image character, background;
-  protected GraphicsContext g2D;
-  protected Timeline timeline;
-  protected Point playerLocation;
-  protected double lastValidPlayerDX;
-  protected double lastValidPlayerDY;
-  protected double playerPixelsFromTopBoundary;
-  protected double playerPixelsFromLeftBoundary;
-  protected double playerPixelsFromBottomBoundary;
-  protected int closeToTopPictureBounderSteps;
-  protected int closeToLeftPictureBounderSteps;
-  protected int closeToBottomPictureBounderSteps;
 
-  protected boolean afterTopLeftCornerCondition = false;
-  protected boolean afterTopLeftCornerCondition2 = false;
-  protected boolean afterBottomLeftCornerCondition = false;
-  protected boolean afterBottomLeftCornerCondition2 = false;
+public class GameBackground extends Canvas implements IState{
+	  protected Image character, background;
+	  protected GraphicsContext g2D;
+	  protected Timeline timeline;
+	  protected Point playerLocation;
+	  protected double lastValidPlayerDX;
+	  protected double lastValidPlayerDY;
+	  protected double playerPixelsFromTopBoundary;
+	  protected double playerPixelsFromLeftBoundary;
+	  protected double playerPixelsFromBottomBoundary;
+	  protected int closeToTopPictureBounderSteps;
+	  protected int closeToLeftPictureBounderSteps;
+	  protected int closeToBottomPictureBounderSteps;
 
-  protected int tic = 0;
-  protected double sx, sy, sw, sh, dx, dy, dw, dh;
-  protected String drawPlayerOverOrUnder;
-  protected KeyCode keyCode;
-  protected double cameraViewSize = 15 * 16;
+	  protected boolean afterTopLeftCornerCondition = false;
+	  protected boolean afterTopLeftCornerCondition2 = false;
+	  protected boolean afterBottomLeftCornerCondition = false;
+	  protected boolean afterBottomLeftCornerCondition2 = false;
+	  
+	  protected int tic = 0;
+	  protected double sx, sy, sw, sh, dx, dy, dw, dh;
+	  protected String drawPlayerOverOrUnder;
+	  protected KeyCode keyCode;
+	  protected double cameraViewSize = 15 * 16;
+	  
+	  private static final Duration SCALE_DURATION = Duration.seconds(2);
+	  private static final double SCALE_FACTOR = 600;
+	  private PathTransition pathTransition;
+	  private ScaleTransition scaler;
+	  private final double width = 600;
+	  private final double height = 400;
+	  private Circle blackCircle;
+	  private StackPane circlePane;
+	  
+	  public GameBackground(Point point, Image mapBackground) {
+		  playerLocation = point;
+		  background = mapBackground;
+		  g2D = this.getGraphicsContext2D();
+		  
+		  // defaults, will be changed when movePlayer() is called
+		  keyCode = KeyCode.UP;
+		  drawPlayerOverOrUnder = "over";
+		  
+	      // A circle black object is created here, Start the circle from the center of the screen
+	      blackCircle = new Circle(width/2, height/2, 1, Color.BLACK);
+	      circlePane = new StackPane(blackCircle);
+	      circlePane.setPrefSize(width, height);
 
-  private static final Duration SCALE_DURATION = Duration.seconds(1);
-  private static final double SCALE_FACTOR = 600;
-  private PathTransition pathTransition;
-  private ScaleTransition scaler;
-  private final double width = 600;
-  private final double height = 400;
-  private Circle blackCircle;
-  private StackPane circlePane;
+		    scaler = new ScaleTransition(
+			        SCALE_DURATION,
+			        blackCircle
+			        );
+	  }
+	  
+	  public Circle getTransitionViewCircle() {
+		  return blackCircle;
+	  }
+	  
+	  public void closingSceneAnimateCircle(PokemonGame.AnimateStarter game, Circle circle, String enteringOrExitingBuilding) {
 
-  public GameBackground(Point point, Image mapBackground) {
-    playerLocation = point;
-    background = mapBackground;
-    g2D = this.getGraphicsContext2D();
+		    scaler = new ScaleTransition(
+		        SCALE_DURATION,
+		        circle
+		        );
+		    scaler.setFromX(1);
+		    scaler.setToX(SCALE_FACTOR);
+		    scaler.setFromY(1);
+		    scaler.setToY(SCALE_FACTOR);
 
-    // defaults, will be changed when movePlayer() is called
-    keyCode = KeyCode.UP;
-    drawPlayerOverOrUnder = "over";
+		    scaler.setAutoReverse(true);
 
-    // A circle black object is created here, Start the circle from the center of
-    // the screen
-    blackCircle = new Circle(width / 2, height / 2, 1, Color.BLACK);
-    circlePane = new StackPane(blackCircle);
-    circlePane.setPrefSize(width, height);
+		    // Cycle count is reduced from infinity to 2
+		    scaler.setCycleCount(1);
 
-    scaler = new ScaleTransition(SCALE_DURATION, blackCircle);
-  }
+		    // Play both the animation at the same time
+		    scaler.play();
+		    //pathTransition.play();
+		   
+		    
+		    scaler.setOnFinished(new EventHandler<ActionEvent>(){
 
-  public Circle getTransitionViewCircle() {
-    return blackCircle;
-  }
+			      @Override
+			      public void handle(ActionEvent arg) {
+			    	 if ( enteringOrExitingBuilding.equals("entering")) {
+			    		 game.continueEnteringBuildingAnimation();
+			    	 }
+			    	 else {
+			    		 game.continueExitingBuildingAnimation();
+			    	 }
+			        //PokemonGame.currentState = STATE.INSIDE_BUILDING;
+			        //PokemonGame.stateChanged = true;
+			      }
+			  });
+	  }
+	  
+	  public boolean isTransitionViewAnimating() {
+		  
+		  return scaler.getStatus() == Status.RUNNING;
+	  }
+	  
+	  public boolean isTimelineAnimating() {
+		  return timeline.getStatus() == Status.RUNNING;
+	  }
+	  
+	  public void movePlayer(KeyCode code, String overOrUnder) {
+		  keyCode = code;
+		  drawPlayerOverOrUnder = overOrUnder;
+		  tic = 0;
+		  timeline.play();
+	  }
+	  public void setPlayerLocation(Point trainerLocation) {
+		  playerLocation = trainerLocation;
+	  }
+		
+	  public Point getPlayerLocation(Point trainerLocation) {
+		  return playerLocation;
+		
+	  }
+	
+	  public void setDXandDY(Point playerLoc) {
+	  	  dx = ((playerLocation.y) * 16);	  // LEFT TO RIGHT, y = col
+	  	  dy = ((playerLocation.x) * 16) - 8; 
+	  }
+	  public double getDx() {
+		  return dx;
+	  }
+	  public void setDx(double newDx) {
+		  dx = newDx;
+	  }
+	  
+	  public double getDy() {
+		  return dy;
+	  }
+	  public void setDy(double newDy) {
+		  dy = newDy;
+	  }
 
-  public void closingSceneAnimateCircle(PokemonGame.AnimateStarter game, Circle circle,
-      String enteringOrExitingBuilding) {
+	  public void drawTrainer() {
+		  if (KeyCode.UP == keyCode ) {
+      	  dy -= (16 / 3.0);
+      	  if (drawPlayerOverOrUnder.equals("over")) {
+          	  // get picture that makes trainer look going north
+      		  if (tic == 1) {
+            	  sx = 128;
+              	  sy = 5; 
+      		  }
+      		  else if (tic == 2) {
+            	  sx = 147;
+              	  sy = 5;
+      		  }
+      		  else if (tic == 3){
+            	  sx = 109;
+              	  sy = 5;
+      		  }
+      	    }else {
+          	  sx = 0;
+          	  sy = 0;
+      	    }
 
-    scaler = new ScaleTransition(SCALE_DURATION, circle);
-    scaler.setFromX(1);
-    scaler.setToX(SCALE_FACTOR);
-    scaler.setFromY(1);
-    scaler.setToY(SCALE_FACTOR);
+          }
+          else if(KeyCode.DOWN == keyCode) {
+      	  dy += (16 / 3.0);
+      	  if (drawPlayerOverOrUnder.equals("over")) {
+          	  // get picture that makes trainer look going south
+      		  if (tic == 1) {
+              	  sx = 69;
+              	  sy = 5;
+      		  }
+      		  else if (tic == 2) {
+              	  sx = 89;
+              	  sy = 5;
+      		  }
+      		  else if (tic == 3){
+              	  sx = 50;
+              	  sy = 5;
+      		  }
+      	  }
+      	  else {
+          	  sx = 0;
+          	  sy = 0;
+      	  }
 
-    scaler.setAutoReverse(true);
-
-    // Cycle count is reduced from infinity to 2
-    scaler.setCycleCount(2);
-
-    // Play both the animation at the same time
-    scaler.play();
-    // pathTransition.play();
-
-    scaler.setOnFinished(new EventHandler<ActionEvent>() {
-
-      @Override
-      public void handle(ActionEvent arg) {
-        if (enteringOrExitingBuilding.equals("entering")) {
-          game.continueEnteringBuildingAnimation();
-        } else {
-          game.continueExitingBuildingAnimation();
         }
         // PokemonGame.currentState = STATE.INSIDE_BUILDING;
         // PokemonGame.stateChanged = true;

@@ -479,7 +479,6 @@ public class PokemonGame extends Application {
   		gameBackground.movePlayer(event.getCode(), "under");
   	}
   }
-  
 
   /*
    * getWildPoke() -- after checkBush() returns true (it found a Pokemon), this
