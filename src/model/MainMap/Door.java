@@ -63,7 +63,9 @@ public class Door implements MainMap{
     }
     else if(txt.equals("cave.txt")){
     	System.out.println("Creating Cave image!");
+    	//gameBackground = new Cave(new Point(18, 22), insideMapImage);
     	gameBackground = new Cave(new Point(18, 22), insideMapImage);
+    	//gameBackground = new Cave(new Point(8, 12), insideMapImage);
     	insideMap = new Cave_TEXT();
     }
     else if(txt.equals("FryslaSafariZone.txt")){
@@ -87,7 +89,7 @@ public class Door implements MainMap{
     }
   }
   
-//For House with two Doors
+  //For House with two Doors
   Door(int firx, int firy, int secx, int secy, String img, String txt){
     this.listOfDoorPositions = new ArrayList<Point>(0);
     this.listOfDoorPositions.add(new Point(firx,firy));
