@@ -1,0 +1,20 @@
+21:50:18.699 [JavaFX Application Thread] DEBUG GameApplication      - Logger initialized
+21:50:18.705 [JavaFX Application Thread] FATAL GameApplication      - Exception during FXGL configuration:
+
+Fatal exception occurred: java.lang.IllegalArgumentException : Parameter specified as non-null is null: method com.almasb.fxgl.app.MainWindow.<init>, parameter stage
+E: com.almasb.fxgl.app.MainWindow.<init>(MainWindow.kt)
+E: com.almasb.fxgl.app.GameApplication.initMainWindow(GameApplication.java:190)
+E: com.almasb.fxgl.app.GameApplication.start(GameApplication.java:112)
+E: controller.BattleView.BattleView.<init>(BattleView.java:39)
+E: controller.PokemonGame.start(PokemonGame.java:142)
+E: com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$161(LauncherImpl.java:863)
+E: com.sun.javafx.application.PlatformImpl.lambda$runAndWait$174(PlatformImpl.java:326)
+E: com.sun.javafx.application.PlatformImpl.lambda$null$172(PlatformImpl.java:295)
+E: java.security.AccessController.doPrivileged(Native Method)
+E: com.sun.javafx.application.PlatformImpl.lambda$runLater$173(PlatformImpl.java:294)
+E: com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+E: com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+E: com.sun.glass.ui.win.WinApplication.lambda$null$147(WinApplication.java:177)
+E: java.lang.Thread.run(Unknown Source)
+
+21:50:18.705 [JavaFX Application Thread] FATAL GameApplication      - FXGL will now exit
