@@ -7,9 +7,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import controller.GameBackground;
+import controller.States.Cave;
+import controller.States.FryslaSafariZone;
 import controller.States.House1;
+import controller.States.House2;
 import controller.States.House6;
 import controller.States.Mart;
+import controller.States.ProfessorLab;
 import javafx.scene.image.Image;
 
 public class Door implements MainMap{
@@ -30,27 +34,45 @@ public class Door implements MainMap{
     this.col = 0;
     this.listOfDoorPositions = new ArrayList<Point>(0);
     this.listOfDoorPositions.add(new Point(posx,posy));
+    //insideMapImage = new Image("file:src/images/"+img, 600,600,false, true);
     insideMapImage = new Image("file:src/images/"+img, false);
     if (txt.equals("Mart.txt")) {
     	System.out.println("Creating Mart image!");
-    	gameBackground = new Mart(new Point(9,19), insideMapImage);
-    	//gameBackground = new Mart(new Point(10,5), new Image("file:src/images/house_6GRID.png", false));
+    	gameBackground = new Mart(new Point(9,20), insideMapImage);
     	insideMap = new MartCity();
     }else if(txt.equals("house_6.txt")){
     	System.out.println("Creating House 6 image!");
-    	gameBackground = new House6(new Point(5, 10), insideMapImage);
-    	//gameBackground = new Mart(new Point(10,5), new Image("file:src/images/house_6GRID.png", false));
+    	gameBackground = new House6(new Point(6, 11), insideMapImage);
     	insideMap = new House6_TEXT();
     }
     else if(txt.equals("house_1.txt")){
     	System.out.println("Creating House 1 image!");
-    	gameBackground = new House1(new Point(6, 9), insideMapImage);
-    	//gameBackground = new Mart(new Point(10,5), new Image("file:src/images/house_6GRID.png", false));
+    	gameBackground = new House1(new Point(7, 9), insideMapImage);
     	insideMap = new House1_TEXT();
+    }
+    else if(txt.equals("professor_lab.txt")){
+    	System.out.println("Creating professor_lab image!");
+    	gameBackground = new ProfessorLab(new Point(8, 14), insideMapImage);
+    	insideMap = new ProfessorLab_TEXT();
+    }
+    else if(txt.equals("house_2.txt")){
+    	System.out.println("Creating house_2 image!");
+    	gameBackground = new House2(new Point(4, 8), insideMapImage);
+    	insideMap = new House2_TEXT();
+    }
+    else if(txt.equals("cave.txt")){
+    	System.out.println("Creating Cave image!");
+    	gameBackground = new Cave(new Point(18, 22), insideMapImage);
+    	insideMap = new Cave_TEXT();
+    }
+    else if(txt.equals("FryslaSafariZone.txt")){
+    	System.out.println("Creating FryslaSafariZone image!");
+    	gameBackground = new FryslaSafariZone(new Point(45,44), insideMapImage);
+    	insideMap = new FryslaSafariZone_TEXT();
     }
     else {
     
-    	System.out.println("ANS -->" + txt);
+    	System.out.println("answer = " + txt);
     }
     try {
       createMapFromTxtFile("src/"+txt);
@@ -160,7 +182,11 @@ public class Door implements MainMap{
         insideBoard[x][y] = read.charAt(y);
 
         if(insideBoard[x][y] == 'E') {
-          playerPositionInsideMap = new Point(x,y);
+          // created an extra row on map to represent where the exit would
+          // be with alot of dots on both sides "..E..", thus spawn trainer
+          // one row above the exit when entering a map (correct pos. on map)
+          // so that player can press down key and exit when first entering. 
+          playerPositionInsideMap = new Point(x - 1,y);
         }
 
         y++;

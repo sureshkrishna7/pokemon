@@ -1,6 +1,5 @@
 package controller.States;
 
-
 import java.awt.Point;
 
 import controller.GameBackground;
@@ -13,9 +12,9 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 
-public class House6 extends GameBackground{
+public class ProfessorLab extends GameBackground{
 
-	public  House6(Point point, Image mapBackground) {
+	public  ProfessorLab(Point point, Image mapBackground) {
 		super(point, mapBackground);
 		this.setWidth(mapBackground.getWidth());
 		this.setHeight(mapBackground.getHeight());
@@ -31,7 +30,8 @@ public class House6 extends GameBackground{
 		timeline = new Timeline(new KeyFrame(Duration.millis(75), new AnimateStarter()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 	}
-
+	
+	
 
 	  private class AnimateStarter implements EventHandler<ActionEvent> {
 		  

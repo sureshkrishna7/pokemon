@@ -25,6 +25,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.Battle;
 import model.Game;
@@ -59,6 +60,7 @@ public class PokemonGame extends Application {
   private static boolean wonBattle;
   public static boolean stateChanged;
   private static final double encounterChance = 0.6;
+  private static boolean trainerWasAlreadyOnDoor;
   private static GameBackground currBackground;
   private static CobvilleTown cobvilleTown, town;
   private static Mart mart;
@@ -102,7 +104,7 @@ public class PokemonGame extends Application {
     STARTMENU, // StartMenu, second state
     MENU, // Menu screen
     COBVILLETOWN, // Actual Game
-    MART,		// inside house
+    INSIDE_BUILDING,		// inside house
     INSTRUCTION, // How to play the Game
     BATTLE, // Battle screen
   };
@@ -119,6 +121,7 @@ public class PokemonGame extends Application {
     playerOldLocation.y = theGame.getTrainerLocation().y;
 
     oldCurrentMap = theGame.getCurrCameraMap();
+    trainerWasAlreadyOnDoor = false;
 
     foundPokemon = false;
     wonBattle = false;
@@ -219,16 +222,12 @@ public class PokemonGame extends Application {
         currentScene.setOnKeyPressed(keyHandler);
         primaryStage.setScene(currentScene);
         break;
-      case MART:
+      case INSIDE_BUILDING:
         stateChanged = false;
-        currentState = STATE.MART;
-        System.out.println("Mart case");
-        //cobvilleTown = (Mart) stateMachine.getIState(STATE.MART);
-        //GameBackground mart = door.getGameBackground();
-        currBackground = door.getGameBackground();
-        stateMachine.updateIState(STATE.MART, new Mart(theGame.getTrainerLocation(), door.getInsideMapImage()));
-        mart = (Mart) stateMachine.getIState(STATE.MART);
-        currentScene = mart.render();
+        currentState = STATE.INSIDE_BUILDING;
+        GameBackground mapInsideBuilding = door.getGameBackground();
+        currBackground = mapInsideBuilding;
+        currentScene = ((GameBackground) mapInsideBuilding).render();
         currentScene.setOnKeyReleased(animateStarter);
         currentScene.setOnKeyPressed(keyHandler);
         primaryStage.setScene(currentScene);
@@ -272,24 +271,33 @@ public class PokemonGame extends Application {
     @Override
     public void handle(KeyEvent event) {
 
+    	System.out.println("State = " + currentState);
       /**
        * We monitor what arrow keys we are pressing only when we are in STATE.GAME
        * This is to avoid key pressing conflicts when we not in GAME state
        */
-      if (currentState == STATE.COBVILLETOWN || currentState == STATE.MART) {
+      if (currentState == STATE.COBVILLETOWN || currentState == STATE.INSIDE_BUILDING) {
         /**
          * NOTE: If user inputs moves too fast, the player will move on the grid faster
          * than the animation timeline can draw the image, and will crash (runs into
          * things on grid before image). So if animation is on, ignore button clicked
          */
         if (currBackground.isTimelineAnimating()) {
-        	System.out.println("ERROR: Already Animating!!");
           return;
         }
-        //System.out.println("Accepting input... ");
+        
+        System.out.println("TheGame = " + theGame.getCurrCameraMap() == null);
         char newLocationObject = 'Z';
         if (KeyCode.UP == event.getCode()) {
           newLocationObject = theGame.playerMove('n');
+
+          if (theGame.getIsTrainerAlreadyOnDoor()) {
+              // when the player is already on a door, they want to press up and 
+              // enter the building, but the map isWalkable() will not allow them
+              // to walk on the house object. newLocationObj == 'z' 
+        	  newLocationObject = 'D';
+        	  trainerWasAlreadyOnDoor = true;
+          }
         } else if (KeyCode.DOWN == event.getCode()) {
           newLocationObject = theGame.playerMove('s');
         } else if (KeyCode.LEFT == event.getCode()) {
@@ -307,7 +315,7 @@ public class PokemonGame extends Application {
           theGame.setCurrCameraMap(oldCurrentMap);
           theGame.weAreOutSafariZone();
         } else {
-          // System.out.println("---KeyCode ------ " + event.getCode());
+          // System.out.println("KeyCode =" + event.getCode());
         }
 
         //System.out.println("Game logic = " + newLocationObject);
@@ -324,68 +332,84 @@ public class PokemonGame extends Application {
              * ****We would be in safari Zone if the door is null****
              * ****Because we magically hop to different places****
              */
-            if(door == null) {
-              theGame.setTrainerLocation(theGame.getCurrCameraMap().getMapPlayerPosition());
-            }
-            else {
-              previousState = currentState;
-              currentState = STATE.MART;
-              stateChanged = true;
-              theGame.setTrainerLocation(door.getMapPlayerPos());
-              theGame.setCurrCameraMap(door.getInsideMapObject());
-//              System.out.println("Drawing MART gameBack in Poke line 322");
-//              System.out.println("     " + door.getGameBackground());
-              drawGameBackground(currBackground, event, newLocationObject);
-              return;
-            }
-          } else if (newLocationObject == 'E') {
-        	  GameBackground backgroundToRemove = ((GameBackground)pane.getCenter());
-        	  backgroundToRemove.setDy(backgroundToRemove.getDy() + 32);
-        	  theGame.setTrainerLocation(playerOldLocation);
-        	  theGame.setCurrCameraMap(oldCurrentMap);
+
+	        if(door == null) {
+	        	System.out.println("DOOR IS NULL");
+	            theGame.setTrainerLocation(theGame.getCurrCameraMap().getMapPlayerPosition());
+	        }
+	        else {
+	            currentState = STATE.INSIDE_BUILDING;
+	            stateChanged = true;
+	            theGame.setTrainerLocation(door.getMapPlayerPos());
+	            theGame.setCurrCameraMap(door.getInsideMapObject());
+	            pane.setCenter(door.getGameBackground());
+	            currBackground = (GameBackground)pane.getCenter();
+	            drawGameBackground(currBackground, event, newLocationObject);
+	            return;
+	        }
+        } 
+        else if (newLocationObject == 'E') {
+            // align back to mainmap destination after exitin building
+        	// since animation increments/decrements the location on GUI
+        	// when moving on different maps (grids)
+        	GameBackground backgroundToRemove = currBackground;
+        	backgroundToRemove.setDy(backgroundToRemove.getDy() + 16);
+        	theGame.setTrainerLocation(playerOldLocation);
+            theGame.setCurrCameraMap(oldCurrentMap);
             
-        	  // -32 (16) to adjust animation after exiting house 
-        	  // (16) to make sure that when he takes a step out the door, 
-        	  // he is put in the correct pos relative to grid
-        	  currentState = STATE.COBVILLETOWN;
-        	  cobvilleTown.setDy(cobvilleTown.getDy() - 32);
-          }  else if (newLocationObject == ' ') {
-          theGame.setTrainerLocation(playerOldLocation);
-          theGame.setCurrCameraMap(oldCurrentMap);
+        	// -32 (16) to adjust animation after exiting house 
+        	// (16) to make sure that when he takes a step out the door, 
+        	// he is put in the correct pos relative to grid
+        	currentState = STATE.COBVILLETOWN;
+        	stateChanged = true;
+        	currBackground = cobvilleTown;
+        	  
+        	// less adjusting if was already on door
+        	if (trainerWasAlreadyOnDoor) {
+        		cobvilleTown.setDy(cobvilleTown.getDy() - 16);
+        		trainerWasAlreadyOnDoor = false;
+        	}else {
+        		cobvilleTown.setDy(cobvilleTown.getDy() - 32);
+        	}
+        	pane.setCenter(cobvilleTown);
+        	  
+        }  else if (newLocationObject == ' ') {
+        	theGame.setTrainerLocation(playerOldLocation);
+        	theGame.setCurrCameraMap(oldCurrentMap);
+
         } else if (newLocationObject == 'S') {
-          playerOldLocation = theGame.getTrainerLocation();
-          oldCurrentMap = theGame.getCurrCameraMap();
-          theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
-          theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
-          theGame.weAreInSafariZone();
+        	playerOldLocation = theGame.getTrainerLocation();
+        	oldCurrentMap = theGame.getCurrCameraMap();
+        	theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
+        	theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
+        	theGame.weAreInSafariZone();
         }
         // after exhausting 500 steps in Safari Zone, eject back to PokemonTown
         else if (theGame.haveExhaustedSafariZone()) {
-          theGame.setTrainerLocation(playerOldLocation);
-          theGame.setCurrCameraMap(oldCurrentMap);
-          theGame.weAreOutSafariZone();
+        	theGame.setTrainerLocation(playerOldLocation);
+        	theGame.setCurrCameraMap(oldCurrentMap);
+        	theGame.weAreOutSafariZone();
 
           // bush, check will battle at random, start battle with randomly instantiated
           // Pokemon
         } else if (newLocationObject == 'B') {
-          foundPokemon = checkBush();
-          if (foundPokemon) {
-
-            /** The Battle is about to start */
-            currentState = STATE.BATTLE;
-
-            Pokemon wildPoke = getWildPoke();
-            wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
-          }
-
-          /** Once the battle is done set the state back to Game */
-          currentState = STATE.COBVILLETOWN;
+	          foundPokemon = checkBush();
+	          if (foundPokemon) {
+	
+	            /** The Battle is about to start */
+	            currentState = STATE.BATTLE;
+	
+	            Pokemon wildPoke = getWildPoke();
+	            wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
+	          }
+	
+	          /** Once the battle is done set the state back to Game */
+	          currentState = STATE.COBVILLETOWN;
 
         } else if (newLocationObject == 'N') {
-          System.out.print("Encountered a NPC\n");
+            System.out.print("Encountered a NPC\n");
         }
         
-       //Scene sc = new Scene();
         drawGameBackground( currBackground, event, newLocationObject);
         
         
@@ -394,29 +418,23 @@ public class PokemonGame extends Application {
       
     }
 
-    public void drawWithCanvas(Door door, KeyEvent event, char newLocationObject) {
-
-    }
-
+    /**
+     * drawGameBackground()
+     * z is a char returned by theGame.playerMove() that's not used in map
+     * to represent an obj, thus can be used to detect null
+     * We need to setBackGroundImage() only after entering/exiting doors
+     */
     public void drawGameBackground(GameBackground gameBackground, KeyEvent event, char newLocationObject) {
-      // z is a char returned by theGame.playerMove() that's not used in map
-      // to represent an obj, thus can be used to detect null
-      if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {
-        // We need to setBackGroundImage() only after entering/exiting doors
-        // cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
-//    	  System.out.println("Testing");
-//    	 System.out.println(event.getCode());
-//    	 System.out.println(gameBackground);
-        gameBackground.setPlayerLocation(theGame.getTrainerLocation());
-        gameBackground.movePlayer(event.getCode(), "over");
-      }
+    	if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {
+    		gameBackground.setPlayerLocation(theGame.getTrainerLocation());
+    		gameBackground.movePlayer(event.getCode(), "over");
+    	}
 
-      // Draw character under X objects
-      else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
-        // cobvilleTown.setBackGroundImage(theGame.getCurrCameraMap().getMapImage());
-        gameBackground.setPlayerLocation(theGame.getTrainerLocation());
-        gameBackground.movePlayer(event.getCode(), "under");
-      }
+    	// Draw character under X objects
+    	else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
+    		gameBackground.setPlayerLocation(theGame.getTrainerLocation());
+    		gameBackground.movePlayer(event.getCode(), "under");
+    	}
     }
   }
 

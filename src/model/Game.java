@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import model.MainMap.EnermyTown;
-import model.MainMap.FryslaSafariZone;
+import model.MainMap.FryslaSafariZone_TEXT;
 import model.MainMap.LilyCoveCity;
 import model.MainMap.MainMap;
 import model.MainMap.MartCity;
@@ -28,11 +28,13 @@ public class Game {
   private MainMap lilyCoveCity;
   private MainMap fryslaSafariZone;
   private Trainer ash;
-
+  
+  private boolean isTrainerAlreadyOnDoor;
   private boolean areWeInSafariZone;
   private int totalSafariZoneSteps; //would be 500
   private int totalSafariZoneBalls;
   private int currentSafariSteps;   //at start of a safari Zone, would be 0
+  
   
   private Map<String, String> allPokemonList;
   private ArrayList<String> pokemonNameList;
@@ -46,7 +48,7 @@ public class Game {
     enermyTown = new EnermyTown();
     mart = new MartCity();
     lilyCoveCity = new LilyCoveCity();
-    fryslaSafariZone = new FryslaSafariZone();
+    fryslaSafariZone = new FryslaSafariZone_TEXT();
     initializePokeLists();
     
     currentMap = enermyTown;
@@ -54,15 +56,17 @@ public class Game {
     ash = new Trainer(new String("Ash"));
     int x = currentMap.getMapPlayerPosition().x;
     int y = currentMap.getMapPlayerPosition().y;
-    System.out.println("Game line 57");
-    System.out.println("ash x = " + x);
-    System.out.println("ash y = " + y);
     ash.setLocation(x, y);
+    isTrainerAlreadyOnDoor = false;
     areWeInSafariZone = false;
   }
   
   public static char getCharAtIndex(int row, int col) {
 	  return currentMapStatic.getCharacterFromLocation(new Point (row,col));
+  }
+  
+  public boolean getIsTrainerAlreadyOnDoor() {
+	  return isTrainerAlreadyOnDoor;
   }
 
   /*
@@ -112,8 +116,8 @@ public class Game {
     Point player = ash.getLocation();
     Point newPoint = new Point();
     
-    System.out.println("W -->" + currentMap.getMapWidth());
-    System.out.println("H -->" + currentMap.getMapHeight()); 
+    isTrainerAlreadyOnDoor = false;
+    System.out.println("Player at = " + player);
     if(direction == 'n' || direction == 'N') {
       newPoint.x = player.x - 1;
       newPoint.y = player.y;
@@ -123,8 +127,12 @@ public class Game {
         if(areWeInSafariZone) {
           currentSafariSteps++;
         }
-        System.out.println("Walkable 1");
+        //System.out.println("Walkable test 1");
         return currentMap.getCharacterFromLocation(newPoint);
+      }
+      else if('D' == getCharAtIndex(ash.getLocation().x, ash.getLocation().y)) {
+    	 System.out.println("Already on door!");
+    	 isTrainerAlreadyOnDoor = true;
       }
     }
     else if(direction == 's' || direction == 'S') {
@@ -136,7 +144,7 @@ public class Game {
         if(areWeInSafariZone) {
           currentSafariSteps++;
         }
-        System.out.println("Walkable 2");
+        //System.out.println("Walkable test 2");
         return currentMap.getCharacterFromLocation(newPoint);
       }
     }
@@ -149,7 +157,7 @@ public class Game {
         if(areWeInSafariZone) {
           currentSafariSteps++;
         }
-        System.out.println("Walkable 3");
+        //System.out.println("Walkable test 3");
         return currentMap.getCharacterFromLocation(newPoint);
       }
     }
@@ -162,7 +170,7 @@ public class Game {
         if(areWeInSafariZone) {
           currentSafariSteps++;
         }
-        System.out.println("Walkable 4");
+        //System.out.println("Walkable test 4");
         return currentMap.getCharacterFromLocation(newPoint);
       }
     }

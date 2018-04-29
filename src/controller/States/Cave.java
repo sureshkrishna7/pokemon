@@ -1,6 +1,5 @@
 package controller.States;
 
-
 import java.awt.Point;
 
 import controller.GameBackground;
@@ -13,9 +12,9 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 
-public class House6 extends GameBackground{
+public class Cave extends GameBackground{
 
-	public  House6(Point point, Image mapBackground) {
+	public  Cave(Point point, Image mapBackground) {
 		super(point, mapBackground);
 		this.setWidth(mapBackground.getWidth());
 		this.setHeight(mapBackground.getHeight());
@@ -31,6 +30,7 @@ public class House6 extends GameBackground{
 		timeline = new Timeline(new KeyFrame(Duration.millis(75), new AnimateStarter()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 	}
+	
 
 
 	  private class AnimateStarter implements EventHandler<ActionEvent> {
@@ -70,11 +70,10 @@ public class House6 extends GameBackground{
 	        tic++;
 	        
 	        drawTrainer();
-	        
-	        System.out.println("DX = " + dx);
-	        System.out.println("DY = " + dy);
-	        
 	        animateImageWithoutBoundary();
+//	        System.out.println("DX = " + dx);
+//	        System.out.println("DY = " + dy);
+
 //	        g2D.drawImage(background, 0, 0);
 //	        g2D.drawImage(character, sx, sy, sw, sh, dx,  dy, dw, dh);
 	        // stop timeline from drawing after final sprite 

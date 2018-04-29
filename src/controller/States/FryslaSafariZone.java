@@ -1,3 +1,4 @@
+
 package controller.States;
 
 
@@ -13,26 +14,24 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 
-public class House6 extends GameBackground{
+public class FryslaSafariZone extends GameBackground{
 
-	public  House6(Point point, Image mapBackground) {
+	public  FryslaSafariZone(Point point, Image mapBackground) {
 		super(point, mapBackground);
 		this.setWidth(mapBackground.getWidth());
 		this.setHeight(mapBackground.getHeight());
-		
 		// Create both images and draw both when the controller instructs
 		// spritsheet contains 6 sub images
 		character = new Image("file:src/images/Game_Boy_Advance - Pokemon_FireRed_LeafGreen - RivalBlueGreenGary.png", false);
 		background = mapBackground;
 		g2D = this.getGraphicsContext2D();
-	
+		
 		// Create a TimeLine that call AnimateStarter.handle every 100ms
 		// class AnimateStarter has two method stubs you have to complete.
 		timeline = new Timeline(new KeyFrame(Duration.millis(75), new AnimateStarter()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 	}
-
-
+	
 	  private class AnimateStarter implements EventHandler<ActionEvent> {
 		  
 		  public AnimateStarter() {
@@ -68,12 +67,9 @@ public class House6 extends GameBackground{
 		@Override
 		public void handle(ActionEvent event) {
 	        tic++;
+	        System.out.println("FryslaSafariZone  animating");
 	        
 	        drawTrainer();
-	        
-	        System.out.println("DX = " + dx);
-	        System.out.println("DY = " + dy);
-	        
 	        animateImageWithoutBoundary();
 //	        g2D.drawImage(background, 0, 0);
 //	        g2D.drawImage(character, sx, sy, sw, sh, dx,  dy, dw, dh);

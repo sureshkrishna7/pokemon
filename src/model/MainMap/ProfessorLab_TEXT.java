@@ -10,19 +10,20 @@ import java.util.Scanner;
 
 import javafx.scene.image.Image;
 
-public class House1_TEXT extends TextFileReader{
+public class ProfessorLab_TEXT extends TextFileReader{
 
 
-  public House1_TEXT() {
+  public ProfessorLab_TEXT() {
     initializeBoard();
     try {
-      createMapGridFromTxtFile("src/house_1.txt");
+      createMapGridFromTxtFile("src/professor_lab.txt");
     } catch (FileNotFoundException e) {
-      System.out.println("house_1 text file isn't found");
+      System.out.println("professor_lab text file isn't found");
     }
-    mainMap = new Image("file:src/images/house_1.png", false);
+    mainMap = new Image("file:src/images/professor_lab.png", false);
   }
 
 
 }
+
 
