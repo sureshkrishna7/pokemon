@@ -70,12 +70,8 @@ public class GameBackground extends Canvas implements IState{
 	  private ScaleTransition scaler;
 	  private final double width = 600;
 	  private final double height = 400;
-	  private final Circle blackCircle;
-	  private final StackPane circlePane;
-	  private Group root;
-	  private BorderPane bp;
-	  private Scene scene = null;
-	  private Scale scale = null;
+	  private Circle blackCircle;
+	  private StackPane circlePane;
 	  
 	  public GameBackground(Point point, Image mapBackground) {
 		  playerLocation = point;
@@ -90,10 +86,7 @@ public class GameBackground extends Canvas implements IState{
 	      blackCircle = new Circle(width/2, height/2, 1, Color.BLACK);
 	      circlePane = new StackPane(blackCircle);
 	      circlePane.setPrefSize(width, height);
-	      
-	      bp = new BorderPane();
-	      // Both the nodes are added to a Group
-	      root = new Group(this,circlePane);
+
 
 	  }
 	  
@@ -126,9 +119,9 @@ public class GameBackground extends Canvas implements IState{
 
 			      @Override
 			      public void handle(ActionEvent arg) {
-			    	 //game.continueToAnimation();
-			        PokemonGame.currentState = STATE.INSIDE_BUILDING;
-			        PokemonGame.stateChanged = true;
+			    	 game.continueToAnimation();
+			        //PokemonGame.currentState = STATE.INSIDE_BUILDING;
+			        //PokemonGame.stateChanged = true;
 			      }
 			  });
 	  }
@@ -372,12 +365,21 @@ public class GameBackground extends Canvas implements IState{
 
 	  @Override
 	  public Scene render() {
-	    bp = new BorderPane();
-	    bp.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0), new Insets(0,0,0,0) )));
-	    bp.setCenter(this);
+		  
+		//System.out.println("RENDERING gBack");
+		BorderPane bp = new BorderPane();
+		bp.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0), new Insets(0,0,0,0) )));
+		bp.setCenter(this);
+		    
+		Scene scene = null;
+		Scale scale = null;
 	    
-
-	    root = new Group(bp, circlePane);
+	    // A circle black object is created here, Start the circle from the center of the screen
+	    blackCircle = new Circle(width/2, height/2, 1, Color.BLACK);
+	    circlePane = new StackPane(blackCircle);
+	    circlePane.setPrefSize(width, height);
+		      
+	    Group root = new Group(bp, circlePane);
 	    if (this instanceof CobvilleTown || this instanceof Cave || 
 	    	this instanceof FryslaSafariZone  || this instanceof LilyCoveCity) {
 	    	System.out.println("instance of Cobville Town");

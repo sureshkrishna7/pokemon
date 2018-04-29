@@ -347,23 +347,18 @@ public class PokemonGame extends Application {
 	        else {
 	            theGame.setTrainerLocation(door.getMapPlayerPos());
 	            theGame.setCurrCameraMap(door.getInsideMapObject());
+	            System.out.println("Curr Background = " + currBackground);
+	            currBackground.closingSceneAnimateCircle(this, currBackground.getTransitionViewCircle());
 	            pane.setCenter(door.getGameBackground());
 	            
 	        	currBackground = (GameBackground)pane.getCenter();
-	        	currBackground.closingSceneAnimateCircle(this, currBackground.getTransitionViewCircle());
 	        	
-//	        	while (currBackground.isTransitionViewAnimating()) {
-//	        		System.out.println("Drawing....");
-//	        	}animationFinished
-//	        	while (!(animationFinished)) {
-//	        		System.out.println("Drawing....");
-//	        	}
-	        	animationFinished = false;
-	            currentState = STATE.INSIDE_BUILDING;
-	            stateChanged = true;
-//	            
-//	            
-	        	drawGameBackground(currBackground, event, newLocationObject);
+	        	/** 
+	        	 * NOTE: new background (entering door) will be drawn when transition view
+	        	 * currBackground.closingSceneAnimateCircle() is done animating
+	        	 * which will call continueToAnimation() in this class to finish
+	        	 * off the code that should run at this point. 
+	        	 */
 	            return;
 	        }
         } 
@@ -440,14 +435,10 @@ public class PokemonGame extends Application {
     public void continueToAnimation() {
         currentState = STATE.INSIDE_BUILDING;
         stateChanged = true;
-        
-        System.out.println("Drawing....");
+       
         drawGameBackground(currBackground, currKeyEvent, currLocationChar);
     }
-    
-	public void setFinished() {
-		animationFinished = true;	
-	}
+ 
 
   } // end AnimateStarter
   
