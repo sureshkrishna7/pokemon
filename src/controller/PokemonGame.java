@@ -348,15 +348,15 @@ public class PokemonGame extends Application {
 	            theGame.setTrainerLocation(door.getMapPlayerPos());
 	            theGame.setCurrCameraMap(door.getInsideMapObject());
 	            System.out.println("Curr Background = " + currBackground);
-	            currBackground.closingSceneAnimateCircle(this, currBackground.getTransitionViewCircle());
+	            currBackground.closingSceneAnimateCircle(this, currBackground.getTransitionViewCircle(), "entering");
 	            pane.setCenter(door.getGameBackground());
 	            
 	        	currBackground = (GameBackground)pane.getCenter();
 	        	
 	        	/** 
 	        	 * NOTE: new background (entering door) will be drawn when transition view
-	        	 * currBackground.closingSceneAnimateCircle() is done animating
-	        	 * which will call continueToAnimation() in this class to finish
+	        	 * currBackground.closingSceneAnimateCircle() is done animating which
+	        	 * will call continueEnteringBuildingAnimation() in this class to finish
 	        	 * off the code that should run at this point. 
 	        	 */
 	            return;
@@ -366,26 +366,9 @@ public class PokemonGame extends Application {
             // align back to mainmap destination after exitin building
         	// since animation increments/decrements the location on GUI
         	// when moving on different maps (grids)
-        	GameBackground backgroundToRemove = currBackground;
-        	backgroundToRemove.setDy(backgroundToRemove.getDy() + 16);
-        	theGame.setTrainerLocation(playerOldLocation);
-            theGame.setCurrCameraMap(oldCurrentMap);
-            
-        	// -32 (16) to adjust animation after exiting house 
-        	// (16) to make sure that when he takes a step out the door, 
-        	// he is put in the correct pos relative to grid
-        	currentState = STATE.COBVILLETOWN;
-        	stateChanged = true;
-        	currBackground = cobvilleTown;
-        	  
-        	// less adjusting if was already on door
-        	if (trainerWasAlreadyOnDoor) {
-        		cobvilleTown.setDy(cobvilleTown.getDy() - 16);
-        		trainerWasAlreadyOnDoor = false;
-        	}else {
-        		cobvilleTown.setDy(cobvilleTown.getDy() - 32);
-        	}
-        	pane.setCenter(cobvilleTown);
+        	currBackground.closingSceneAnimateCircle(this, currBackground.getTransitionViewCircle(), "exiting");
+        	return;
+        	//pane.setCenter(cobvilleTown);
         	  
         }  else if (newLocationObject == ' ') {
         	theGame.setTrainerLocation(playerOldLocation);
@@ -432,9 +415,34 @@ public class PokemonGame extends Application {
       
     }
     
-    public void continueToAnimation() {
+    public void continueEnteringBuildingAnimation() {
         currentState = STATE.INSIDE_BUILDING;
         stateChanged = true;
+        drawGameBackground(currBackground, currKeyEvent, currLocationChar);
+    }
+    
+    public void continueExitingBuildingAnimation() {
+    	GameBackground backgroundToRemove = currBackground;
+    	backgroundToRemove.setDy(backgroundToRemove.getDy() + 16);
+    	theGame.setTrainerLocation(playerOldLocation);
+        theGame.setCurrCameraMap(oldCurrentMap);
+        
+        //currBackground.closingSceneAnimateCircle(this, currBackground.getTransitionViewCircle(), "exiting");
+        
+    	// -32 (16) to adjust animation after exiting house 
+    	// (16) to make sure that when he takes a step out the door, 
+    	// he is put in the correct pos relative to grid
+    	currentState = STATE.COBVILLETOWN;
+    	stateChanged = true;
+    	currBackground = cobvilleTown;
+    	pane.setCenter(cobvilleTown);
+    	// less adjusting if was already on door
+    	if (trainerWasAlreadyOnDoor) {
+    		cobvilleTown.setDy(cobvilleTown.getDy() - 16);
+    		trainerWasAlreadyOnDoor = false;
+    	}else {
+    		cobvilleTown.setDy(cobvilleTown.getDy() - 32);
+    	}
         drawGameBackground(currBackground, currKeyEvent, currLocationChar);
     }
  

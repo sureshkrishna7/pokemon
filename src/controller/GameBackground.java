@@ -94,7 +94,7 @@ public class GameBackground extends Canvas implements IState{
 		  return blackCircle;
 	  }
 	  
-	  public void closingSceneAnimateCircle(PokemonGame.AnimateStarter game, Circle circle) {
+	  public void closingSceneAnimateCircle(PokemonGame.AnimateStarter game, Circle circle, String enteringOrExitingBuilding) {
 
 		    scaler = new ScaleTransition(
 		        SCALE_DURATION,
@@ -119,7 +119,12 @@ public class GameBackground extends Canvas implements IState{
 
 			      @Override
 			      public void handle(ActionEvent arg) {
-			    	 game.continueToAnimation();
+			    	 if ( enteringOrExitingBuilding.equals("entering")) {
+			    		 game.continueEnteringBuildingAnimation();
+			    	 }
+			    	 else {
+			    		 game.continueExitingBuildingAnimation();
+			    	 }
 			        //PokemonGame.currentState = STATE.INSIDE_BUILDING;
 			        //PokemonGame.stateChanged = true;
 			      }
