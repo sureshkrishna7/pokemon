@@ -87,4 +87,10 @@ public class Elroy extends NPC {
     this.inventory.put("heal", l3);
   }
 
+  @Override
+  public void setCoords() {
+    // TODO Auto-generated method stub
+    
+  }
+
 }

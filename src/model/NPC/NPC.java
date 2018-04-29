@@ -3,6 +3,8 @@ package model.NPC;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
+
+import javafx.scene.image.Image;
 import model.Items;
 import model.Pokemon;
 import model.Trainer;
@@ -11,9 +13,13 @@ import model.UsableItems.UsableItem;
 public abstract class NPC extends Items {
   private String name;
   private boolean hostile;
+  
   protected Pokemon currentPokemon; // current battle pokemon, switch dynamically while in battle
   protected Map<String, ArrayList<UsableItem>> inventory;
   protected ArrayList<Pokemon> listOfPokemon;
+  protected double xCoord;
+  protected double yCoord;
+  protected Image img;
 
   /*
    * NPC(String, boolean, ArrayList<Pokemon>) -- this constructor creates an
@@ -40,7 +46,19 @@ public abstract class NPC extends Items {
   public Map<String, ArrayList<UsableItem>> getInventory() {
     return this.inventory;
   }
+  
+  public double getYCoord() {
+    return yCoord;
+  }
 
+  public double getXCoord() {
+    return xCoord;
+  }
+  
+  public Image getImage() {
+    return img;
+  }
+  
   public String getName() {
     return name;
   }
@@ -93,4 +111,6 @@ public abstract class NPC extends Items {
   public abstract void initializePokeList();
 
   public abstract void initializeInventory();
+  
+  public abstract void setCoords();
 }

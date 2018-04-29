@@ -2,6 +2,8 @@ package model.NPC;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javafx.scene.image.Image;
 import model.Pokemon;
 import model.Trainer;
 import model.UsableItems.FullTonic;
@@ -14,9 +16,11 @@ public class Tain extends NPC {
     super('N', name, hostile);
     this.inventory = new HashMap<>();
     this.listOfPokemon = new ArrayList<Pokemon>();
+    this.img = new Image("file:src/images/Tain.png");
     initializeInventory();
     initializePokeList();
     setRandomCurPoke();
+    setCoords();
   }
   
   @Override
@@ -134,5 +138,9 @@ public class Tain extends NPC {
     this.inventory.put("mid tonic", l2);
   }
 
-
+  @Override
+  public void setCoords() {
+    this.xCoord = 40;
+    this.yCoord = 50;
+  }
 }
