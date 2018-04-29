@@ -334,7 +334,7 @@ public class PokemonGame extends Application {
              */
 
 	        if(door == null) {
-	        	System.out.println("DOOR IS NULL");
+	        	System.out.println("DOOR = NULL");
 	            theGame.setTrainerLocation(theGame.getCurrCameraMap().getMapPlayerPosition());
 	        }
 	        else {
