@@ -133,6 +133,10 @@ public class MainMenu implements IState {
     dropShadow.setBlurType(BlurType.GAUSSIAN);
     save.setEffect(dropShadow);
     
+    save.setOnActivate(() -> {
+      PokemonGame.writePersistentObject();
+    });
+    
     exit = new MenuItem("Exit Menu");
     exit.setId("fancytext");
     DropShadow dropShadow2 = new DropShadow();

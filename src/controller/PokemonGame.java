@@ -145,7 +145,7 @@ public class PokemonGame extends Application {
   }
 
   @SuppressWarnings("unchecked")
-  private static void readPersistentObjects() {
+  public static void readPersistentObjects() {
     try {
       FileInputStream fileInput = new FileInputStream("src/persistedTrainerObjects.out");
       ObjectInputStream in = new ObjectInputStream(fileInput);
@@ -178,7 +178,7 @@ public class PokemonGame extends Application {
       writePersistentObject();
     }
   }
-  private static void writePersistentObject() {
+  public static void writePersistentObject() {
     try {
       FileOutputStream fileOutput = new FileOutputStream("src/persistedTrainerObjects.out");
       ObjectOutputStream out = new ObjectOutputStream(fileOutput);
