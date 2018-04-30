@@ -1,0 +1,19 @@
+Welcome to Pokemon:
+
+There are 2 game modes in this type of game. Safari Zone & Battle:
+
+You can explore the City and find pokemon to battle.
+You have the ability to change pokemon, use Items, fight or run.
+
+You can also enter the safari zone to capture new Pokemon.
+Here, you cannot battle pokemon, but you can use items to 
+assist you in capturing pokemon.
+Rocks will make it easier to catch a pokemon, but more likely
+to run.
+Bait will make the pokemon less likely to run.
+Use the safari ball to catch safari pokemon
+
+Explore the map, battle pokemon, and capture pokemon to add
+to your team.
+
+Have Fun!

@@ -8,7 +8,8 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
 
-
+import controller.BattleView.SafariView;
+import controller.BattleView.TausifBattleView;
 import controller.States.CobvilleTown;
 import controller.States.Mart;
 import controller.States.StartScreen;
@@ -400,6 +401,23 @@ public class PokemonGame extends Application {
 	            currentState = STATE.BATTLE;
 	
 	            Pokemon wildPoke = getWildPoke();
+	            if (theGame.inSafariZone()) {
+	            		try {
+						SafariView.start(primaryStage, theGame.getTrainer(), wildPoke);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	            }
+	            else {
+	            		try {
+						TausifBattleView.start(primaryStage, theGame.getTrainer(), wildPoke);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	            }
+	            
 	            wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
 	          }
 	

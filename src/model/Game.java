@@ -14,8 +14,9 @@ import model.MainMap.MartCity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
 
-public class Game {
+public class Game extends Observable {
 
   private boolean didGameEnd;
   private boolean playerWon;
@@ -35,6 +36,7 @@ public class Game {
   private int totalSafariZoneBalls;
   private int currentSafariSteps;   //at start of a safari Zone, would be 0
   
+  private Pokemon testPokemon;
   
   private Map<String, String> allPokemonList;
   private ArrayList<String> pokemonNameList;
@@ -59,6 +61,8 @@ public class Game {
     ash.setLocation(x, y);
     isTrainerAlreadyOnDoor = false;
     areWeInSafariZone = false;
+    
+    testPokemon = new Pokemon("Vulpix", 2, 'R', 'F', null);
   }
   
   public static char getCharAtIndex(int row, int col) {
@@ -216,6 +220,10 @@ public class Game {
     currentSafariSteps = 0;
   }
   
+  public boolean inSafariZone() {
+	  return areWeInSafariZone;
+  }
+  
   public void weAreOutSafariZone() {
     areWeInSafariZone = false;
     currentSafariSteps = 0;
@@ -224,5 +232,9 @@ public class Game {
   public boolean haveExhaustedSafariZone() {
     return currentSafariSteps >= 500;
   }
+
+public Pokemon getWildPokemon() {
+	return this.testPokemon;
+}
 
 }

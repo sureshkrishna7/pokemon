@@ -61,7 +61,7 @@ public class Pokemon extends Items {
     return moves.get(i).baseDamage();
   }
 
-  public void attack(int i, Pokemon enemy) {
+  public boolean attack(int i, Pokemon enemy) {
     Attack attack = moves.get(i);
 
     boolean diffBoostFactor = false;
@@ -123,7 +123,10 @@ public class Pokemon extends Items {
       if(attack.getDebuf() != null) {
         enemy.setStatus(attack.getDebuf());
       }
+      return true;
     }
+    else
+    		return false;
   }
 
   public boolean isOpposingType(Pokemon p) {
