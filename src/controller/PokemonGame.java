@@ -18,6 +18,7 @@ import java.util.Scanner;
 
 import controller.BattleView.SafariView;
 import controller.BattleView.TausifBattleView;
+import controller.States.FryslaSafariZone;
 //import controller.controller.States.CobvilleTown;
 import controller.States.Mart;
 import controller.States.StartScreen;
@@ -325,6 +326,7 @@ public class PokemonGame extends Application {
         break;
       case INSIDE_BUILDING:
         stateChanged = false;
+        //inSafariTown = true;
         currentState = STATE.INSIDE_BUILDING;
         GameBackground mapInsideBuilding = door.getGameBackground();
         currBackground = mapInsideBuilding;
@@ -392,7 +394,7 @@ public class PokemonGame extends Application {
           return;
         }
         
-        inSafariTown = false;
+        //inSafariTown = false;
         currKeyEvent = event;
         char newLocationObject = 'Z';
         currLocationChar = newLocationObject;
@@ -441,13 +443,19 @@ public class PokemonGame extends Application {
           oldCurrentMap = theGame.getCurrCameraMap();
           door = (Door) theGame.getCurrCameraMap().enteredDoor(theGame.getTrainerLocation().x, theGame.getTrainerLocation().y);
 
-          Door safariTownEntrance = (Door) theGame.getCurrCameraMap().enteredDoor(4, 30);
+          Door safariTownEntrance = (Door) theGame.getCurrCameraMap().enteredDoor(5, 30);
           
-          if (safariTownEntrance == door) {
-        	  	inSafariTown = true;
-          }else {
-        	  	inSafariTown = false;
-          }
+          System.out.println("inSafari? "  + inSafariTown);
+          
+          //checkIfInSafariTown(door);
+//          if (theGame.getTrainerLocation().x == 30 && theGame.getTrainerLocation().y == 5) {
+//        	  	inSafariTown = true;
+//          }else {
+//        	  System.out.println("x = " +theGame.getTrainerLocation().x) ;
+//        	  System.out.println("y = " +theGame.getTrainerLocation().y) ;
+//        	  	
+//        	  	inSafariTown = false;
+//          }
           /* 
            * ****We would be in safari Zone if the door is null****
            * ****Because we magically hop to different places****
@@ -460,11 +468,14 @@ public class PokemonGame extends Application {
           else {
             theGame.setTrainerLocation(door.getMapPlayerPos());
             theGame.setCurrCameraMap(door.getInsideMapObject());
+            //inSafariTown = true;
             notAcceptingInput = true;
             currBackground.closingSceneAnimateCircle(this, currBackground.getTransitionViewCircle(), "entering");
+            
             pane.setCenter(door.getGameBackground());
 
             currBackground = (GameBackground)pane.getCenter();
+            inSafariTown = currBackground.getInSafariTown();
 
             /** 
              * NOTE: new background (entering door) will be drawn when transition view
@@ -531,8 +542,10 @@ public class PokemonGame extends Application {
 	            currentState = STATE.BATTLE;
 	
 	            Pokemon wildPoke = getWildPoke();
+	            System.out.println("inSafari?? "  + inSafariTown);
+	            
 	            //if (theGame.inSafariZone()) {
-	            if (inSafariTown) {
+	            if (currBackground.getInSafariTown()) {
 	            		try {
 						SafariView.start(primaryStage, theGame.getTrainer(), wildPoke);
 					} catch (Exception e) {
@@ -541,6 +554,8 @@ public class PokemonGame extends Application {
 					}
 	            }
 	            else {
+	            	
+	            	System.out.println("not in SafariTown!");
 	            		try {
 						TausifBattleView.start(primaryStage, theGame.getTrainer(), wildPoke);
 	            			//SafariView.start(primaryStage, theGame.getTrainer(), wildPoke);
@@ -586,6 +601,13 @@ public class PokemonGame extends Application {
 
   } // end AnimateStarter
 
+//  public boolean getIsInSafariTown(GameBackground gameBackground) {
+//		if (gameBackground instanceof FryslaSafariZone) {
+//      	  return true;
+//		}
+//		System.out.println(gameBackground.getClass());
+//		return false;
+//  }
   /**
    * drawGameBackground()
    * z is a char returned by theGame.playerMove() that's not used in map
@@ -594,6 +616,8 @@ public class PokemonGame extends Application {
    */
   public void drawGameBackground(GameBackground gameBackground, KeyEvent event, char newLocationObject) {
     if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {
+    	
+
       gameBackground.setPlayerLocation(theGame.getTrainerLocation());
       gameBackground.movePlayer(event.getCode(), "over");
     }
@@ -719,7 +743,6 @@ public class PokemonGame extends Application {
     Optional<ButtonType> result = statSheet.showAndWait();
 
   }
-
 public static void getOutOfBattle() {
 	currentState =STATE.COBVILLETOWN;
 	stateChanged = true;
@@ -727,10 +750,11 @@ public static void getOutOfBattle() {
 }
 
 public static void getOutSafari() {
-	door = (Door) theGame.getCurrCameraMap().enteredDoor(5, 30);
+	//door = (Door) theGame.getCurrCameraMap().enteredDoor(5, 30);
 	
+	//pane.setCenter(currBackground);
 	System.out.println("Setting state to InsideBuilding");
-	currentState =STATE.INSIDE_BUILDING;
+	currentState = STATE.INSIDE_BUILDING;
 	stateChanged = true;
 }
 }

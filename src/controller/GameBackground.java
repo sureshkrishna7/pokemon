@@ -59,6 +59,7 @@ public class GameBackground extends Canvas implements IState {
   protected boolean afterTopLeftCornerCondition2 = false;
   protected boolean afterBottomLeftCornerCondition = false;
   protected boolean afterBottomLeftCornerCondition2 = false;
+  protected boolean inSafariTown = false;
 
   protected int tic = 0;
   protected double sx, sy, sw, sh, dx, dy, dw, dh;
@@ -369,6 +370,10 @@ public class GameBackground extends Canvas implements IState {
     // TODO Auto-generated method stub
 
   }
+  
+  public boolean getInSafariTown() {
+	  return inSafariTown;
+  }
 
   @Override
   public Scene render() {
@@ -388,6 +393,12 @@ public class GameBackground extends Canvas implements IState {
     circlePane.setPrefSize(width, height);
 
     Group root = new Group(bp, circlePane);
+    
+    
+    if (this instanceof FryslaSafariZone) {
+    		inSafariTown = true;
+    }
+    
     if (this instanceof CobvilleTown || this instanceof Cave || this instanceof FryslaSafariZone
         || this instanceof LilyCoveCity) {
       System.out.println("instance of Cobville Town");
