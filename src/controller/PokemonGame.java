@@ -215,8 +215,8 @@ public class PokemonGame extends Application {
     initializeGameForFirstTime();
 
     // initialize state to start
-    //currentState = STATE.COBVILLETOWN;
-    currentState = STATE.START;
+    currentState = STATE.COBVILLETOWN;
+    //currentState = STATE.START;
 
     stateChanged = true;
 
@@ -236,6 +236,7 @@ public class PokemonGame extends Application {
       }
     }.start();
 
+    stage.sizeToScene();
     stage.show();
 
     stage.setOnCloseRequest(new WritePersistentObject());

@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -17,8 +18,12 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -70,14 +75,20 @@ public class MainMenu implements IState {
   
   
   private Parent getGameMenu(Game theGame) {
-    BorderPane root = new BorderPane();
+    StackPane root = new StackPane();
+    Rectangle textBox = new Rectangle(100,200,Paint.valueOf("AQUA"));
     
-    BackgroundImage myBI= new BackgroundImage(new Image("file:src/images/GameBackground1.gif",width,height,false,true),
+    ImageView bGround = new ImageView("file:src/images/GameBackground1.gif");
+    bGround.prefHeight(height);
+    bGround.prefWidth(width);
+    /*
+    BackgroundImage myBI= new BackgroundImage(new Image("file:src/images/GameBackground1.gif",width,height,true,true),
         BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
         BackgroundSize.DEFAULT);
-    
-    root.setBackground(new Background(myBI));
-    
+    */
+    //root.setLeft(bGround);
+    //root.setBackground(new Background(myBI));
+    //root.setBackground(new Image("file:src/images/GameBackground1.gif"));
     StringBuilder sb = new StringBuilder();
 
     sb.append("Pokemon: \n");
@@ -94,11 +105,12 @@ public class MainMenu implements IState {
     text.setFill(Color.ANTIQUEWHITE);
     
     initMenuItems();
-    
     menuBox = new VBox(10, save, exit, quit);
     menuBox.setPadding(new Insets(60.0, 0, 0, 80.0));
-    root.setRight(text);
-    root.setCenter(menuBox);
+    root.getChildren().addAll(bGround, textBox, text, menuBox);
+    root.setAlignment(Pos.TOP_LEFT);
+    //root.setRight(textPane);
+    //root.setLeft(menuBox);
     return root;
   }
   
