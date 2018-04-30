@@ -50,12 +50,6 @@ public class MainMenu implements IState {
   private static MenuItem save;
   private static MenuItem quit;
   private static MenuItem exit;
-<<<<<<< HEAD
-  
-  //temp comment
-  public MainMenu(Game theGame) {  
-    scene = new Scene(getGameMenu(theGame));
-=======
 
   private StringBuilder sb;
 
@@ -67,7 +61,6 @@ public class MainMenu implements IState {
   }
 
   public void arrowKeyMovement() {
->>>>>>> 1708822f8c40c5d5aec0e7c3b16b012cb1ff0758
     scene.setOnKeyPressed(event -> {
       if (event.getCode() == KeyCode.UP) {
         if (currentItem > 0) {

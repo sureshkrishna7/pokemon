@@ -16,12 +16,9 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
 
-<<<<<<< HEAD
 import controller.BattleView.SafariView;
 import controller.BattleView.TausifBattleView;
-import controller.States.CobvilleTown;
-=======
->>>>>>> 1708822f8c40c5d5aec0e7c3b16b012cb1ff0758
+//import controller.controller.States.CobvilleTown;
 import controller.States.Mart;
 import controller.States.StartScreen;
 import controller.States.StateMachine;
@@ -517,7 +514,7 @@ public class PokemonGame extends Application {
           // bush, check will battle at random, start battle with randomly instantiated
           // Pokemon
         } else if (newLocationObject == 'B') {
-<<<<<<< HEAD
+
 	          foundPokemon = checkBush();
 	          if (foundPokemon) {
 	
@@ -550,23 +547,6 @@ public class PokemonGame extends Application {
 
         } else if (newLocationObject == 'N') {
             System.out.print("Encountered a NPC\n");
-=======
-          foundPokemon = checkBush();
-          if (foundPokemon) {
-
-            /** The Battle is about to start */
-            currentState = STATE.BATTLE;
-
-            Pokemon wildPoke = getWildPoke();
-            wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
-          }
-
-          /** Once the battle is done set the state back to Game */
-          currentState = STATE.COBVILLETOWN;
-
-        } else {
-
->>>>>>> 1708822f8c40c5d5aec0e7c3b16b012cb1ff0758
         }
 
         drawGameBackground( currBackground, event, newLocationObject);
