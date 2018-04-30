@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Observer;
@@ -14,11 +15,10 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
 
-
-import controller.States.CobvilleTown;
 import controller.States.Mart;
 import controller.States.StartScreen;
 import controller.States.StateMachine;
+import controller.States.CobvilleTown.CobvilleTown;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -27,11 +27,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.Battle;
@@ -41,6 +39,8 @@ import model.MainMap.Door;
 import model.MainMap.MainMap;
 import model.Menus.MainMenu;
 import model.Menus.StartMenu;
+import model.NPC.NPC;
+import model.NPC.Tain;
 import model.UsableItems.UsableItem;
 
 //Simply Create the User and insert User into PokeTownMap, the rest of the maps will be embedded within PokeTownMap
@@ -61,6 +61,7 @@ public class PokemonGame extends Application {
   private static Point playerOldLocation = new Point();
   private static MainMap oldCurrentMap;
 
+  public static List<NPC> npcList;
   private static boolean firstState;
   private static boolean running;
   private static boolean foundPokemon;
@@ -133,6 +134,8 @@ public class PokemonGame extends Application {
     pane = new BorderPane();
     currBackground = new GameBackground(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
 
+    initNPCs();
+    
     playerStartLocation.x = theGame.getTrainerLocation().x;
     playerStartLocation.y = theGame.getTrainerLocation().y;
 
@@ -200,6 +203,11 @@ public class PokemonGame extends Application {
     catch (IOException e){
       e.printStackTrace();
     }
+  }
+  
+  private static void initNPCs() {
+    npcList = new LinkedList<NPC>();
+    npcList.add(new Tain("Tain", true));
   }
 
   @Override
@@ -393,8 +401,12 @@ public class PokemonGame extends Application {
           theGame.setTrainerLocation(playerOldLocation);
           theGame.setCurrCameraMap(oldCurrentMap);
           theGame.weAreOutSafariZone();
-        } else {
-          // System.out.println("KeyCode =" + event.getCode());
+        } else if(KeyCode.ENTER == event.getCode()) {
+          System.out.print("Encountered NPC\n");
+          if (newLocationObject == 'N') {
+            System.out.print("Encountered NPC\n");
+            System.out.println("\tIntiate Dialog Box Here!");
+          }
         }
 
         //System.out.println("Game logic = " + newLocationObject);
@@ -496,8 +508,8 @@ public class PokemonGame extends Application {
           /** Once the battle is done set the state back to Game */
           currentState = STATE.COBVILLETOWN;
 
-        } else if (newLocationObject == 'N') {
-          System.out.print("Encountered a NPC\n");
+        } else {
+            
         }
 
         drawGameBackground( currBackground, event, newLocationObject);
