@@ -354,10 +354,12 @@ public class PokemonGame extends Application {
     @Override
     public void handle(KeyEvent event) {
       if (event.getCode() == KeyCode.ESCAPE) {
+        menu = (MainMenu) stateMachine.getIState(STATE.MENU);
+        menu.listIncludedMainMenu(theGame);
         previousState = currentState;
         currentState = STATE.MENU;
         stateChanged = true;
-        menu.listIncludedMainMenu(theGame);
+        //menu.listIncludedMainMenu(theGame);
       }
     }
   }

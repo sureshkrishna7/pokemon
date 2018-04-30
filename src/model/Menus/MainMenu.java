@@ -37,10 +37,10 @@ import model.Pokemon;
 import model.UsableItems.UsableItem;
 
 public class MainMenu implements IState {
-  
+
   private static final int width = 600;
   private static final int height = 400;
-  
+
   private static final Font FONT1 = Font.font("Serif",FontWeight.NORMAL, 18);
   private static final Font FONT2 = Font.font("Serif", FontWeight.BOLD, 26);
   private Scene scene;
@@ -50,13 +50,13 @@ public class MainMenu implements IState {
   private static MenuItem save;
   private static MenuItem quit;
   private static MenuItem exit;
-  
+
   private StringBuilder sb;
-  
+
   public MainMenu(Game theGame) {
-    
+
     listExcludedMainMenu(theGame);
-    
+
     arrowKeyMovement();
   }
 
@@ -68,14 +68,14 @@ public class MainMenu implements IState {
           getMenuItem(--currentItem).setActive(true);
         }
       }
-      
+
       if (event.getCode() == KeyCode.DOWN) {
         if (currentItem < menuBox.getChildren().size() - 1) {
           getMenuItem(currentItem).setActive(false);
           getMenuItem(++currentItem).setActive(true);
         }
       }
-      
+
       if (event.getCode() == KeyCode.ENTER) {
         getMenuItem(currentItem).activate();
       }
@@ -83,14 +83,14 @@ public class MainMenu implements IState {
   }
 
   public void listExcludedMainMenu(Game theGame) {
-    
+
     StackPane root = new StackPane();
     Rectangle textBox = new Rectangle(100,240,Paint.valueOf("BLACK"));
-    
+
     ImageView bGround = new ImageView("file:src/images/GameBackground1.gif");
     bGround.prefHeight(height);
     bGround.prefWidth(width);
-      
+
     initMenuItems();
     menuBox = new VBox(50, save, exit, quit);
     menuBox.setPadding(new Insets(25, 5, 20, 90));
@@ -98,54 +98,33 @@ public class MainMenu implements IState {
     root.setAlignment(Pos.TOP_LEFT);
     //root.setRight(textPane);
     //root.setLeft(menuBox);
- 
+
     scene = new Scene(root);
     scene.getStylesheets().add("file:src/style.css");
   }
-  
+
   public Scene getScene() {
     return this.scene;
   }
-  
-  
+
+
   public void listIncludedMainMenu(Game theGame) {
     StackPane root = new StackPane();
     Rectangle textBox = new Rectangle(100,240,Paint.valueOf("BLACK"));
-    
+
     ImageView bGround = new ImageView("file:src/images/GameBackground1.gif");
     bGround.prefHeight(height);
     bGround.prefWidth(width);
-    
-    System.out.println("Main Menu is this running?");
-    
-    sb = readList(theGame);
-    
-    Text text = new Text(sb.toString());
-    text.setFont(FONT1);
-    LinearGradient linearGradient = new LinearGradient(0, 0, 20, 20, false, CycleMethod.REFLECT, new Stop(0,Color.valueOf("ff7eb3")),new Stop(1,Color.valueOf("#96deda")));
-    text.setStroke(Color.TRANSPARENT);
-    text.setFill(linearGradient);
-    
-    initMenuItems();
-    menuBox = new VBox(50, save, exit, quit);
-    menuBox.setPadding(new Insets(25, 5, 20, 90));
-    root.getChildren().addAll(bGround, textBox, text, menuBox);
-    root.setAlignment(Pos.TOP_LEFT);
-    //root.setRight(textPane);
-    //root.setLeft(menuBox);
-    scene = new Scene(root);
-    
-    arrowKeyMovement();
-  }
 
-  public StringBuilder readList(Game theGame) {
+    System.out.println("Main Menu is this running?");
+
     sb = new StringBuilder();
 
     sb.append("Pokemon: \n");
-    
+
     ArrayList<Pokemon> pokes = theGame.getTrainer().getPokeList();
     System.out.println("Main Menu Pokemon List ="+pokes.toString());
-    
+
     for (Pokemon p : pokes) {
       System.out.println("MainMenu Pokemon = "+p.getData());
       sb.append(p.getData());
@@ -155,10 +134,26 @@ public class MainMenu implements IState {
       System.out.println("MainMenu items = "+entry.getKey() + " "+ entry.getValue().size() + "\n");
       sb.append("\t" + entry.getKey() + " " + entry.getValue().size() + "\n");
     }
-    
-    return sb;
+
+
+    Text text = new Text(sb.toString());
+    text.setFont(FONT1);
+    LinearGradient linearGradient = new LinearGradient(0, 0, 20, 20, false, CycleMethod.REFLECT, new Stop(0,Color.valueOf("ff7eb3")),new Stop(1,Color.valueOf("#96deda")));
+    text.setStroke(Color.TRANSPARENT);
+    text.setFill(linearGradient);
+
+    initMenuItems();
+    menuBox = new VBox(50, save, exit, quit);
+    menuBox.setPadding(new Insets(25, 5, 20, 90));
+    root.getChildren().addAll(bGround, textBox, text, menuBox);
+    root.setAlignment(Pos.TOP_LEFT);
+    //root.setRight(textPane);
+    //root.setLeft(menuBox);
+    scene = new Scene(root);
+
+    arrowKeyMovement();
   }
-  
+
   private static void initMenuItems() {
     save = new MenuItem("Save");
     save.setId("fancytext");
@@ -168,11 +163,11 @@ public class MainMenu implements IState {
     dropShadow.setSpread(1);
     dropShadow.setBlurType(BlurType.GAUSSIAN);
     save.setEffect(dropShadow);
-    
+
     save.setOnActivate(() -> {
       PokemonGame.writePersistentObject();
     });
-    
+
     exit = new MenuItem("Exit Menu");
     exit.setId("fancytext");
     DropShadow dropShadow2 = new DropShadow();
@@ -181,48 +176,48 @@ public class MainMenu implements IState {
     dropShadow2.setSpread(1);
     dropShadow2.setBlurType(BlurType.GAUSSIAN);
     exit.setEffect(dropShadow2);
-    
-    
+
+
     exit.setOnActivate(() -> {
       //System.out.println(prevScene);
       //PokemonGame.primaryStage.setScene(prevScene);
       PokemonGame.currentState = PokemonGame.previousState;
       PokemonGame.stateChanged = true;
     });
-    
+
     quit = new MenuItem("Quit");
     quit.setOnActivate(() -> System.exit(0));
-    
+
     quit.setId("fancytext");
-    
+
     DropShadow dropShadow3 = new DropShadow();
     dropShadow3.setColor(Color.RED);
     dropShadow3.setRadius(25);
     dropShadow3.setSpread(1);
     dropShadow3.setBlurType(BlurType.GAUSSIAN);
     quit.setEffect(dropShadow3);
-    
+
   }
-  
+
   private static class MenuItem extends VBox {
     private Text text;
     private Runnable script;
 
     public MenuItem(String name) {
-        super(15);
-        setAlignment(Pos.CENTER);
+      super(15);
+      setAlignment(Pos.CENTER);
 
-        text = new Text(name);
-        text.setFont(FONT2);
+      text = new Text(name);
+      text.setFont(FONT2);
 
-        getChildren().addAll(text);
-        if(name == "SAVE") setActive(true);
-        else setActive(false);
-        setOnActivate(() -> System.out.println(name + " activated"));
+      getChildren().addAll(text);
+      if(name == "SAVE") setActive(true);
+      else setActive(false);
+      setOnActivate(() -> System.out.println(name + " activated"));
     }
 
     public void setActive(boolean b) {
-      
+
       if(b) {
         text.setStyle("-fx-rotate: 12;");
         //text.setFill(Color.WHITE);
@@ -238,12 +233,12 @@ public class MainMenu implements IState {
     }
 
     public void setOnActivate(Runnable r) {
-        script = r;
+      script = r;
     }
 
     public void activate() {
-        if (script != null)
-            script.run();
+      if (script != null)
+        script.run();
     }
   }
 
@@ -254,7 +249,7 @@ public class MainMenu implements IState {
   @Override
   public void update(float elapsedTime) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
@@ -277,6 +272,6 @@ public class MainMenu implements IState {
   public String getName() {
     return "mainMenu";
   }
-  
-  
+
+
 }
