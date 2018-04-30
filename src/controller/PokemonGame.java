@@ -237,6 +237,7 @@ public class PokemonGame extends Application {
     }.start();
 
     stage.show();
+
     stage.setOnCloseRequest(new WritePersistentObject());
   }
 
