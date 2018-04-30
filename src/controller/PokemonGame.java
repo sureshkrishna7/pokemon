@@ -541,7 +541,8 @@ public class PokemonGame extends Application {
 	            
 	            wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
 	          }
-	
+	          
+	          System.out.println("Returning to Cobville Town");
 	          /** Once the battle is done set the state back to Game */
 	          currentState = STATE.COBVILLETOWN;
 
@@ -707,4 +708,10 @@ public class PokemonGame extends Application {
     Optional<ButtonType> result = statSheet.showAndWait();
 
   }
+
+public static void getOutOfBattle() {
+	currentState =STATE.COBVILLETOWN;
+	stateChanged = true;
+	
+}
 }

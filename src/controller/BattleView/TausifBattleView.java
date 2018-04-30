@@ -618,12 +618,16 @@ public class TausifBattleView {
 			
 			if (wonBattle == true) {
 				System.out.println("You Win");
+			
 			}
 			else if (trainer.allPokemonExhausted()) {
 				System.out.println("You Lose");
 			}
-			else
+			else {
 				System.out.println("You Ran Away");
+			PokemonGame.getOutOfBattle();
+			}
+			
 		}
 	}
 
