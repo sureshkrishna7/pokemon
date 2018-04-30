@@ -542,7 +542,8 @@ public class PokemonGame extends Application {
 	            currentState = STATE.BATTLE;
 	
 	            Pokemon wildPoke = getWildPoke();
-	            System.out.println("inSafari?? "  + inSafariTown);
+	            //System.out.println("PLAYER-----> "  + currBackground.get);
+	            drawGameBackground( currBackground, event, newLocationObject);
 	            
 	            //if (theGame.inSafariZone()) {
 	            if (currBackground.getInSafariTown()) {
@@ -569,6 +570,7 @@ public class PokemonGame extends Application {
 	          }
 	          
 	          System.out.println("Returning to Cobville Town");
+	          
 	          /** Once the battle is done set the state back to Game */
 	          currentState = STATE.COBVILLETOWN;
 
@@ -753,6 +755,7 @@ public static void getOutSafari() {
 	//door = (Door) theGame.getCurrCameraMap().enteredDoor(5, 30);
 	
 	//pane.setCenter(currBackground);
+	//currBackground.setDx(currBackground.getDx() - 16);
 	System.out.println("Setting state to InsideBuilding");
 	currentState = STATE.INSIDE_BUILDING;
 	stateChanged = true;
