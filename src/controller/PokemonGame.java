@@ -21,6 +21,7 @@ import controller.BattleView.TausifBattleView;
 import controller.States.FryslaSafariZone;
 //import controller.controller.States.CobvilleTown;
 import controller.States.Mart;
+import controller.States.StartInstruct;
 import controller.States.StartScreen;
 import controller.States.StateMachine;
 import controller.States.CobvilleTown.CobvilleTown;
@@ -92,6 +93,7 @@ public class PokemonGame extends Application {
   private StartScreen start;
   private StartMenu startMenu;
   private KeyEvent currKeyEvent;
+  private StartInstruct startInstruct;
   private char currLocationChar;
 
   public static STATE currentState;
@@ -340,6 +342,11 @@ public class PokemonGame extends Application {
       case BATTLE:
         break;
       case INSTRUCTION:
+    	    stateChanged = false;
+    	    currentState = STATE.INSTRUCTION;
+    	    startInstruct = (StartInstruct) stateMachine.getIState(STATE.INSTRUCTION);
+    	    currentScene = startInstruct.render();
+    	    primaryStage.setScene(currentScene);
         break;
       case MENU:
         stateChanged = false;
@@ -370,7 +377,7 @@ public class PokemonGame extends Application {
     }
   }
 
-  public void setState(STATE newState) {
+  public static void setState(STATE newState) {
     currentState = newState;
   }
 

@@ -189,6 +189,10 @@ public class StartMenu implements IState{
     instructions = new MenuItem("INSTRUCTIONS");
     instructions.setId("fancytext");
     
+    instructions.setOnActivate(() -> {
+    	PokemonGame.currentState = STATE.INSTRUCTION;
+        PokemonGame.stateChanged = true;
+    });
     DropShadow dropShadow2 = new DropShadow();
     dropShadow2.setColor(Color.YELLOW);
     dropShadow2.setRadius(25);

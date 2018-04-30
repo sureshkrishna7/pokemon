@@ -29,6 +29,7 @@ public class StateMachine implements IState {
     mStates.put(STATE.COBVILLETOWN, new CobvilleTown(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage()));
     mStates.put(STATE.MENU, new MainMenu(theGame));
     mStates.put(STATE.START, new StartScreen(stage));
+    mStates.put(STATE.INSTRUCTION, new StartInstruct());
     stack = new Stack<>();
   }
   

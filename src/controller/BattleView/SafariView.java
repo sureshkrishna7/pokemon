@@ -545,6 +545,12 @@ public class SafariView {
 			
 			if (captured == true) {
 				System.out.println("Captured Pokemon");
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				PokemonGame.getOutSafari();
 			}
 			else if (playerRun == true) {
