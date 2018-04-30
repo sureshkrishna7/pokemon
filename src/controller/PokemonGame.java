@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -124,12 +125,12 @@ public class PokemonGame extends Application {
 
   private static void initializeGameForFirstTime() {
     theGame = new Game();
-
+    
     pane = new BorderPane();
     currBackground = new GameBackground(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
 
     initNPCs();
-    
+
     playerStartLocation.x = theGame.getTrainerLocation().x;
     playerStartLocation.y = theGame.getTrainerLocation().y;
 
@@ -143,27 +144,27 @@ public class PokemonGame extends Application {
     wonBattle = false;
   }
 
+  @SuppressWarnings("unchecked")
   private static void readPersistentObjects() {
     try {
       FileInputStream fileInput = new FileInputStream("src/persistedTrainerObjects.out");
       ObjectInputStream in = new ObjectInputStream(fileInput);
 
-      @SuppressWarnings("unchecked")
-      List<Pokemon> trainerPokemonList = (List<Pokemon>) in.readObject();
+      ArrayList<Pokemon> trainerPokemonList = new ArrayList<Pokemon>();
+      trainerPokemonList = (ArrayList<Pokemon>) in.readObject();
       for(Pokemon poke: trainerPokemonList) {
         theGame.getTrainer().addPokemon(poke);
       }
 
-      @SuppressWarnings("unchecked")
-      Map<String, ArrayList<UsableItem>> inventory = (Map<String, ArrayList<UsableItem>>) in.readObject();
+      Map<String, ArrayList<UsableItem>> inventory = new HashMap<>();
+      inventory = (Map<String, ArrayList<UsableItem>>) in.readObject();
       theGame.getTrainer().setThisAsInventory(inventory);
 
-      @SuppressWarnings("unchecked")
-      Map<String, ArrayList<UsableItem>> safariInventory = (Map<String, ArrayList<UsableItem>>) in.readObject();
+      Map<String, ArrayList<UsableItem>> safariInventory = new HashMap<>();
+      safariInventory = (Map<String, ArrayList<UsableItem>>) in.readObject();
       theGame.getTrainer().setThisAsSafariInventory(safariInventory);
-      
-      in.close();
 
+      in.close();
     }
     catch (IOException e){
       e.printStackTrace();
@@ -174,7 +175,7 @@ public class PokemonGame extends Application {
   private class WritePersistentObject implements EventHandler<WindowEvent> {
     @Override
     public void handle(WindowEvent event) {
-        writePersistentObject();
+      writePersistentObject();
     }
   }
   private static void writePersistentObject() {
@@ -182,11 +183,14 @@ public class PokemonGame extends Application {
       FileOutputStream fileOutput = new FileOutputStream("src/persistedTrainerObjects.out");
       ObjectOutputStream out = new ObjectOutputStream(fileOutput);
 
-      List<Pokemon> trainerPokemonList = theGame.getTrainer().getPokeList();
+      ArrayList<Pokemon> trainerPokemonList = new ArrayList<Pokemon>();
+      trainerPokemonList = theGame.getTrainer().getPokeList();
 
-      Map<String, ArrayList<UsableItem>> inventory = theGame.getTrainer().getInventory();
+      Map<String, ArrayList<UsableItem>> inventory = new HashMap<>();
+      inventory = theGame.getTrainer().getInventory();
 
-      Map<String, ArrayList<UsableItem>> safariInventory = theGame.getTrainer().getSafariInventory();
+      Map<String, ArrayList<UsableItem>> safariInventory = new HashMap<>();
+      safariInventory = theGame.getTrainer().getSafariInventory();
 
       out.writeObject(trainerPokemonList);
       out.writeObject(inventory);
@@ -198,7 +202,7 @@ public class PokemonGame extends Application {
       e.printStackTrace();
     }
   }
-  
+
   private static void initNPCs() {
     npcList = new LinkedList<NPC>();
     npcList.add(new Tain("Tain", true));
@@ -511,7 +515,7 @@ public class PokemonGame extends Application {
           currentState = STATE.COBVILLETOWN;
 
         } else {
-            
+
         }
 
         drawGameBackground( currBackground, event, newLocationObject);
