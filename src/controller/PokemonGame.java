@@ -84,6 +84,7 @@ public class PokemonGame extends Application {
   private KeyHandler keyHandler = new KeyHandler();
   private MainMenu menu;
   private boolean notAcceptingInput = false;
+  private boolean inSafariTown = false;
 
   // IState objects
   private StateMachine stateMachine;
@@ -390,7 +391,8 @@ public class PokemonGame extends Application {
         if (currBackground.isTimelineAnimating() || notAcceptingInput) {
           return;
         }
-
+        
+        inSafariTown = false;
         currKeyEvent = event;
         char newLocationObject = 'Z';
         currLocationChar = newLocationObject;
@@ -439,6 +441,13 @@ public class PokemonGame extends Application {
           oldCurrentMap = theGame.getCurrCameraMap();
           door = (Door) theGame.getCurrCameraMap().enteredDoor(theGame.getTrainerLocation().x, theGame.getTrainerLocation().y);
 
+          Door safariTownEntrance = (Door) theGame.getCurrCameraMap().enteredDoor(4, 30);
+          
+          if (safariTownEntrance == door) {
+        	  	inSafariTown = true;
+          }else {
+        	  	inSafariTown = false;
+          }
           /* 
            * ****We would be in safari Zone if the door is null****
            * ****Because we magically hop to different places****
@@ -522,7 +531,8 @@ public class PokemonGame extends Application {
 	            currentState = STATE.BATTLE;
 	
 	            Pokemon wildPoke = getWildPoke();
-	            if (theGame.inSafariZone()) {
+	            //if (theGame.inSafariZone()) {
+	            if (inSafariTown) {
 	            		try {
 						SafariView.start(primaryStage, theGame.getTrainer(), wildPoke);
 					} catch (Exception e) {
@@ -533,6 +543,7 @@ public class PokemonGame extends Application {
 	            else {
 	            		try {
 						TausifBattleView.start(primaryStage, theGame.getTrainer(), wildPoke);
+	            			//SafariView.start(primaryStage, theGame.getTrainer(), wildPoke);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -713,5 +724,13 @@ public static void getOutOfBattle() {
 	currentState =STATE.COBVILLETOWN;
 	stateChanged = true;
 	
+}
+
+public static void getOutSafari() {
+	door = (Door) theGame.getCurrCameraMap().enteredDoor(5, 30);
+	
+	System.out.println("Setting state to InsideBuilding");
+	currentState =STATE.INSIDE_BUILDING;
+	stateChanged = true;
 }
 }

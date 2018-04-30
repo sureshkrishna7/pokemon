@@ -545,12 +545,15 @@ public class SafariView {
 			
 			if (captured == true) {
 				System.out.println("Captured Pokemon");
+				PokemonGame.getOutSafari();
 			}
 			else if (playerRun == true) {
 				System.out.println("You Ran Away");
+				PokemonGame.getOutSafari();
 			}
 			else
 				System.out.println("Pokemon Ran Away");
+				PokemonGame.getOutSafari();
 		}
 	}
 
