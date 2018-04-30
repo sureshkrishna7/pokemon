@@ -115,7 +115,7 @@ public class MainMenu implements IState {
     
     initMenuItems();
     menuBox = new VBox(50, save, exit, quit);
-    menuBox.setPadding(new Insets(20, 5, 5, 20));
+    menuBox.setPadding(new Insets(25, 5, 20, 90));
     root.getChildren().addAll(bGround, textBox, text, menuBox);
     root.setAlignment(Pos.TOP_LEFT);
     //root.setRight(textPane);
