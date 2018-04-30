@@ -51,10 +51,16 @@ public class MainMenu implements IState {
   private static MenuItem quit;
   private static MenuItem exit;
   
-  public MainMenu(Game theGame) {  
-    scene = new Scene(getGameMenu(theGame));
-    scene.getStylesheets().add("file:src/style.css");
+  private StringBuilder sb;
+  
+  public MainMenu(Game theGame) {
     
+    listExcludedMainMenu(theGame);
+    
+    arrowKeyMovement();
+  }
+
+  public void arrowKeyMovement() {
     scene.setOnKeyPressed(event -> {
       if (event.getCode() == KeyCode.UP) {
         if (currentItem > 0) {
@@ -75,37 +81,44 @@ public class MainMenu implements IState {
       }
     });
   }
-  
-  public Scene getScene() {
-    return this.scene;
-  }
-  
-  
-  private Parent getGameMenu(Game theGame) {
+
+  public void listExcludedMainMenu(Game theGame) {
+    
     StackPane root = new StackPane();
     Rectangle textBox = new Rectangle(100,240,Paint.valueOf("BLACK"));
     
     ImageView bGround = new ImageView("file:src/images/GameBackground1.gif");
     bGround.prefHeight(height);
     bGround.prefWidth(width);
-    /*
-    BackgroundImage myBI= new BackgroundImage(new Image("file:src/images/GameBackground1.gif",width,height,true,true),
-        BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-        BackgroundSize.DEFAULT);
-    */
-    //root.setLeft(bGround);
-    //root.setBackground(new Background(myBI));
-    //root.setBackground(new Image("file:src/images/GameBackground1.gif"));
-    StringBuilder sb = new StringBuilder();
-
-    sb.append("Pokemon: \n");
-    for (Pokemon p : theGame.getTrainer().getPokeList()) {
-      sb.append(p.getData());
-    }
-    sb.append("\nItems: \n");
-    for (Map.Entry<String, ArrayList<UsableItem>> entry : theGame.getTrainer().getInventory().entrySet()) {
-      sb.append("\t" + entry.getKey() + " " + entry.getValue().size() + "\n");
-    }
+      
+    initMenuItems();
+    menuBox = new VBox(50, save, exit, quit);
+    menuBox.setPadding(new Insets(25, 5, 20, 90));
+    root.getChildren().addAll(bGround, textBox, menuBox);
+    root.setAlignment(Pos.TOP_LEFT);
+    //root.setRight(textPane);
+    //root.setLeft(menuBox);
+ 
+    scene = new Scene(root);
+    scene.getStylesheets().add("file:src/style.css");
+  }
+  
+  public Scene getScene() {
+    return this.scene;
+  }
+  
+  
+  public void listIncludedMainMenu(Game theGame) {
+    StackPane root = new StackPane();
+    Rectangle textBox = new Rectangle(100,240,Paint.valueOf("BLACK"));
+    
+    ImageView bGround = new ImageView("file:src/images/GameBackground1.gif");
+    bGround.prefHeight(height);
+    bGround.prefWidth(width);
+    
+    System.out.println("Main Menu is this running?");
+    
+    sb = readList(theGame);
     
     Text text = new Text(sb.toString());
     text.setFont(FONT1);
@@ -120,7 +133,30 @@ public class MainMenu implements IState {
     root.setAlignment(Pos.TOP_LEFT);
     //root.setRight(textPane);
     //root.setLeft(menuBox);
-    return root;
+    scene = new Scene(root);
+    
+    arrowKeyMovement();
+  }
+
+  public StringBuilder readList(Game theGame) {
+    sb = new StringBuilder();
+
+    sb.append("Pokemon: \n");
+    
+    ArrayList<Pokemon> pokes = theGame.getTrainer().getPokeList();
+    System.out.println("Main Menu Pokemon List ="+pokes.toString());
+    
+    for (Pokemon p : pokes) {
+      System.out.println("MainMenu Pokemon = "+p.getData());
+      sb.append(p.getData());
+    }
+    sb.append("\nItems: \n");
+    for (Map.Entry<String, ArrayList<UsableItem>> entry : theGame.getTrainer().getInventory().entrySet()) {
+      System.out.println("MainMenu items = "+entry.getKey() + " "+ entry.getValue().size() + "\n");
+      sb.append("\t" + entry.getKey() + " " + entry.getValue().size() + "\n");
+    }
+    
+    return sb;
   }
   
   private static void initMenuItems() {

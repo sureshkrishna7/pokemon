@@ -307,16 +307,6 @@ public class PokemonGame extends Application {
         // Play logo animation
         startMenu.playAnimationLogo();
         primaryStage.setScene(currentScene);
-        
-        /*if(isANewGame) {
-          System.out.println("setup default................");
-          theGame.setUpPlayerDefault();
-        }
-        else {
-          System.out.println("setup read persistence...........");
-          readPersistentObjects();
-        }*/
-        
         break;
       case COBVILLETOWN:
         stateChanged = false;
@@ -367,6 +357,7 @@ public class PokemonGame extends Application {
         previousState = currentState;
         currentState = STATE.MENU;
         stateChanged = true;
+        menu.listIncludedMainMenu(theGame);
       }
     }
   }
