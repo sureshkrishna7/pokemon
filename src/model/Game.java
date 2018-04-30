@@ -54,11 +54,17 @@ public class Game {
     currentMap = enermyTown;
 
     ash = new Trainer(new String("Ash"));
+    
     int x = currentMap.getMapPlayerPosition().x;
     int y = currentMap.getMapPlayerPosition().y;
     ash.setLocation(x, y);
+    
     isTrainerAlreadyOnDoor = false;
     areWeInSafariZone = false;
+  }
+  
+  public void setUpPlayerDefault() {
+    ash.setUpDefault();
   }
   
   public static char getCharAtIndex(int row, int col) {
