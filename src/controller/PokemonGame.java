@@ -124,12 +124,6 @@ public class PokemonGame extends Application {
 
   private static void initializeGameForFirstTime() {
     theGame = new Game();
-    if(isANewGame) {
-      theGame.setUpPlayerDefault();
-    }
-    else {
-      readPersistentObjects();
-    }
 
     pane = new BorderPane();
     currBackground = new GameBackground(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
@@ -294,6 +288,14 @@ public class PokemonGame extends Application {
         // Play logo animation
         startMenu.playAnimationLogo();
         primaryStage.setScene(currentScene);
+        
+        if(isANewGame) {
+          theGame.setUpPlayerDefault();
+        }
+        else {
+          readPersistentObjects();
+        }
+        
         break;
       case COBVILLETOWN:
         stateChanged = false;
