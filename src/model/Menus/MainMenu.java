@@ -41,6 +41,7 @@ public class MainMenu implements IState {
   private static MenuItem quit;
   private static MenuItem exit;
   
+  //temp comment
   public MainMenu(Game theGame) {  
     scene = new Scene(getGameMenu(theGame));
     scene.setOnKeyPressed(event -> {
