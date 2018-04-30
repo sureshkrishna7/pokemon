@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PokemonType {
+public class PokemonType implements Serializable{
 
   //Water, Ice, Fire, Earth
 

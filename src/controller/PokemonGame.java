@@ -92,8 +92,6 @@ public class PokemonGame extends Application {
   public static STATE currentState;
   public static STATE previousState;
 
-  public static boolean isANewGame;
-
   public static void main(String[] args) {
     launch(args);
   }
@@ -144,9 +142,14 @@ public class PokemonGame extends Application {
     wonBattle = false;
   }
 
+  public static void setDefaultData() {
+    theGame.setUpPlayerDefault();
+  }
+  
   @SuppressWarnings("unchecked")
   public static void readPersistentObjects() {
     try {
+      System.out.println("****************Reading objects****************");
       FileInputStream fileInput = new FileInputStream("src/persistedTrainerObjects.out");
       ObjectInputStream in = new ObjectInputStream(fileInput);
 
@@ -155,15 +158,19 @@ public class PokemonGame extends Application {
       for(Pokemon poke: trainerPokemonList) {
         theGame.getTrainer().addPokemon(poke);
       }
-
+      System.out.println("pokemonlist = "+trainerPokemonList.toString());
+      
       Map<String, ArrayList<UsableItem>> inventory = new HashMap<>();
       inventory = (Map<String, ArrayList<UsableItem>>) in.readObject();
       theGame.getTrainer().setThisAsInventory(inventory);
+      System.out.println("inventory = "+inventory.toString());
 
       Map<String, ArrayList<UsableItem>> safariInventory = new HashMap<>();
       safariInventory = (Map<String, ArrayList<UsableItem>>) in.readObject();
       theGame.getTrainer().setThisAsSafariInventory(safariInventory);
-
+      System.out.println("safariInventory = "+safariInventory.toString());
+      System.out.println("****************Reading objects****************");
+      
       in.close();
     }
     catch (IOException e){
@@ -180,22 +187,28 @@ public class PokemonGame extends Application {
   }
   public static void writePersistentObject() {
     try {
+      System.out.println("******************Writing objects*******************");
       FileOutputStream fileOutput = new FileOutputStream("src/persistedTrainerObjects.out");
       ObjectOutputStream out = new ObjectOutputStream(fileOutput);
 
       ArrayList<Pokemon> trainerPokemonList = new ArrayList<Pokemon>();
       trainerPokemonList = theGame.getTrainer().getPokeList();
-
+      System.out.println("pokemonlist = "+trainerPokemonList.toString());
+      
       Map<String, ArrayList<UsableItem>> inventory = new HashMap<>();
       inventory = theGame.getTrainer().getInventory();
-
+      System.out.println("inventory = "+inventory.toString());
+      
       Map<String, ArrayList<UsableItem>> safariInventory = new HashMap<>();
       safariInventory = theGame.getTrainer().getSafariInventory();
+      System.out.println("safariInventory = "+safariInventory.toString());
 
       out.writeObject(trainerPokemonList);
       out.writeObject(inventory);
       out.writeObject(safariInventory);
 
+      System.out.println("******************Writing objects*******************");
+      
       out.close();
     }
     catch (IOException e){
@@ -215,8 +228,8 @@ public class PokemonGame extends Application {
     initializeGameForFirstTime();
 
     // initialize state to start
-    currentState = STATE.COBVILLETOWN;
-    //currentState = STATE.START;
+    //currentState = STATE.COBVILLETOWN;
+    currentState = STATE.START;
 
     stateChanged = true;
 
@@ -295,12 +308,14 @@ public class PokemonGame extends Application {
         startMenu.playAnimationLogo();
         primaryStage.setScene(currentScene);
         
-        if(isANewGame) {
+        /*if(isANewGame) {
+          System.out.println("setup default................");
           theGame.setUpPlayerDefault();
         }
         else {
+          System.out.println("setup read persistence...........");
           readPersistentObjects();
-        }
+        }*/
         
         break;
       case COBVILLETOWN:
@@ -678,5 +693,4 @@ public class PokemonGame extends Application {
     Optional<ButtonType> result = statSheet.showAndWait();
 
   }
-
 }

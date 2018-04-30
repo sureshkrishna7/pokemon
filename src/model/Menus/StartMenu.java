@@ -166,7 +166,7 @@ public class StartMenu implements IState{
     start.setOnActivate(() -> {
       PokemonGame.currentState = STATE.COBVILLETOWN;
       PokemonGame.stateChanged = true;
-      PokemonGame.isANewGame = true;
+      PokemonGame.setDefaultData();
     });
 
     continueGame = new MenuItem("CONTINUE");
@@ -182,7 +182,7 @@ public class StartMenu implements IState{
     continueGame.setOnActivate(() -> {
       PokemonGame.currentState = STATE.COBVILLETOWN;
       PokemonGame.stateChanged = true;
-      PokemonGame.isANewGame = false;
+      PokemonGame.readPersistentObjects();
     });
     
     

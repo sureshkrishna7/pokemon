@@ -1,11 +1,12 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public abstract class Items {
+public abstract class Items implements Serializable{
 
   // Have door class implement Items
   private char type;
