@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 import model.MainMap.EnermyTown;
 import model.MainMap.FryslaSafariZone_TEXT;
-import model.MainMap.LilyCoveCity;
+import model.MainMap.LilyCoveCity_TEXT;
 import model.MainMap.MainMap;
 import model.MainMap.MartCity;
 
@@ -49,20 +49,26 @@ public class Game extends Observable {
 
     enermyTown = new EnermyTown();
     mart = new MartCity();
-    lilyCoveCity = new LilyCoveCity();
+    lilyCoveCity = new LilyCoveCity_TEXT();
     fryslaSafariZone = new FryslaSafariZone_TEXT();
     initializePokeLists();
     
     currentMap = enermyTown;
 
     ash = new Trainer(new String("Ash"));
+    
     int x = currentMap.getMapPlayerPosition().x;
     int y = currentMap.getMapPlayerPosition().y;
     ash.setLocation(x, y);
+    
     isTrainerAlreadyOnDoor = false;
     areWeInSafariZone = false;
     
     testPokemon = new Pokemon("Vulpix", 2, 'R', 'F', null);
+  }
+  
+  public void setUpPlayerDefault() {
+    ash.setUpDefault();
   }
   
   public static char getCharAtIndex(int row, int col) {

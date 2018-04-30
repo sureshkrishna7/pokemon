@@ -1,19 +1,31 @@
 package controller;
 
 import java.awt.Point;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Observer;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
 
+<<<<<<< HEAD
 import controller.BattleView.SafariView;
 import controller.BattleView.TausifBattleView;
 import controller.States.CobvilleTown;
+=======
+>>>>>>> 1708822f8c40c5d5aec0e7c3b16b012cb1ff0758
 import controller.States.Mart;
 import controller.States.StartScreen;
 import controller.States.StateMachine;
+import controller.States.CobvilleTown.CobvilleTown;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -22,12 +34,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.Battle;
 import model.Game;
 import model.Pokemon;
@@ -35,6 +46,8 @@ import model.MainMap.Door;
 import model.MainMap.MainMap;
 import model.Menus.MainMenu;
 import model.Menus.StartMenu;
+import model.NPC.NPC;
+import model.NPC.Tain;
 import model.UsableItems.UsableItem;
 
 //Simply Create the User and insert User into PokeTownMap, the rest of the maps will be embedded within PokeTownMap
@@ -44,7 +57,7 @@ public class PokemonGame extends Application {
   private final double cameraViewSize = 20 * 16;
 
   public static int renderCount = 1;
-  
+
   public static Stage primaryStage;
   public static Scene currentScene;
   public static GraphicsContext g2D;
@@ -55,6 +68,7 @@ public class PokemonGame extends Application {
   private static Point playerOldLocation = new Point();
   private static MainMap oldCurrentMap;
 
+  public static List<NPC> npcList;
   private static boolean firstState;
   private static boolean running;
   private static boolean foundPokemon;
@@ -72,11 +86,14 @@ public class PokemonGame extends Application {
   private AnimateStarter animateStarter = new AnimateStarter();;
   private KeyHandler keyHandler = new KeyHandler();
   private MainMenu menu;
-  // IState objects
+  private boolean notAcceptingInput = false;
 
+  // IState objects
   private StateMachine stateMachine;
   private StartScreen start;
   private StartMenu startMenu;
+  private KeyEvent currKeyEvent;
+  private char currLocationChar;
 
   public static STATE currentState;
   public static STATE previousState;
@@ -112,9 +129,12 @@ public class PokemonGame extends Application {
 
   private static void initializeGameForFirstTime() {
     theGame = new Game();
+    
     pane = new BorderPane();
     currBackground = new GameBackground(theGame.getTrainerLocation(), theGame.getCurrCameraMap().getMapImage());
-    
+
+    initNPCs();
+
     playerStartLocation.x = theGame.getTrainerLocation().x;
     playerStartLocation.y = theGame.getTrainerLocation().y;
 
@@ -128,6 +148,85 @@ public class PokemonGame extends Application {
     wonBattle = false;
   }
 
+  public static void setDefaultData() {
+    theGame.setUpPlayerDefault();
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static void readPersistentObjects() {
+    try {
+      System.out.println("****************Reading objects****************");
+      FileInputStream fileInput = new FileInputStream("src/persistedTrainerObjects.out");
+      ObjectInputStream in = new ObjectInputStream(fileInput);
+
+      ArrayList<Pokemon> trainerPokemonList = new ArrayList<Pokemon>();
+      trainerPokemonList = (ArrayList<Pokemon>) in.readObject();
+      for(Pokemon poke: trainerPokemonList) {
+        theGame.getTrainer().addPokemon(poke);
+      }
+      System.out.println("pokemonlist = "+trainerPokemonList.toString());
+      
+      Map<String, ArrayList<UsableItem>> inventory = new HashMap<>();
+      inventory = (Map<String, ArrayList<UsableItem>>) in.readObject();
+      theGame.getTrainer().setThisAsInventory(inventory);
+      System.out.println("inventory = "+inventory.toString());
+
+      Map<String, ArrayList<UsableItem>> safariInventory = new HashMap<>();
+      safariInventory = (Map<String, ArrayList<UsableItem>>) in.readObject();
+      theGame.getTrainer().setThisAsSafariInventory(safariInventory);
+      System.out.println("safariInventory = "+safariInventory.toString());
+      System.out.println("****************Reading objects****************");
+      
+      in.close();
+    }
+    catch (IOException e){
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+  private class WritePersistentObject implements EventHandler<WindowEvent> {
+    @Override
+    public void handle(WindowEvent event) {
+      writePersistentObject();
+    }
+  }
+  public static void writePersistentObject() {
+    try {
+      System.out.println("******************Writing objects*******************");
+      FileOutputStream fileOutput = new FileOutputStream("src/persistedTrainerObjects.out");
+      ObjectOutputStream out = new ObjectOutputStream(fileOutput);
+
+      ArrayList<Pokemon> trainerPokemonList = new ArrayList<Pokemon>();
+      trainerPokemonList = theGame.getTrainer().getPokeList();
+      System.out.println("pokemonlist = "+trainerPokemonList.toString());
+      
+      Map<String, ArrayList<UsableItem>> inventory = new HashMap<>();
+      inventory = theGame.getTrainer().getInventory();
+      System.out.println("inventory = "+inventory.toString());
+      
+      Map<String, ArrayList<UsableItem>> safariInventory = new HashMap<>();
+      safariInventory = theGame.getTrainer().getSafariInventory();
+      System.out.println("safariInventory = "+safariInventory.toString());
+
+      out.writeObject(trainerPokemonList);
+      out.writeObject(inventory);
+      out.writeObject(safariInventory);
+
+      System.out.println("******************Writing objects*******************");
+      
+      out.close();
+    }
+    catch (IOException e){
+      e.printStackTrace();
+    }
+  }
+
+  private static void initNPCs() {
+    npcList = new LinkedList<NPC>();
+    npcList.add(new Tain("Tain", true));
+  }
+
   @Override
   public void start(Stage stage) throws Exception {
 
@@ -135,18 +234,18 @@ public class PokemonGame extends Application {
     initializeGameForFirstTime();
 
     // initialize state to start
-    currentState = STATE.COBVILLETOWN;
-    //currentState = STATE.STARTMENU;
-    
+    //currentState = STATE.COBVILLETOWN;
+    currentState = STATE.START;
+
     stateChanged = true;
 
     stateMachine = new StateMachine(theGame, stage, this);
     primaryStage = stage;
-    
+
     new AnimationTimer() {
-      
+
       private long last = 0;
-      
+
       @Override
       public void handle(long current) {
         if(current - last >= 28000000) {
@@ -156,7 +255,10 @@ public class PokemonGame extends Application {
       }
     }.start();
 
+    stage.sizeToScene();
     stage.show();
+
+    stage.setOnCloseRequest(new WritePersistentObject());
   }
 
   private void tick() {
@@ -179,7 +281,7 @@ public class PokemonGame extends Application {
    *         controller(pokemonGame) could call those methods when the STATE
    *         changes
    */
-  
+
   private void render() {
 
     if(stateChanged) {
@@ -188,13 +290,13 @@ public class PokemonGame extends Application {
         System.out.println("currentState: " + currentState);
         stateMachine.getIState(previousState).onExit();
       }
-      
+
       switch (currentState) {
       case START:
         stateChanged = false;
         currentState = STATE.START;
         previousState = STATE.START;
-        
+
         start = (StartScreen) stateMachine.getIState(STATE.START);
         currentScene = start.render();
         if (currentScene == null) {
@@ -228,10 +330,12 @@ public class PokemonGame extends Application {
         currentState = STATE.INSIDE_BUILDING;
         GameBackground mapInsideBuilding = door.getGameBackground();
         currBackground = mapInsideBuilding;
+        //drawGameBackground(currBackground, currKeyEvent, currLocationChar);
         currentScene = ((GameBackground) mapInsideBuilding).render();
         currentScene.setOnKeyReleased(animateStarter);
         currentScene.setOnKeyPressed(keyHandler);
         primaryStage.setScene(currentScene);
+
         break;
       case BATTLE:
         break;
@@ -256,9 +360,12 @@ public class PokemonGame extends Application {
     @Override
     public void handle(KeyEvent event) {
       if (event.getCode() == KeyCode.ESCAPE) {
+        menu = (MainMenu) stateMachine.getIState(STATE.MENU);
+        menu.listIncludedMainMenu(theGame);
         previousState = currentState;
         currentState = STATE.MENU;
         stateChanged = true;
+        //menu.listIncludedMainMenu(theGame);
       }
     }
   }
@@ -272,7 +379,7 @@ public class PokemonGame extends Application {
     @Override
     public void handle(KeyEvent event) {
 
-    	System.out.println("State = " + currentState);
+      System.out.println("State = " + currentState);
       /**
        * We monitor what arrow keys we are pressing only when we are in STATE.GAME
        * This is to avoid key pressing conflicts when we not in GAME state
@@ -283,21 +390,22 @@ public class PokemonGame extends Application {
          * than the animation timeline can draw the image, and will crash (runs into
          * things on grid before image). So if animation is on, ignore button clicked
          */
-        if (currBackground.isTimelineAnimating()) {
+        if (currBackground.isTimelineAnimating() || notAcceptingInput) {
           return;
         }
-        
-        System.out.println("TheGame = " + theGame.getCurrCameraMap() == null);
+
+        currKeyEvent = event;
         char newLocationObject = 'Z';
+        currLocationChar = newLocationObject;
         if (KeyCode.UP == event.getCode()) {
           newLocationObject = theGame.playerMove('n');
 
           if (theGame.getIsTrainerAlreadyOnDoor()) {
-              // when the player is already on a door, they want to press up and 
-              // enter the building, but the map isWalkable() will not allow them
-              // to walk on the house object. newLocationObj == 'z' 
-        	  newLocationObject = 'D';
-        	  trainerWasAlreadyOnDoor = true;
+            // when the player is already on a door, they want to press up and 
+            // enter the building, but the map isWalkable() will not allow them
+            // to walk on the house object. newLocationObj == 'z' 
+            newLocationObject = 'D';
+            trainerWasAlreadyOnDoor = true;
           }
         } else if (KeyCode.DOWN == event.getCode()) {
           newLocationObject = theGame.playerMove('s');
@@ -315,85 +423,101 @@ public class PokemonGame extends Application {
           theGame.setTrainerLocation(playerOldLocation);
           theGame.setCurrCameraMap(oldCurrentMap);
           theGame.weAreOutSafariZone();
-        } else {
-          // System.out.println("KeyCode =" + event.getCode());
+        } else if(KeyCode.ENTER == event.getCode()) {
+          System.out.print("Encountered NPC\n");
+          if (newLocationObject == 'N') {
+            System.out.print("Encountered NPC\n");
+            System.out.println("\tIntiate Dialog Box Here!");
+          }
         }
 
         //System.out.println("Game logic = " + newLocationObject);
+        currLocationChar = newLocationObject;
 
         if (newLocationObject == 'D') {
-            System.out.print("Encountered a Door\n");
+          System.out.print("Encountered a Door\n");
 
-            playerOldLocation.x = theGame.getTrainerLocation().x;
-            playerOldLocation.y = theGame.getTrainerLocation().y;
-            oldCurrentMap = theGame.getCurrCameraMap();
-            door = (Door) theGame.getCurrCameraMap().enteredDoor(theGame.getTrainerLocation().x, theGame.getTrainerLocation().y);
+          playerOldLocation.x = theGame.getTrainerLocation().x;
+          playerOldLocation.y = theGame.getTrainerLocation().y;
+          oldCurrentMap = theGame.getCurrCameraMap();
+          door = (Door) theGame.getCurrCameraMap().enteredDoor(theGame.getTrainerLocation().x, theGame.getTrainerLocation().y);
 
-            /* 
-             * ****We would be in safari Zone if the door is null****
-             * ****Because we magically hop to different places****
+          /* 
+           * ****We would be in safari Zone if the door is null****
+           * ****Because we magically hop to different places****
+           */
+
+          if(door == null) {
+            System.out.println("DOOR = NULL");
+            theGame.setTrainerLocation(theGame.getCurrCameraMap().getMapPlayerPosition());
+          }
+          else {
+            theGame.setTrainerLocation(door.getMapPlayerPos());
+            theGame.setCurrCameraMap(door.getInsideMapObject());
+            notAcceptingInput = true;
+            currBackground.closingSceneAnimateCircle(this, currBackground.getTransitionViewCircle(), "entering");
+            pane.setCenter(door.getGameBackground());
+
+            currBackground = (GameBackground)pane.getCenter();
+
+            /** 
+             * NOTE: new background (entering door) will be drawn when transition view
+             * currBackground.closingSceneAnimateCircle() is done animating which
+             * will call continueEnteringBuildingAnimation() in this class to finish
+             * off the code that should run at this point. 
              */
-
-	        if(door == null) {
-	        	System.out.println("DOOR IS NULL");
-	            theGame.setTrainerLocation(theGame.getCurrCameraMap().getMapPlayerPosition());
-	        }
-	        else {
-	            currentState = STATE.INSIDE_BUILDING;
-	            stateChanged = true;
-	            theGame.setTrainerLocation(door.getMapPlayerPos());
-	            theGame.setCurrCameraMap(door.getInsideMapObject());
-	            pane.setCenter(door.getGameBackground());
-	            currBackground = (GameBackground)pane.getCenter();
-	            drawGameBackground(currBackground, event, newLocationObject);
-	            return;
-	        }
+            return;
+          }
         } 
         else if (newLocationObject == 'E') {
-            // align back to mainmap destination after exitin building
-        	// since animation increments/decrements the location on GUI
-        	// when moving on different maps (grids)
-        	GameBackground backgroundToRemove = currBackground;
-        	backgroundToRemove.setDy(backgroundToRemove.getDy() + 16);
-        	theGame.setTrainerLocation(playerOldLocation);
-            theGame.setCurrCameraMap(oldCurrentMap);
-            
-        	// -32 (16) to adjust animation after exiting house 
-        	// (16) to make sure that when he takes a step out the door, 
-        	// he is put in the correct pos relative to grid
-        	currentState = STATE.COBVILLETOWN;
-        	stateChanged = true;
-        	currBackground = cobvilleTown;
-        	  
-        	// less adjusting if was already on door
-        	if (trainerWasAlreadyOnDoor) {
-        		cobvilleTown.setDy(cobvilleTown.getDy() - 16);
-        		trainerWasAlreadyOnDoor = false;
-        	}else {
-        		cobvilleTown.setDy(cobvilleTown.getDy() - 32);
-        	}
-        	pane.setCenter(cobvilleTown);
-        	  
+
+          GameBackground backgroundToRemove = currBackground;
+          backgroundToRemove.setDy(backgroundToRemove.getDy() + 16);
+          theGame.setTrainerLocation(playerOldLocation);
+          theGame.setCurrCameraMap(oldCurrentMap);
+
+          // align back to mainmap destination after exitin building
+          // since animation increments/decrements the location on GUI
+          // when moving on different maps (grids)
+          notAcceptingInput = true;
+          currBackground.closingSceneAnimateCircle(this, currBackground.getTransitionViewCircle(), "exiting");
+
+          // -32 (16) to adjust animation after exiting house 
+          // (16) to make sure that when he takes a step out the door, 
+          // he is put in the correct pos relative to grid
+          // less adjusting if was already on door
+          if (trainerWasAlreadyOnDoor) {
+            cobvilleTown.setDy(cobvilleTown.getDy() - 16);
+            trainerWasAlreadyOnDoor = false;
+          }else {
+            cobvilleTown.setDy(cobvilleTown.getDy() - 32);
+          }
+
+          pane.setCenter(cobvilleTown);
+          currBackground = (GameBackground)pane.getCenter();
+          return;
+
         }  else if (newLocationObject == ' ') {
-        	theGame.setTrainerLocation(playerOldLocation);
-        	theGame.setCurrCameraMap(oldCurrentMap);
+          theGame.setTrainerLocation(playerOldLocation);
+          theGame.setCurrCameraMap(oldCurrentMap);
 
         } else if (newLocationObject == 'S') {
-        	playerOldLocation = theGame.getTrainerLocation();
-        	oldCurrentMap = theGame.getCurrCameraMap();
-        	theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
-        	theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
-        	theGame.weAreInSafariZone();
+          playerOldLocation = theGame.getTrainerLocation();
+          oldCurrentMap = theGame.getCurrCameraMap();
+          theGame.setTrainerLocation(theGame.getFryslaSafariZone().getMapPlayerPosition());
+          theGame.setCurrCameraMap(theGame.getFryslaSafariZone());
+          theGame.weAreInSafariZone();
         }
         // after exhausting 500 steps in Safari Zone, eject back to PokemonTown
         else if (theGame.haveExhaustedSafariZone()) {
-        	theGame.setTrainerLocation(playerOldLocation);
-        	theGame.setCurrCameraMap(oldCurrentMap);
-        	theGame.weAreOutSafariZone();
+          theGame.setTrainerLocation(playerOldLocation);
+          theGame.setCurrCameraMap(oldCurrentMap);
+          theGame.weAreOutSafariZone();
 
           // bush, check will battle at random, start battle with randomly instantiated
           // Pokemon
         } else if (newLocationObject == 'B') {
+<<<<<<< HEAD
 	          foundPokemon = checkBush();
 	          if (foundPokemon) {
 	
@@ -426,33 +550,66 @@ public class PokemonGame extends Application {
 
         } else if (newLocationObject == 'N') {
             System.out.print("Encountered a NPC\n");
+=======
+          foundPokemon = checkBush();
+          if (foundPokemon) {
+
+            /** The Battle is about to start */
+            currentState = STATE.BATTLE;
+
+            Pokemon wildPoke = getWildPoke();
+            wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
+          }
+
+          /** Once the battle is done set the state back to Game */
+          currentState = STATE.COBVILLETOWN;
+
+        } else {
+
+>>>>>>> 1708822f8c40c5d5aec0e7c3b16b012cb1ff0758
         }
-        
+
         drawGameBackground( currBackground, event, newLocationObject);
-        
-        
+
+
       }// end if (currentState == State.COBVILLE)
-      
-      
+
+
     }
 
-    /**
-     * drawGameBackground()
-     * z is a char returned by theGame.playerMove() that's not used in map
-     * to represent an obj, thus can be used to detect null
-     * We need to setBackGroundImage() only after entering/exiting doors
-     */
-    public void drawGameBackground(GameBackground gameBackground, KeyEvent event, char newLocationObject) {
-    	if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {
-    		gameBackground.setPlayerLocation(theGame.getTrainerLocation());
-    		gameBackground.movePlayer(event.getCode(), "over");
-    	}
+    public void continueEnteringBuildingAnimation() {
+      notAcceptingInput = false;
+      currentState = STATE.INSIDE_BUILDING;
+      stateChanged = true;
+      drawGameBackground(currBackground, currKeyEvent, currLocationChar);
+    }
 
-    	// Draw character under X objects
-    	else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
-    		gameBackground.setPlayerLocation(theGame.getTrainerLocation());
-    		gameBackground.movePlayer(event.getCode(), "under");
-    	}
+    public void continueExitingBuildingAnimation() {
+      notAcceptingInput = false;
+      currentState = STATE.COBVILLETOWN;
+      stateChanged = true;
+      drawGameBackground(currBackground, currKeyEvent, currLocationChar);
+    }
+
+
+  } // end AnimateStarter
+
+  /**
+   * drawGameBackground()
+   * z is a char returned by theGame.playerMove() that's not used in map
+   * to represent an obj, thus can be used to detect null
+   * We need to setBackGroundImage() only after entering/exiting doors
+   */
+  public void drawGameBackground(GameBackground gameBackground, KeyEvent event, char newLocationObject) {
+    if ((!(newLocationObject == 'Z')) && (!(newLocationObject == 'X'))) {
+      gameBackground.setPlayerLocation(theGame.getTrainerLocation());
+      gameBackground.movePlayer(event.getCode(), "over");
+    }
+
+    // Draw character under X objects
+    else if ((!(newLocationObject == 'Z')) && (newLocationObject == 'X')) {
+      gameBackground.setPlayerLocation(theGame.getTrainerLocation());
+      gameBackground.movePlayer(event.getCode(), "under");
     }
   }
 

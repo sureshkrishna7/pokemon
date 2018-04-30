@@ -1,10 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Pokemon extends Items {
+@SuppressWarnings("serial")
+public class Pokemon extends Items implements Serializable{
 
   private String name;
   private String status;
@@ -14,6 +16,16 @@ public class Pokemon extends Items {
   private ArrayList<Attack> moves;
   //private Attack specialMove;
   private boolean boostFactorSet;
+  
+  /**
+   * @author suresh
+   * No argument constructor for persistence to work. 
+   * Look up no java.io.InvalidClassException
+   */
+  public Pokemon() {
+    super('P');
+    boostFactorSet = false;
+  }
   
   public Pokemon(String name, int level, char rarity, char typeOfPokemon, Attack specialMove) {
     super('P');

@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +9,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import model.UsableItems.*;
 
-public class Trainer extends Items {
+public class Trainer extends Items implements Serializable{
 
   private String filepath; // TODO: need to set proper filepath for the user or Image of the player
   private String name;
@@ -17,7 +18,6 @@ public class Trainer extends Items {
   private Map<String, ArrayList<UsableItem>> inventory;
   private Map<String, ArrayList<UsableItem>> itemsGainedInSafariZone;
   private Map<String, ArrayList<UsableItem>> safariInventory;
-  private int money;
   private Point currentPos = new Point();
   private Pokemon currentPokemon; // current battle pokemon, switch dynamically while in battle
   private int allowedSafariSteps; // 500 steps in safari mode
@@ -32,22 +32,34 @@ public class Trainer extends Items {
   public Trainer(String name) {
     super('O');
     this.name = name;
-    this.money = 5000;
     this.listOfPokemon = new ArrayList<Pokemon>();
     this.beforeSafariPokeList = new ArrayList<Pokemon>();
-    listOfPokemon.add(new Pokemon("Squirtle", 20, 'C', 'W', null));
     this.inventory = new HashMap<>();
     this.safariInventory = new HashMap<>();
     this.itemsGainedInSafariZone = new HashMap<>();
-    initializeInventory();
-    initializeSafariInventory();
-    setBattlePokemon(listOfPokemon.get(0));
+
+    //setUpDefault();
 
     // Set this to 500 when the trainer pays money to NPC or menu option
     this.allowedSafariSteps = 500;
     this.allowedCurrentBalls = 30;
   }
 
+  public void setUpDefault() {
+    listOfPokemon.add(new Pokemon("Squirtle", 20, 'C', 'W', null));
+    setBattlePokemon(listOfPokemon.get(0));
+    initializeInventory();
+    initializeSafariInventory();
+  }
+
+  public void setThisAsInventory(Map<String, ArrayList<UsableItem>> invent) {
+    this.inventory = invent;
+  }
+
+  public void setThisAsSafariInventory(Map<String, ArrayList<UsableItem>> safariInvent) {
+    this.safariInventory = safariInvent;
+  }
+  
   /*
    * initializeSafariInventory() -- this method adds to the safari inventory 
    * 10 each rock and bait and 30 safari balls.
@@ -140,7 +152,7 @@ public class Trainer extends Items {
   public Map<String, ArrayList<UsableItem>> getSafariInventory() {
     return this.safariInventory;
   }
-  
+
   public Map<String, ArrayList<UsableItem>> getItemsGainedInSafariZone() {
     return this.itemsGainedInSafariZone;
   }
@@ -148,7 +160,7 @@ public class Trainer extends Items {
   public void setBattlePokemon(Pokemon p) {
     this.currentPokemon = p;
   }
-  
+
   public String getName() {
     return name;
   }
@@ -156,7 +168,7 @@ public class Trainer extends Items {
   public Pokemon getCurPokemon() {
     return currentPokemon;
   }
-  
+
   public void addPokemon(Pokemon s) {
     listOfPokemon.add(s);
   }
@@ -172,7 +184,7 @@ public class Trainer extends Items {
   public ArrayList<Pokemon> getPokeList() {
     return listOfPokemon;
   }
-  
+
   public ArrayList<Pokemon> getBeforeSafariPokeList(){
     return beforeSafariPokeList;
   }
@@ -188,7 +200,7 @@ public class Trainer extends Items {
     currentPos.x = pos.x;
     currentPos.y = pos.y;
   }
-  
+
   /*
    * allPokemonExhausted(Trainer) -- this method iterates through all of the
    * Pokemon in the Trainer's pokeList. It returns false as soon as it finds one

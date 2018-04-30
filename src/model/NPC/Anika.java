@@ -149,5 +149,4 @@ public class Anika extends NPC {
     this.inventory.put("heal", l3);
   }
 
-
 }

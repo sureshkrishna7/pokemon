@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Statistics {
+public class Statistics implements Serializable{
 
   private int maxMP;
   private int curMP;

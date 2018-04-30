@@ -12,6 +12,7 @@ import controller.States.FryslaSafariZone;
 import controller.States.House1;
 import controller.States.House2;
 import controller.States.House6;
+import controller.States.LilyCoveCity;
 import controller.States.Mart;
 import controller.States.ProfessorLab;
 import javafx.scene.image.Image;
@@ -62,13 +63,20 @@ public class Door implements MainMap{
     }
     else if(txt.equals("cave.txt")){
     	System.out.println("Creating Cave image!");
+    	//gameBackground = new Cave(new Point(18, 22), insideMapImage);
     	gameBackground = new Cave(new Point(18, 22), insideMapImage);
+    	//gameBackground = new Cave(new Point(8, 12), insideMapImage);
     	insideMap = new Cave_TEXT();
     }
     else if(txt.equals("FryslaSafariZone.txt")){
     	System.out.println("Creating FryslaSafariZone image!");
-    	gameBackground = new FryslaSafariZone(new Point(45,44), insideMapImage);
+    	gameBackground = new FryslaSafariZone(new Point(39, 22), insideMapImage);
     	insideMap = new FryslaSafariZone_TEXT();
+    }
+    else if(txt.equals("LilyCoveCity.txt")){
+    	System.out.println("Creating LilyCoveCity image!");
+    	gameBackground = new LilyCoveCity(new Point(27, 50), insideMapImage);
+    	insideMap = new LilyCoveCity_TEXT();
     }
     else {
     
@@ -81,7 +89,7 @@ public class Door implements MainMap{
     }
   }
   
-//For House with two Doors
+  //For House with two Doors
   Door(int firx, int firy, int secx, int secy, String img, String txt){
     this.listOfDoorPositions = new ArrayList<Point>(0);
     this.listOfDoorPositions.add(new Point(firx,firy));

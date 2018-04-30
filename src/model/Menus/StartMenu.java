@@ -49,6 +49,7 @@ public class StartMenu implements IState{
 
   private int currentItem = 0;
   private static MenuItem start;
+  private static MenuItem continueGame;
   private static MenuItem instructions;
   private static MenuItem quit;
   public Scene scene;
@@ -138,8 +139,8 @@ public class StartMenu implements IState{
 
     initMenuItems();
 
-    menuBox = new VBox(70,start, instructions, quit);
-    menuBox.setPadding(new Insets(80, 5, 5, 60));
+    menuBox = new VBox(70,start, continueGame, instructions, quit);
+    menuBox.setPadding(new Insets(30, 5, 5, 60));
 
 
     // Group group = new Group(menuBox, closingSceneAnimateCircle());
@@ -165,8 +166,26 @@ public class StartMenu implements IState{
     start.setOnActivate(() -> {
       PokemonGame.currentState = STATE.COBVILLETOWN;
       PokemonGame.stateChanged = true;
+      PokemonGame.setDefaultData();
     });
 
+    continueGame = new MenuItem("CONTINUE");
+    continueGame.setId("fancytext");
+    
+    DropShadow dropShadow4 = new DropShadow();
+    dropShadow4.setColor(Color.BLUE);
+    dropShadow4.setRadius(25);
+    dropShadow4.setSpread(1);
+    dropShadow4.setBlurType(BlurType.GAUSSIAN);
+    continueGame.setEffect(dropShadow4);
+    
+    continueGame.setOnActivate(() -> {
+      PokemonGame.currentState = STATE.COBVILLETOWN;
+      PokemonGame.stateChanged = true;
+      PokemonGame.readPersistentObjects();
+    });
+    
+    
     instructions = new MenuItem("INSTRUCTIONS");
     instructions.setId("fancytext");
     

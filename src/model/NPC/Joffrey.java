@@ -141,5 +141,4 @@ public class Joffrey extends NPC {
     this.inventory.put("heal", l3);
   }
 
-
 }

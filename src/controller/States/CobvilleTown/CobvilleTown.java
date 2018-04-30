@@ -1,4 +1,4 @@
-package controller.States;
+package controller.States.CobvilleTown;
 
 import java.awt.Point;
 
@@ -29,8 +29,6 @@ import javafx.util.Duration;
  */
 
 public class CobvilleTown extends GameBackground {
-
-
 
 	  public CobvilleTown(Point point, Image mapBackground) {
 		  super(point, mapBackground);
@@ -64,7 +62,6 @@ public class CobvilleTown extends GameBackground {
 
 	  }
 	  
-
 
 		public void setBackGroundImage(Image changeOfMap) {
 		  g2D.clearRect(0, 0, 800, 800);
@@ -107,7 +104,7 @@ public class CobvilleTown extends GameBackground {
 
 	      g2D.drawImage(background, dx - (cameraViewSize / 2), dy - (cameraViewSize / 2), cameraViewSize, cameraViewSize, 0,
 	    		  		0, cameraViewSize, cameraViewSize);
-	      g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, cameraViewSize / 2.0, dw, dh);
+	      g2D.drawImage(character, sx, sy, sw, sh, cameraViewSize / 2.0, cameraViewSize / 2.0, dw, dh);    
 	    }
 
 	    @Override
@@ -132,6 +129,7 @@ public class CobvilleTown extends GameBackground {
 	           */
 	          if (row <= 10 && col <= 10 && keyCode == KeyCode.UP) {
 	          	closeToTopPictureBounderSteps++;
+	          	afterTopLeftCornerCondition2 = true;
 	          	animateImage("left, top", "last Valid DX and DY");
 	          }
 	          else if (row <= 10 && col <= 10 && keyCode == KeyCode.DOWN) {
@@ -246,6 +244,11 @@ public class CobvilleTown extends GameBackground {
 	          else if(col <= 10 && keyCode == KeyCode.DOWN) {
 	          	lastValidPlayerDY = dy;
 	          	animateImage("left, cam/2", "last Valid DX and dy");
+	          	
+	          	if (afterTopLeftCornerCondition2) {
+	          		closeToTopPictureBounderSteps -= 3;
+	          		afterTopLeftCornerCondition2 = false;
+	          	}
 	          }
 	          
 	          /*
@@ -292,7 +295,7 @@ public class CobvilleTown extends GameBackground {
 	          
 	        //System.out.println("DX = " + dx);
 	        //System.out.println("DY = " + dy);
-	        // stop timeline from drawing after final sprite 
+	        // stop timeline from drawing after final sprite  
 	        if (tic == 3) {
 	        	timeline.stop();
 	        }
