@@ -221,7 +221,8 @@ public class Game extends Observable {
   
   public void weAreInSafariZone() {
     areWeInSafariZone = true;
-    totalSafariZoneSteps = ash.getAllowedSafariSteps();
+    //totalSafariZoneSteps = ash.getAllowedSafariSteps();
+    totalSafariZoneSteps = 25;
     totalSafariZoneBalls = ash.getAllowedCurrentBalls();
     currentSafariSteps = 0;
   }
