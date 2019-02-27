@@ -573,7 +573,7 @@ public class PokemonGame extends Application {
 					}
 	            }
 	            
-	            wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
+	            //wonBattle = Battle.battle(theGame.getTrainer(), wildPoke, sc);
 	          }
 	          
 	          System.out.println("Returning to Cobville Town");

@@ -205,7 +205,11 @@ public class Battle {
         }
         System.out.println("Select option:");
         System.out.printf("1: Attack\n2. Use Item\n3. Switch Pokemon\n4. Run away\n");
+        
+        //if(in != null) {choice = in.nextInt();}
+        
         choice = in.nextInt();
+        
         if (choice < 1 || choice > 4) {
           invalid = true;
         }
