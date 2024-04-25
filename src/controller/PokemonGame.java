@@ -73,7 +73,7 @@ public class PokemonGame extends Application {
   private static boolean foundPokemon;
   private static boolean wonBattle;
   public static boolean stateChanged;
-  private static final double encounterChance = 0.6;
+  private static final double encounterChance = 0.9;
   private static boolean trainerWasAlreadyOnDoor;
   private static GameBackground currBackground;
   private static CobvilleTown cobvilleTown, town;
@@ -699,10 +699,10 @@ public class PokemonGame extends Application {
     Random ran = new Random();
     double pivot = ran.nextDouble();
 
-    if (pivot > encounterChance) {
-      return true;
+    if (pivot < encounterChance) {
+      return false;
     }
-    return false;
+    return true;
   }// end checkBush()
 
   /*
